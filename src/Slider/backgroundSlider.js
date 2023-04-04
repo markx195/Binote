@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from "react";
 import './backgroundSlider.css'
-import imageSlide from "./dataSlider";
+import imageSlide from "../dataSlider";
+import {useNavigate} from 'react-router-dom'
 
 const BackgroundSlider = () => {
+    const navigate = useNavigate()
+
+    function handleClick() {
+        navigate("/login")
+    }
+
     const [currentState, setCurrentState] = useState(0)
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -40,7 +47,7 @@ const BackgroundSlider = () => {
                     }
                 </div>
             </div>
-            <div className="snip1582">Next</div>
+            <div className="snip1582" onClick={(e) => handleClick()}>Next</div>
         </div>
     )
 }
