@@ -1,20 +1,33 @@
-import React, {useState} from "react"
-import {data} from "../data/data"
+import React, {useState, useEffect} from "react"
 import {LoadingCard} from "../loadingCard"
 import InfiniteScroll from "react-infinite-scroll-component"
+import axios from "axios"
+import {Rate} from 'rsuite';
 
 const CourseCard = () => {
-    const [dataSource, setDataSource] = useState(data)
-    const [hasMore, setHasMore] = useState(data)
+    const [dataSource, setDataSource] = useState([])
+    const [hasMore, setHasMore] = useState("")
+
     const fetchData = () => {
-        if (dataSource.length < 200) {
-            setTimeout(() => {
-                setDataSource(dataSource.concat(Array.from({length: 6})))
-            }, 500)
-        } else {
-            setHasMore(false)
-        }
+        // if (dataSource.length < 8) {
+        setTimeout(() => {
+            axios.get("http://192.168.102.216:8055/items/course", {}).then((res) => {
+                setDataSource(res.data.data)
+            })
+            setDataSource(dataSource.concat(Array.from({length: 6})))
+        }, 500)
+        // } else {
+        //     setHasMore(false)
+        // }
     }
+
+    useEffect(() => {
+        axios.get("http://192.168.102.216:8055/items/course", {}).then((res) => {
+            setDataSource(res.data.data)
+            console.log(res.data.data)
+        })
+    })
+
     return (<>
             <div className="border border-solid border-[#D5D5D5] max-w-[1762px] mx-auto">
             </div>
@@ -59,18 +72,21 @@ const CourseCard = () => {
                                 />
                             </div>
 
-                            <p className='font-bold flex justify-between px-4 pb-4 text-sm'>{item?.name}</p>
+                            <p className='font-bold flex justify-between px-4 pb-4 text-sm'>{item?.title}</p>
                             <div className="px-4 pb-4">
                                 <button
                                     className="h-[39px] w-full hover:bg-[#F0C528] border-[#D5D5D5] rounded-lg hover:text-[#2F2E2E] border-[#F0C528]">
                                     Tham gia khóa học
                                 </button>
                             </div>
+                            <div>
+                                <Rate defaultValue={3} color="yellow" />
+                            </div>
                             <div className='flex justify-between px-4 pb-4 text-sm'>
-                                <p className=''>Link: {item?.name}</p>
+
                                 <p>
                 <span className='bg-orange-500 text-white p-1 rounded-full'>
-                  {item.price}
+                  {item?.notes}
                 </span>
                                 </p>
                             </div>
