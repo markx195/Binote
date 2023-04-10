@@ -52,7 +52,7 @@ const HomePage = () => {
                 <div className="item-center py-2">
                     {data &&
                         <div className="flex">
-                            <h3 className="pr-2">{data.name}</h3>
+                            <h3 className="pr-2 inline-flex items-center">{data.name}</h3>
                             <img src={data.picture} alt="" className="w-[32px] h-[32px] rounded"></img>
                         </div>
                     }
