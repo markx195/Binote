@@ -48,7 +48,6 @@ const CourseCard = () => {
         navigate(`/NoteDetails/${id}`);
     };
 
-
     const handleScroll = () => {
         if (
             window.innerHeight + document.documentElement.scrollTop ===
@@ -63,7 +62,7 @@ const CourseCard = () => {
             <RecentlyCourses></RecentlyCourses>
             <div className="border border-solid border-[#D5D5D5] max-w-[1762px] mx-auto"></div>
             {/*Course catalog*/}
-            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[79px]">
+            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-4 md:px-[79px]">
                 {courses.map((item) => (
                     <button
                         onClick={() => handleButtonClick(item.id)}
@@ -75,7 +74,7 @@ const CourseCard = () => {
                 ))}
             </div>
             {/*Searching*/}
-            <div className="px-[79px] w-full">
+            <div className="px-4 md:px-[79px] w-full">
                 <div className="relative flex">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <SearchIcon className="text-gray-400"/>
@@ -95,7 +94,8 @@ const CourseCard = () => {
                 endMessage={<p>Đã hết</p>}
                 loader={<LoadingCard/>}
             >
-                <div className='grid grid-cols-2 lg:grid-cols-4 gap-6 pt-4 max-w-[1762px] mx-auto'>
+                <div
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 max-w-[1762px] mx-auto'>
                     {dataSource.map((item, index) => (
                         <div
                             key={index}
@@ -131,8 +131,8 @@ const CourseCard = () => {
                                 <p className="inline-flex items-center">
                                     <StickyNote2Icon></StickyNote2Icon>
                                     <span className='p-1'>
-                                    {item?.notes_count} notes
-                                    </span>
+                        {item?.notes_count} notes
+                        </span>
                                 </p>
                             </div>
                         </div>
