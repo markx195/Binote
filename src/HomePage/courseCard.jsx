@@ -1,27 +1,28 @@
 import React, {useState, useEffect, useCallback} from "react"
-import {LoadingCard} from "../loadingCard"
-import InfiniteScroll from "react-infinite-scroll-component"
 import axios from "axios"
+import InfiniteScroll from "react-infinite-scroll-component"
+import {LoadingCard} from "../loadingCard"
 import StarRatingComponent from 'react-star-rating-component';
 import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import RecentlyCourses from "./recentlyCourses";
+import {useNavigate} from "react-router-dom"
 
-const CourseCard = (props) => {
+const CourseCard = () => {
     const [dataSource, setDataSource] = useState([])
     const [hasMore, setHasMore] = useState("")
     const [courses, setCourses] = useState([]);
-    const fetchData = useCallback(() => {
-        axios.get(
-            "http://192.168.102.216:8055/items/course?fields=*,notes.*,count(notes)&meta=total_count",
+    const fetchData = useCallback((id = 1, page = 0) => {
+        axios.get(`http://192.168.102.216:8055/items/course?fields=*,notes.*,count(notes)&meta=total_count&filter[catalog_id][_in]=${id}&page${page}&limit=5&sort=-id`,
             {}
-        )
-            .then((res) => {
-                setDataSource(dataSource.concat(res.data.data));
-            })
+        ).then((res) => {
+            setDataSource(dataSource.concat(res.data.data));
+            setHasMore(res.data.meta.total_pages > page + 1);
+        })
             .catch((error) => {
                 console.error(error);
             });
-    }, []);
+    }, []); //get all courses
 
     useEffect(() => {
         axios
@@ -34,33 +35,38 @@ const CourseCard = (props) => {
             });
     }, []);
 
-    // const fetchData = () => {
-    //     // if (dataSource.length < 8) {
-    //     setTimeout(() => {
-    //         axios.get("http://192.168.102.216:8055/items/course", {}).then((res) => {
-    //             setDataSource(res.data.data)
-    //         })
-    //         setDataSource(dataSource.concat(Array.from({length: 6})))
-    //     }, 500)
-    //     // } else {
-    //     //     setHasMore(false)
-    //     // }
-    // }
-
     useEffect(() => {
-        // axios.get("http://192.168.102.216:8055/items/course", {}).then((res) => {
-        //     setDataSource(res.data.data)
-        //     console.log(res.data.data)
-        // })
         fetchData();
     }, [fetchData])
 
+    const handleButtonClick = (id) => {
+        fetchData(id);
+    };
+
+    const navigate = useNavigate()
+    const handleNoteDetails = (id) => {
+        navigate(`/NoteDetails/${id}`);
+    };
+
+
+    const handleScroll = () => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop ===
+            document.documentElement.offsetHeight
+        ) {
+            // User has scrolled to the bottom
+            fetchData();
+        }
+    };
+
     return (<>
+            <RecentlyCourses></RecentlyCourses>
             <div className="border border-solid border-[#D5D5D5] max-w-[1762px] mx-auto"></div>
             {/*Course catalog*/}
             <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[79px]">
                 {courses.map((item) => (
                     <button
+                        onClick={() => handleButtonClick(item.id)}
                         key={item.code}
                         className="h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528]"
                     >
@@ -82,13 +88,19 @@ const CourseCard = (props) => {
                 </div>
             </div>
             {/*courses component*/}
-            <InfiniteScroll dataLength={dataSource.length} next={fetchData} hasMore={hasMore} endMessage={<p>Đã hết</p>}
-                            loader={<LoadingCard/>}>
+            <InfiniteScroll
+                dataLength={dataSource.length}
+                next={() => fetchData(dataSource.id, dataSource.length / 5)}
+                hasMore={hasMore}
+                endMessage={<p>Đã hết</p>}
+                loader={<LoadingCard/>}
+            >
                 <div className='grid grid-cols-2 lg:grid-cols-4 gap-6 pt-4 max-w-[1762px] mx-auto'>
                     {dataSource.map((item, index) => (
                         <div
                             key={index}
                             className='border shadow-lg rounded-lg hover:scale-105 duration-300'
+                            onClick={() => handleNoteDetails(item.id)}
                         >
                             <div className="p-4">
                                 <img
@@ -103,7 +115,7 @@ const CourseCard = (props) => {
                             </p>
                             <div className="px-4 pb-4">
                                 <a
-                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
+                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md shadow-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
                                     href={item?.link}
                                     target="_blank"
                                     rel="noopener noreferrer"

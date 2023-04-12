@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {GoogleLogin} from '@react-oauth/google';
-import "./login.css"
 import jwt_decode from "jwt-decode"
 import {useNavigate} from 'react-router-dom'
 
@@ -9,6 +8,8 @@ const LoginForm = () => {
     const [user, setUser] = useState({})
     const responseMessage = (response) => {
         var userObject = jwt_decode(response.credential)
+        console.log(response.credential)
+        console.log(response)
         setUser(userObject)
         document.getElementById("hiddenLogin").hidden = true
         localStorage.setItem('user_info', JSON.stringify(userObject))
