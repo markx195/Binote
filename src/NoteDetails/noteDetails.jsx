@@ -1,22 +1,23 @@
 import React, {useState, useEffect} from "react";
 import {useParams, useLocation} from "react-router-dom";
-import HomePage from "../HomePage/homePage"
-import Note from "./Note"
+import HomePage from "../HomePage/homePage";
+import ReactDOM from 'react-dom';
+import Note from '../NoteDetails/Note';
 import StarRatingComponent from 'react-star-rating-component';
 
 const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
     const id = useParams()
-    const [courseData, setCourseData] = useState(null);
+    const [courseData, setCourseData] = useState([]);
+    const [rating, setRating] = useState(0); // Add state for rating
 
     useEffect(() => {
         const fetchCourseData = async () => {
             try {
                 const response = await fetch(
-                    "http://192.168.102.216:8055/items/course/29?fields=*,notes.*"
+                    `http://192.168.102.216:8055/items/course/${id.id}?fields=*,notes.*`
                 );
                 const data = await response.json();
                 setCourseData(data.data);
-                console.log(data)
             } catch (error) {
                 console.error("Error fetching course data:", error);
             }
@@ -24,6 +25,11 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
 
         fetchCourseData();
     }, []);
+
+    // Define onStarClick function
+    const onStarClick = (nextValue) => {
+        setRating(nextValue);
+    };
 
     return (
         <>
@@ -33,7 +39,7 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
                     <>
                         <img
                             src={`http://192.168.102.216:8055/assets/${courseData.image}`}
-                            alt="" className="rounded-lg"/>
+                            alt="" className="rounded-lg h-[400px] w-full"/>
                         <div className="font-bold text-[32px] leading-[120%] text-left pt-6">
                             {courseData.title}
                         </div>
@@ -47,16 +53,25 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
                                 Đi tới khóa học
                             </a>
                             <StarRatingComponent
-                                class="flex-shrink-0"
-                                font
+                                className="flex-shrink-0" // Fix typo: 'class' should be 'className'
                                 name="rate1"
-                                starCount={courseData.rating}
+                                starCount={5}
+                                value={rating} // Pass the rating value from state
+                                onStarClick={onStarClick} // Use the defined onStarClick function
+                                renderStarIcon={() => (
+                                    <span
+                                        className="text-4xl" // Increase the font size to make it bigger
+                                        style={{paddingRight: "4px"}} // Add some padding between stars
+                                    >&#9733;
+                                    </span>
+                                )}
                             />
                         </div>
                         <div className="text-left">{courseData.description}</div>
                     </>
                 )}
             </div>
+            <Note courseData={courseData.notes}/>
         </>
     );
 };

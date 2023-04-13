@@ -14,7 +14,7 @@ const RecentlyCourses = () => {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
-                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWVhMzlkLTM4NTUtNDMyMC1hOGU2LTAyNDg3ZGExYmYzMSIsInJvbGUiOiI3ZTc2YTIzMC04MTY3LTQyZDYtODY2ZS1lMTJjNGFmZDAzNDIiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4MTI2NTk0MywiZXhwIjoxNjgxMzUyMzQzLCJpc3MiOiJkaXJlY3R1cyJ9.RqTjEQzFVQhLi0c0oNdPo57_ClSvyNwaHoCScsBAO94" // Replace YOUR_TOKEN_HERE with your actual token
+                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWVhMzlkLTM4NTUtNDMyMC1hOGU2LTAyNDg3ZGExYmYzMSIsInJvbGUiOiI3ZTc2YTIzMC04MTY3LTQyZDYtODY2ZS1lMTJjNGFmZDAzNDIiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4MTM0OTY0OCwiZXhwIjoxNjgxNDM2MDQ4LCJpc3MiOiJkaXJlY3R1cyJ9.ukkFaZHVqZ6G8mF2bULMSk2udOGDGr4Pt5LdLEJtvOM" // Replace YOUR_TOKEN_HERE with your actual token
                         }
                     });
                     setCourses(response.data.data);
