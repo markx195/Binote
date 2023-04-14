@@ -10,15 +10,14 @@ const RecentlyCourses = () => {
             const fetchData = async () => {
                 try {
                     // Make API call with token in request headers
-                    const response = await axios.get("http://192.168.102.216:8055/items/course?fields=*,notes.*&filter[notes][user_created][_eq]=$CURRENT_USER&sort=-notes.date_updated,-notes.date_created&limit=5", {
+                    const response = await axios.get("http://192.168.3.150:8055/items/course?fields=*,notes.*&filter[notes][user_created][_eq]=$CURRENT_USER&sort=-notes.date_updated,-notes.date_created&limit=5", {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
-                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWVhMzlkLTM4NTUtNDMyMC1hOGU2LTAyNDg3ZGExYmYzMSIsInJvbGUiOiI3ZTc2YTIzMC04MTY3LTQyZDYtODY2ZS1lMTJjNGFmZDAzNDIiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4MTM0OTY0OCwiZXhwIjoxNjgxNDM2MDQ4LCJpc3MiOiJkaXJlY3R1cyJ9.ukkFaZHVqZ6G8mF2bULMSk2udOGDGr4Pt5LdLEJtvOM" // Replace YOUR_TOKEN_HERE with your actual token
+                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWVhMzlkLTM4NTUtNDMyMC1hOGU2LTAyNDg3ZGExYmYzMSIsInJvbGUiOiI3ZTc2YTIzMC04MTY3LTQyZDYtODY2ZS1lMTJjNGFmZDAzNDIiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4MTQzNjM1MiwiZXhwIjoxNjgxNTIyNzUyLCJpc3MiOiJkaXJlY3R1cyJ9.kM8uaEYmPeXv7MkSe8L90AHFImxgU28dpj8NzgjUDxQ" // Replace YOUR_TOKEN_HERE with your actual token
                         }
                     });
                     setCourses(response.data.data);
-                    console.log(response.data.data);
                 } catch
                     (error) {
                     console.error("Error fetching data:", error);
@@ -41,11 +40,11 @@ const RecentlyCourses = () => {
     return (
         <>
             {courses.length > 0 && (
-                <div className="pt-12 max-w-[1762px] mx-auto flex">
+                <div className="pt-12 max-w-[1300px] mx-auto flex">
                     <div className="flex-grow">
                         <img
                             key={courses[0].image}
-                            src={`http://192.168.102.216:8055/assets/${courses[0].image}`}
+                            src={`http://192.168.3.150:8055/assets/${courses[0].image}`}
                             alt={courses[0].name}
                             className="w-full h-full object-cover rounded-lg"
                         />

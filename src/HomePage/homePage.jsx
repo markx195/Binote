@@ -10,7 +10,7 @@ const HomePage = () => {
 
     return (
         <>
-            <div className="max-w-[1762px] mx-auto flex justify-between items-center p-4 pt-8">
+            <div className="max-w-[1300px] mx-auto flex justify-between items-center p-4 pt-8">
                 <div className="flex items-center">
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl px-2">
                         Bi<span className="font-bold">Noted</span>

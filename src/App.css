@@ -13,4 +13,12 @@
     }
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
+#hideScroll::-webkit-scrollbar {
+    display: none;
+}
+
 

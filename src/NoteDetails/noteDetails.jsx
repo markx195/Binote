@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {useParams, useLocation} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import HomePage from "../HomePage/homePage";
-import ReactDOM from 'react-dom';
 import Note from '../NoteDetails/Note';
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -14,7 +13,7 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
         const fetchCourseData = async () => {
             try {
                 const response = await fetch(
-                    `http://192.168.102.216:8055/items/course/${id.id}?fields=*,notes.*`
+                    `http://192.168.3.150:8055/items/course/${id.id}?fields=*,notes.*`
                 );
                 const data = await response.json();
                 setCourseData(data.data);
@@ -34,11 +33,11 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
     return (
         <>
             <HomePage/>
-            <div className="max-w-[1762px] mx-auto pt-[37px]">
+            <div className="max-w-[1300px] mx-auto pt-[37px]">
                 {courseData && (
                     <>
                         <img
-                            src={`http://192.168.102.216:8055/assets/${courseData.image}`}
+                            src={`http://192.168.3.150:8055/assets/${courseData.image}`}
                             alt="" className="rounded-lg h-[400px] w-full"/>
                         <div className="font-bold text-[32px] leading-[120%] text-left pt-6">
                             {courseData.title}

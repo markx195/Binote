@@ -13,7 +13,7 @@ const CourseCard = () => {
     const [hasMore, setHasMore] = useState("")
     const [courses, setCourses] = useState([]);
     const fetchData = useCallback((id = 1, page = 0) => {
-        axios.get(`http://192.168.102.216:8055/items/course?fields=*,notes.*,count(notes)&meta=total_count&filter[catalog_id][_in]=${id}&page${page}&limit=5&sort=-id`,
+        axios.get(`http://192.168.3.150:8055/items/course?fields=*,notes.*,count(notes)&meta=total_count&filter[catalog_id][_in]=${id}&page${page}&limit=5&sort=-id`,
             {}
         ).then((res) => {
             setDataSource(dataSource.concat(res.data.data));
@@ -26,7 +26,7 @@ const CourseCard = () => {
 
     useEffect(() => {
         axios
-            .get("http://192.168.102.216:8055/items/catalog", {})
+            .get("http://192.168.3.150:8055/items/catalog", {})
             .then((res) => {
                 setCourses(res.data.data);
             })
@@ -60,9 +60,9 @@ const CourseCard = () => {
 
     return (<>
             <RecentlyCourses></RecentlyCourses>
-            <div className="border border-solid border-[#D5D5D5] max-w-[1762px] mx-auto"></div>
+            <div className="border border-solid border-[#D5D5D5] max-w-[1300px] mx-auto"></div>
             {/*Course catalog*/}
-            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-4 md:px-[79px]">
+            <div className="flex flex-wrap pt-10 pb-6 gap-4 max-w-[1300px] mx-auto">
                 {courses.map((item) => (
                     <button
                         onClick={() => handleButtonClick(item.id)}
@@ -74,7 +74,7 @@ const CourseCard = () => {
                 ))}
             </div>
             {/*Searching*/}
-            <div className="px-4 md:px-[79px] w-full">
+            <div className="max-w-[1300px] mx-auto w-full">
                 <div className="relative flex">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <SearchIcon className="text-gray-400"/>
@@ -95,7 +95,7 @@ const CourseCard = () => {
                 loader={<LoadingCard/>}
             >
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 max-w-[1762px] mx-auto'>
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 max-w-[1300px] mx-auto'>
                     {dataSource.map((item, index) => (
                         <div
                             key={index}
@@ -105,7 +105,7 @@ const CourseCard = () => {
                             <div className="p-4">
                                 <img
                                     key={item.image}
-                                    src={`http://192.168.102.216:8055/assets/${item.image}`}
+                                    src={`http://192.168.3.150:8055/assets/${item.image}`}
                                     alt={item?.name}
                                     className='w-full rounded h-[150px] object-cover rounded-t-lg'
                                 />
