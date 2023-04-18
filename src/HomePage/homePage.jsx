@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Outlet} from "react-router-dom";
-import {useHistory, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
     const [data, setData] = useState({})

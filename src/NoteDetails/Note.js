@@ -8,10 +8,11 @@ import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import React, {useState, useRef, useEffect} from "react";
 import '../App.css'
 
-const Note = ({courseData = []}) => {
+const Note = ({courseData = [], idNoted}) => {
     const editorRef = useRef();
     const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState('');
+    const [inputValueCK, setInputValueCK] = useState('');
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
 
@@ -56,7 +57,11 @@ const Note = ({courseData = []}) => {
 
     const handleItemClick = (item) => {
         setSelectedItemId(item.id);
-        console.log(item)
+        if (item.id === "") {
+            const editor = editorRef.current?.editor;
+            editor.setData("");
+            setInputValue("");
+        }
         if (item && item.note) {
             const editor = editorRef.current?.editor;
             if (editor) {
@@ -67,8 +72,20 @@ const Note = ({courseData = []}) => {
     };
 
     const handleInputChange = (e) => {
-        console.log("Selected Item ID:", selectedItemId);
-        console.log("Input Value:", e.target.value);
+        if (selectedItemId === "") {
+            const requestBody = {
+                title: e.target.value,
+                course_id: parseInt(idNoted)
+            };
+            // Make POST request to the API endpoint
+            const response = fetch('http://192.168.3.150:8055/items/note', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+        }
         const inputValue = e.target.value;
         setInputValue(inputValue);
 
@@ -89,6 +106,10 @@ const Note = ({courseData = []}) => {
                 })
                     .then((response) => {
                         // Handle response
+                        const updatedItems = [...items]; // Create a copy of items array
+                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
+                        updatedItems[updatedItemIndex].title = inputValue; // Update the title of the item with the new input value
+                        setItems(updatedItems);
                     })
                     .catch((error) => {
                         // Handle error
@@ -97,6 +118,32 @@ const Note = ({courseData = []}) => {
         }, 5000); // 10 seconds
 
         // Update the timeoutId state with the new timeout id
+        setTimeoutId(newTimeoutId);
+    }
+
+    const handleChangeCK = (e, editor) => {
+        const data = editor.getData()
+        setInputValueCK(data);
+        clearTimeout(timeoutId);
+        const newTimeoutId = setTimeout(() => {
+            if (data) {
+                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
+                    method: "PATCH", // Update method to PATCH
+                    body: JSON.stringify({note: data}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => {
+                        const updatedItems = [...items]; // Create a copy of items array
+                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
+                        updatedItems[updatedItemIndex].note = data; // Update the title of the item with the new input value
+                        setItems(updatedItems);
+                    })
+                    .catch((error) => {
+                    });
+            }
+        }, 5000); // 10 seconds
         setTimeoutId(newTimeoutId);
     }
 
@@ -169,10 +216,7 @@ const Note = ({courseData = []}) => {
                     onReady={editor => {
                         console.log("store the Editor and use it when needed", editor)
                     }}
-                    onChange={(event, editor) => {
-                        const data = editor.getData();
-                        console.log({event, editor, data})
-                    }}
+                    onChange={handleChangeCK}
                     onFocus={(event, editor) => {
                         console.log("Focus", editor)
                     }}

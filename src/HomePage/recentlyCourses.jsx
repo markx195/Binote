@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import axios from "axios"
 import CropSquareIcon from '@mui/icons-material/CropSquare';
+import "../App.css"
 
 const RecentlyCourses = ({token}) => {
     const [courses, setCourses] = useState([])
@@ -24,7 +25,7 @@ const RecentlyCourses = ({token}) => {
                 }
             };
             fetchData();
-        }, []
+        }, [token]
     );
 
     const goToSlide = useCallback((dataIndex) => {
@@ -64,16 +65,17 @@ const RecentlyCourses = ({token}) => {
                         </div>
                         <div className="w-[554.67px] border border-[#D5D5D5] border-solid"></div>
                         <p className="font-bold text-left pt-6">Ghi chú</p>
-                        {courses[0].notes?.map(course => (
-                            //block lỗi each child in a list should have a unique "key" prop.
-                            <div key={course.id}>
-                                <div className="flex justify-between py-4">
-                                    <p className="text-left">{course.title}</p>
-                                    <a className="text-[#4790E4]">Chi tiết</a>
+                        <div className="overflow-y-scroll scroll-container">
+                            {courses[0].notes?.map(course => (
+                                <div key={course.id}>
+                                    <div className="flex justify-between py-4">
+                                        <p className="text-left">{course.title}</p>
+                                        <a className="text-[#4790E4]">Chi tiết</a>
+                                    </div>
+                                    <div className="border border-[#000000] border-dashed"></div>
                                 </div>
-                                <div className="border border-[#000000] border-dashed"></div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

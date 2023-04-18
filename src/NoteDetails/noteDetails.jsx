@@ -4,7 +4,7 @@ import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import StarRatingComponent from 'react-star-rating-component';
 
-const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
+const NoteDetails = () => {
     const id = useParams()
     const [courseData, setCourseData] = useState([]);
     const [rating, setRating] = useState(0); // Add state for rating
@@ -70,7 +70,7 @@ const NoteDetails = ({noteId, handleAddNote, handleDeleteNote}) => {
                     </>
                 )}
             </div>
-            <Note courseData={courseData.notes}/>
+            <Note courseData={courseData.notes} idNoted={id.id}/>
         </>
     );
 };

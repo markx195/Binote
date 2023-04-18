@@ -1,6 +1,6 @@
 import './App.css';
 import BackgroundSlider from "./Slider/backgroundSlider";
-import {Route, Routes, useParams} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Login from "./Login/login";
 import React, {useState} from "react";
 import HomePage from "./HomePage/homePage"

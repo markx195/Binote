@@ -21,4 +21,23 @@ body::-webkit-scrollbar {
     display: none;
 }
 
+.scroll-container {
+    max-height: 180px;
+    overflow-y: auto;
+    /* Customize scrollbar styles */
+    scrollbar-width: thin;
+    scrollbar-color: #4790E4 transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #2F2E2E;
+    border-radius: 5px;
+}
+
+
 
