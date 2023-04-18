@@ -8,21 +8,32 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
 
-const CourseCard = () => {
+const CourseCard = ({access_token}) => {
+    const accessToken = access_token
     const [dataSource, setDataSource] = useState([])
     const [hasMore, setHasMore] = useState("")
+    const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
-    const fetchData = useCallback((id = 1, page = 0) => {
-        axios.get(`http://192.168.3.150:8055/items/course?fields=*,notes.*,count(notes)&meta=total_count&filter[catalog_id][_in]=${id}&page${page}&limit=5&sort=-id`,
-            {}
-        ).then((res) => {
-            setDataSource(dataSource.concat(res.data.data));
-            setHasMore(res.data.meta.total_pages > page + 1);
-        })
-            .catch((error) => {
+
+    const fetchData = useCallback(
+        async (id = 1, page = 0) => {
+            try {
+                const payload = {
+                    title: searchQuery,
+                    catalog_id: [id]
+                };
+                const response = await axios.post(
+                    'http://192.168.3.150:8055/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=0&limit=5&sort=sort&sort=-id',
+                    payload
+                );
+                setDataSource(response.data.data);
+                setHasMore(response.total_count > page + 1);
+            } catch (error) {
                 console.error(error);
-            });
-    }, []); //get all courses
+            }
+        },
+        [searchQuery]
+    );
 
     useEffect(() => {
         axios
@@ -36,10 +47,23 @@ const CourseCard = () => {
     }, []);
 
     useEffect(() => {
+        // Debounce the API call to reduce the number of requests during rapid input changes
+        const debounceTimer = setTimeout(() => {
+            fetchData();
+        }, 300); // Adjust the debounce delay as needed
+
+        // Clean up the timer on unmount or when searchQuery changes
+        return () => {
+            clearTimeout(debounceTimer);
+        };
+    }, [searchQuery, fetchData]);
+
+    useEffect(() => {
         fetchData();
     }, [fetchData])
 
     const handleButtonClick = (id) => {
+        console.log(id)
         fetchData(id);
     };
 
@@ -48,18 +72,8 @@ const CourseCard = () => {
         navigate(`/NoteDetails/${id}`);
     };
 
-    const handleScroll = () => {
-        if (
-            window.innerHeight + document.documentElement.scrollTop ===
-            document.documentElement.offsetHeight
-        ) {
-            // User has scrolled to the bottom
-            fetchData();
-        }
-    };
-
     return (<>
-            <RecentlyCourses></RecentlyCourses>
+            <RecentlyCourses token={accessToken}></RecentlyCourses>
             <div className="border border-solid border-[#D5D5D5] max-w-[1300px] mx-auto"></div>
             {/*Course catalog*/}
             <div className="flex flex-wrap pt-10 pb-6 gap-4 max-w-[1300px] mx-auto">
@@ -83,6 +97,7 @@ const CourseCard = () => {
                         type="text"
                         placeholder="Tìm kiếm tại mục kỹ năng làm việc"
                         className="bg-white border-solid border-[#D5D5D5] border rounded-lg w-full h-[52px] pl-10 pr-3 text-left"
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </div>
@@ -91,11 +106,10 @@ const CourseCard = () => {
                 dataLength={dataSource.length}
                 next={() => fetchData(dataSource.id, dataSource.length / 5)}
                 hasMore={hasMore}
-                endMessage={<p>Đã hết</p>}
                 loader={<LoadingCard/>}
             >
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 max-w-[1300px] mx-auto'>
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 max-w-[1300px] mx-auto'>
                     {dataSource.map((item, index) => (
                         <div
                             key={index}

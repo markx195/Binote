@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import axios from "axios"
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 
-const RecentlyCourses = () => {
+const RecentlyCourses = ({token}) => {
     const [courses, setCourses] = useState([])
     const [activeSlide, setActiveSlide] = useState(0);
 
@@ -14,7 +14,7 @@ const RecentlyCourses = () => {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
-                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWVhMzlkLTM4NTUtNDMyMC1hOGU2LTAyNDg3ZGExYmYzMSIsInJvbGUiOiI3ZTc2YTIzMC04MTY3LTQyZDYtODY2ZS1lMTJjNGFmZDAzNDIiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTY4MTQzNjM1MiwiZXhwIjoxNjgxNTIyNzUyLCJpc3MiOiJkaXJlY3R1cyJ9.kM8uaEYmPeXv7MkSe8L90AHFImxgU28dpj8NzgjUDxQ" // Replace YOUR_TOKEN_HERE with your actual token
+                            Authorization: `Bearer ${token}`
                         }
                     });
                     setCourses(response.data.data);
@@ -65,13 +65,14 @@ const RecentlyCourses = () => {
                         <div className="w-[554.67px] border border-[#D5D5D5] border-solid"></div>
                         <p className="font-bold text-left pt-6">Ghi chú</p>
                         {courses[0].notes?.map(course => (
-                            <>
+                            //block lỗi each child in a list should have a unique "key" prop.
+                            <div key={course.id}>
                                 <div className="flex justify-between py-4">
                                     <p className="text-left">{course.title}</p>
                                     <a className="text-[#4790E4]">Chi tiết</a>
                                 </div>
                                 <div className="border border-[#000000] border-dashed"></div>
-                            </>
+                            </div>
                         ))}
                     </div>
                 </div>

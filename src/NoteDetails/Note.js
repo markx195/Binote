@@ -5,13 +5,19 @@ import {yellow} from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import '../App.css'
 
-const Note = ({courseData}) => {
+const Note = ({courseData = []}) => {
     const editorRef = useRef();
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState('');
+    const [selectedItemId, setSelectedItemId] = useState(null);
+    const [timeoutId, setTimeoutId] = useState("");
+
+    useEffect(() => {
+        setItems(courseData);
+    }, [courseData])
 
     const handleAddItem = () => {
         const newItem = {
@@ -20,11 +26,9 @@ const Note = ({courseData}) => {
             date_created: new Date().toLocaleDateString(),
             note: ''
         };
-
         // Update the state with the new item
         setItems(prevItems => [...prevItems, newItem]);
     };
-
 
     const handleDeleteItem = (id) => {
         fetch(`http://192.168.3.150:8055/items/note/${id}`, {
@@ -35,7 +39,8 @@ const Note = ({courseData}) => {
                     // Item successfully deleted, handle success
                     console.log('Item deleted successfully');
                     // Update state with new list of items after deleting item
-                    setItems(prevItems => prevItems.filter(item => item.id !== id)); // Update state
+                    setItems(prevItems => prevItems.filter(item => item.id !== id));
+                    // Update state
                     // Perform any additional actions or state updates as needed
                 } else {
                     // Item deletion failed, handle error
@@ -50,6 +55,7 @@ const Note = ({courseData}) => {
     };
 
     const handleItemClick = (item) => {
+        setSelectedItemId(item.id);
         console.log(item)
         if (item && item.note) {
             const editor = editorRef.current?.editor;
@@ -61,9 +67,38 @@ const Note = ({courseData}) => {
     };
 
     const handleInputChange = (e) => {
-        // Update inputValue state with the current input value
-        setInputValue(e.target.value);
-    };
+        console.log("Selected Item ID:", selectedItemId);
+        console.log("Input Value:", e.target.value);
+        const inputValue = e.target.value;
+        setInputValue(inputValue);
+
+        // Clear previous timeout
+        clearTimeout(timeoutId);
+
+        // Set a new timeout for 10 seconds
+        const newTimeoutId = setTimeout(() => {
+            if (inputValue) {
+                // Make PATCH API call to update item with selectedItemId
+                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
+                    method: "PATCH", // Update method to PATCH
+                    // Update body with inputValue as title key
+                    body: JSON.stringify({title: inputValue}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => {
+                        // Handle response
+                    })
+                    .catch((error) => {
+                        // Handle error
+                    });
+            }
+        }, 5000); // 10 seconds
+
+        // Update the timeoutId state with the new timeout id
+        setTimeoutId(newTimeoutId);
+    }
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -95,7 +130,7 @@ const Note = ({courseData}) => {
                     </div>
                 </div>
                 <div className="max-h-[445px] overflow-y-scroll" id="hideScroll">
-                    {Array.isArray(courseData) && [...courseData, ...items].map(item => (
+                    {items?.map(item => (
                         <div key={item.id}
                              onClick={() => handleItemClick(item)}
                              className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left">

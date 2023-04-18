@@ -1,23 +1,39 @@
 import React, {useState} from "react";
+import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
+import {Directus} from "@directus/sdk";
 import {GoogleLogin} from '@react-oauth/google';
-import jwt_decode from "jwt-decode"
-import {useNavigate} from 'react-router-dom'
 
-const LoginForm = () => {
-    const navigate = useNavigate()
-    const [user, setUser] = useState({})
-    const responseMessage = (response) => {
-        var userObject = jwt_decode(response.credential)
-        console.log(response.credential)
-        console.log(response)
-        setUser(userObject)
-        document.getElementById("hiddenLogin").hidden = true
-        localStorage.setItem('user_info', JSON.stringify(userObject))
-        navigate("/HomePage")
-    };
-
-    const errorMessage = (error) => {
-        console.log(error);
+const LoginForm = ({onAccessTokenChange}) => {
+    const navigate = useNavigate();
+    const [user, setUser] = useState({});
+    const responseMessage = async (response) => {
+        try {
+            // Authenticate with Directus
+            const url = 'http://192.168.3.150:8055/auth/login';
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: "thuctv@biplus.com.vn", // Use the email from the Google login response
+                    password: "12345678", // Set a temporary password for Directus login
+                })
+            };
+            const apiResponse = await fetch(url, options);
+            const data = await apiResponse.json();
+            const access_token = data.data.access_token
+            onAccessTokenChange(access_token);
+            // Decode the JWT token from Google login response
+            const userObject = jwt_decode(response.credential);
+            setUser(userObject);
+            document.getElementById("hiddenLogin").hidden = true;
+            localStorage.setItem("user_info", JSON.stringify(userObject));
+            navigate("/HomePage");
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -26,61 +42,12 @@ const LoginForm = () => {
             <br/>
             <br/>
             <div id="hiddenLogin">
-                <GoogleLogin onSuccess={responseMessage} icon={false}
-                             onError={errorMessage}/>
+                {/* Pass the responseMessage function as onSuccess callback */}
+                <GoogleLogin onSuccess={responseMessage} icon={false}/>
             </div>
         </div>
-    )
-}
+    );
+};
 
-//     const [accessToken, setAccessToken] = useState('');
-//
-//     // Step 2: Redirect to Google login page
-//     const handleLogin = () => {
-//         window.open('http://onepiecenote.com:8055/auth/login/google', '_blank', 'width=500,height=600');
-//     };
-//
-//     // Step 3: Handle callback from Google
-//     const handleCallback = async () => {
-//         // Extract authorization code from URL query parameter
-//         const urlParams = new URLSearchParams(window.location.search);
-//         const authorizationCode = urlParams.get('code');
-//
-//         // Step 4: Exchange authorization code for access token
-//         const response = await fetch('http://onepiecenote.com:8055/auth/login/google', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 code: authorizationCode,
-//                 clientId: 'YOUR_CLIENT_ID', // Replace with your client ID
-//                 clientSecret: 'YOUR_CLIENT_SECRET' // Replace with your client secret
-//             })
-//         });
-//
-//         if (response.ok) {
-//             const data = await response.json();
-//             const token = data.access_token;
-//             setAccessToken(token);
-//         } else {
-//             console.error('Failed to exchange authorization code for access token');
-//         }
-//     };
-//
-//     return (
-//         <div>
-//             {accessToken ? (
-//                 <div>
-//                     <p>Access token: {accessToken}</p>
-//                     {/* Use the access token to make authenticated API requests */}
-//                     {/* Example: <button onClick={fetchDataWithAccessToken}>Fetch Data</button> */}
-//                 </div>
-//             ) : (
-//                 <button onClick={handleLogin}>Login with Google</button>
-//             )}
-//         </div>
-//     );
-// };
+export default LoginForm;
 
-export default LoginForm
