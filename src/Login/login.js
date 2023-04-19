@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import {Directus} from "@directus/sdk";
 import {GoogleLogin} from '@react-oauth/google';
+import '../App.css'
 
 const LoginForm = ({onAccessTokenChange}) => {
     const navigate = useNavigate();
@@ -37,12 +38,10 @@ const LoginForm = ({onAccessTokenChange}) => {
     };
 
     return (
-        <div>
-            <h2>React Google Login</h2>
-            <br/>
-            <br/>
-            <div id="hiddenLogin">
-                {/* Pass the responseMessage function as onSuccess callback */}
+        <div className="backGroundImgLogin">
+            <div className="loginVideo">
+            </div>
+            <div id="hiddenLogin" className="ggLogin">
                 <GoogleLogin onSuccess={responseMessage} icon={false}/>
             </div>
         </div>

@@ -39,5 +39,38 @@ body::-webkit-scrollbar {
     border-radius: 5px;
 }
 
+.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+    border: none !important;
+    box-shadow: none !important;
+}
 
+.backGroundImgLogin {
+    background-image: url("../public/Frame.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+}
+
+.ggLogin {
+    position: absolute;
+    z-index: 999;
+    color: aliceblue;
+    top: 23%;
+    right: 16%
+}
+
+.loginVideo {
+    background-image: url("../public/Comp 1.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 598.53px;
+    height: 323.14px;
+    position: absolute;
+    z-index: 999;
+    top: 28%;
+    right: 40%
+}
 
