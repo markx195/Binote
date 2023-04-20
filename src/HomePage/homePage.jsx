@@ -63,9 +63,6 @@ const HomePage = () => {
                             <img src={data.picture} alt="" className="w-[32px] h-[32px] rounded"></img>
                         </div>
                     }
-                    {/*{Object.keys(data).length !== 0 &&*/}
-                    {/*    <button onClick={(e) => handleSignOut(e)}>Sign Out</button>*/}
-                    {/*}*/}
                 </div>
             </div>
             <Outlet/>
