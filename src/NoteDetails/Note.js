@@ -11,7 +11,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import AlarmIcon from '@mui/icons-material/Alarm';
-import {format, parse} from 'date-fns';
 
 const Note = ({courseData = [], idNoted}) => {
     let isUserInput = false;
