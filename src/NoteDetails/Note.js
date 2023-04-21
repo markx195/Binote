@@ -24,6 +24,7 @@ const Note = ({courseData = [], idNoted}) => {
     const [selectedTime, setSelectedTime] = useState("");
 
     const handleDateChange = (date) => {
+        console.log(date)
         const inputDate = new Date(date);
         inputDate.setHours(12);
         inputDate.setMinutes(0);
@@ -35,32 +36,32 @@ const Note = ({courseData = [], idNoted}) => {
         const outputDateString = `${year}-${month}-${day}T12:00:00`;
         console.log(outputDateString);
         setStartDate(date); // Pass the Date object to setStartDate()
-        // clearTimeout(timeoutId);
-        // // Set a new timeout for 10 seconds
-        // const newTimeoutId = setTimeout(() => {
-        //     if (date) {
-        //         // Make PATCH API call to update item with selectedItemId
-        //         fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
-        //             method: "PATCH", // Update method to PATCH
-        //             // Update body with inputValue as title key
-        //             body: JSON.stringify({date_created: outputDateString}),
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //             },
-        //         })
-        //             .then((response) => {
-        //                 // Handle response
-        //                 const updatedItems = [...items]; // Create a copy of items array
-        //                 const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
-        //                 updatedItems[updatedItemIndex].date_created = date; // Update the title of the item with the new input value
-        //                 setItems(updatedItems);
-        //             })
-        //             .catch((error) => {
-        //                 // Handle error
-        //             });
-        //     }
-        // }, 3000);
-        // setTimeoutId(newTimeoutId);
+        clearTimeout(timeoutId);
+        // Set a new timeout for 10 seconds
+        const newTimeoutId = setTimeout(() => {
+            if (date) {
+                // Make PATCH API call to update item with selectedItemId
+                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
+                    method: "PATCH", // Update method to PATCH
+                    // Update body with inputValue as title key
+                    body: JSON.stringify({date_created: outputDateString}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => {
+                        // Handle response
+                        const updatedItems = [...items]; // Create a copy of items array
+                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
+                        updatedItems[updatedItemIndex].date_created = date; // Update the title of the item with the new input value
+                        setItems(updatedItems);
+                    })
+                    .catch((error) => {
+                        // Handle error
+                    });
+            }
+        }, 3000);
+        setTimeoutId(newTimeoutId);
     };
 
     const handleSelectTime = (time) => {
@@ -150,6 +151,12 @@ const Note = ({courseData = [], idNoted}) => {
             } else {
                 editor.setData(item.note);
                 setInputValue(item.title);
+                const inputDate = new Date(item.date_created);
+                inputDate.setHours(12);
+                inputDate.setMinutes(0);
+                inputDate.setSeconds(0);
+                inputDate.setMilliseconds(0);
+                setStartDate(inputDate);
             }
         }
     };
