@@ -22,58 +22,6 @@ const Note = ({courseData = [], idNoted}) => {
     const [timeoutId, setTimeoutId] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState("");
-
-    const handleDateChange = (date) => {
-        console.log(date)
-        const inputDate = new Date(date);
-        inputDate.setHours(12);
-        inputDate.setMinutes(0);
-        inputDate.setSeconds(0);
-        inputDate.setMilliseconds(0);
-        const year = inputDate.getFullYear();
-        const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-        const day = String(inputDate.getDate()).padStart(2, '0');
-        const outputDateString = `${year}-${month}-${day}T12:00:00`;
-        console.log(outputDateString);
-        setStartDate(date); // Pass the Date object to setStartDate()
-        clearTimeout(timeoutId);
-        // Set a new timeout for 10 seconds
-        const newTimeoutId = setTimeout(() => {
-            if (date) {
-                // Make PATCH API call to update item with selectedItemId
-                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
-                    method: "PATCH", // Update method to PATCH
-                    // Update body with inputValue as title key
-                    body: JSON.stringify({date_created: outputDateString}),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                    .then((response) => {
-                        // Handle response
-                        const updatedItems = [...items]; // Create a copy of items array
-                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
-                        updatedItems[updatedItemIndex].date_created = date; // Update the title of the item with the new input value
-                        setItems(updatedItems);
-                    })
-                    .catch((error) => {
-                        // Handle error
-                    });
-            }
-        }, 3000);
-        setTimeoutId(newTimeoutId);
-    };
-
-    const handleSelectTime = (time) => {
-        setSelectedTime(time.target.value);
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const options = {day: '2-digit', month: '2-digit', year: '2-digit'};
-        return date.toLocaleDateString('en-GB', options);
-    }
-
     useEffect(() => {
         setItems(courseData);
     }, [courseData])
@@ -137,6 +85,75 @@ const Note = ({courseData = [], idNoted}) => {
             });
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = {day: '2-digit', month: '2-digit', year: '2-digit'};
+        return date.toLocaleDateString('en-GB', options);
+    }
+
+    const updateItemData = (itemId, dataToUpdate) => {
+        return fetch(`http://192.168.3.150:8055/items/note/${itemId}`, {
+            method: "PATCH",
+            body: JSON.stringify(dataToUpdate),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((updatedItem) => updatedItem)
+            .catch((error) => {
+                // Handle error
+                console.error("Error updating item data:", error);
+            });
+    };
+
+    const handleDateChange = (date) => {
+        const inputDate = new Date(date);
+        inputDate.setHours(12);
+        inputDate.setMinutes(0);
+        inputDate.setSeconds(0);
+        inputDate.setMilliseconds(0);
+        const year = inputDate.getFullYear();
+        const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+        const day = String(inputDate.getDate()).padStart(2, '0');
+        const outputDateString = `${year}-${month}-${day}T12:00:00`;
+        setStartDate(date);
+        clearTimeout(timeoutId);
+        const newTimeoutId = setTimeout(() => {
+            if (date) {
+                const dataToUpdate = {date_created: outputDateString};
+                updateItemData(selectedItemId, dataToUpdate)
+                    .then((updatedItem) => {
+                        const updatedItems = [...items];
+                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId);
+                        updatedItems[updatedItemIndex].date_created = date;
+                        setItems(updatedItems);
+                    });
+            }
+        }, 3000);
+        setTimeoutId(newTimeoutId);
+    };
+
+    const handleSelectTime = (time) => {
+        const changeTypeTime = parseInt(time.target.value);
+        setSelectedTime(changeTypeTime);
+        clearTimeout(timeoutId);
+        // Set a new timeout for 3 seconds
+        const newTimeoutId = setTimeout(() => {
+            if (time) {
+                const dataToUpdate = {learning_hour: changeTypeTime};
+                updateItemData(selectedItemId, dataToUpdate)
+                    .then((updatedItem) => {
+                        const updatedItems = [...items];
+                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId);
+                        updatedItems[updatedItemIndex].learning_hour = changeTypeTime;
+                        setItems(updatedItems);
+                    });
+            }
+        }, 3000);
+        setTimeoutId(newTimeoutId);
+    };
+
     const handleItemClick = (item) => {
         setSelectedItemId(item.id);
         const editor = editorRef.current?.editor;
@@ -157,6 +174,7 @@ const Note = ({courseData = [], idNoted}) => {
                 inputDate.setSeconds(0);
                 inputDate.setMilliseconds(0);
                 setStartDate(inputDate);
+                setSelectedTime(item.learning_hour)
             }
         }
     };

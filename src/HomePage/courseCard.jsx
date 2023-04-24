@@ -20,7 +20,7 @@ const CourseCard = ({access_token}) => {
             try {
                 const payload = {
                     title: searchQuery,
-                    catalog_id: [id]
+                    category_id: [id]
                 };
                 const response = await axios.post(
                     'http://192.168.3.150:8055/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=0&limit=5&sort=sort&sort=-id',
@@ -37,7 +37,7 @@ const CourseCard = ({access_token}) => {
 
     useEffect(() => {
         axios
-            .get("http://192.168.3.150:8055/items/catalog", {})
+            .get("http://192.168.3.150:8055/items/category", {})
             .then((res) => {
                 setCourses(res.data.data);
             })
