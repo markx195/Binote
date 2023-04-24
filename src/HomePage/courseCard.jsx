@@ -8,15 +8,14 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
 
-const CourseCard = ({access_token}) => {
-    const accessToken = access_token
+const CourseCard = () => {
     const [dataSource, setDataSource] = useState([])
     const [hasMore, setHasMore] = useState("")
     const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
 
     const fetchData = useCallback(
-        async (id = 1, page = 0) => {
+        async (id = 0, page = 0) => {
             try {
                 const payload = {
                     title: searchQuery,
@@ -73,10 +72,15 @@ const CourseCard = ({access_token}) => {
     };
 
     return (<>
-            <RecentlyCourses token={accessToken}></RecentlyCourses>
+            <RecentlyCourses></RecentlyCourses>
             <div className="border border-solid border-[#D5D5D5] max-w-[1300px] mx-auto"></div>
             {/*Course catalog*/}
             <div className="flex flex-wrap pt-10 pb-6 gap-4 max-w-[1300px] mx-auto">
+                <button
+                    onClick={() => handleButtonClick()}
+                    className="h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528]"
+                >Tất Cả
+                </button>
                 {courses.map((item) => (
                     <button
                         onClick={() => handleButtonClick(item.id)}
@@ -95,7 +99,7 @@ const CourseCard = ({access_token}) => {
                     </div>
                     <input
                         type="text"
-                        placeholder="Tìm kiếm tại mục kỹ năng làm việc"
+                        placeholder="Tìm kiếm khóa học"
                         className="bg-white border-solid border-[#D5D5D5] border rounded-lg w-full h-[52px] pl-10 pr-3 text-left"
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -103,14 +107,14 @@ const CourseCard = ({access_token}) => {
             </div>
             {/*courses component*/}
             <InfiniteScroll
-                dataLength={dataSource.length}
+                dataLength={dataSource?.length}
                 next={() => fetchData(dataSource.id, dataSource.length / 5)}
                 hasMore={hasMore}
                 loader={<LoadingCard/>}
             >
                 <div
                     className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 max-w-[1300px] mx-auto'>
-                    {dataSource.map((item, index) => (
+                    {dataSource?.map((item, index) => (
                         <div
                             key={index}
                             className='border shadow-lg rounded-lg hover:scale-105 duration-300'

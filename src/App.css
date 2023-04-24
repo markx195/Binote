@@ -62,14 +62,6 @@ body::-webkit-scrollbar {
     box-shadow: none !important;
 }
 
-.backGroundImgLogin {
-    background-image: url("../public/Frame.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
-}
 
 .ggLogin {
     position: absolute;
@@ -79,18 +71,6 @@ body::-webkit-scrollbar {
     right: 16%
 }
 
-.loginVideo {
-    background-image: url("../public/Comp 1.gif");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 598.53px;
-    height: 323.14px;
-    position: absolute;
-    z-index: 999;
-    top: 28%;
-    right: 40%
-}
 
 p.ck-placeholder {
     margin-left: 39px;

@@ -5,6 +5,7 @@ import Note from '../NoteDetails/Note';
 import StarRatingComponent from 'react-star-rating-component';
 
 const NoteDetails = () => {
+    const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
     const [courseData, setCourseData] = useState([]);
     const [rating, setRating] = useState(0); // Add state for rating
@@ -13,18 +14,22 @@ const NoteDetails = () => {
         const fetchCourseData = async () => {
             try {
                 const response = await fetch(
-                    `http://192.168.3.150:8055/items/course/${id.id}?fields=*,notes.*`
-                    // `http://192.168.3.150:8055/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`
-                );
+                    `http://192.168.3.150:8055/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
+                        headers: {
+                            Accept: "*/*",
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${storedAccessToken}`
+                        }
+                    });
                 const data = await response.json();
                 setCourseData(data.data);
-            } catch (error) {
+            } catch
+                (error) {
                 console.error("Error fetching course data:", error);
             }
         };
-
         fetchCourseData();
-    }, []);
+    }, [id.id, storedAccessToken]);
 
     // Define onStarClick function
     const onStarClick = (nextValue) => {

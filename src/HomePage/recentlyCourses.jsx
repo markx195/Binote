@@ -3,7 +3,8 @@ import axios from "axios"
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import "../App.css"
 
-const RecentlyCourses = ({token}) => {
+const RecentlyCourses = () => {
+    const storedAccessToken = localStorage.getItem('accessToken');
     const [courses, setCourses] = useState([])
     const [activeSlide, setActiveSlide] = useState(0);
 
@@ -15,7 +16,7 @@ const RecentlyCourses = ({token}) => {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${storedAccessToken}`
                         }
                     });
                     setCourses(response.data.data);
@@ -25,7 +26,7 @@ const RecentlyCourses = ({token}) => {
                 }
             };
             fetchData();
-        }, [token]
+        }, [storedAccessToken]
     );
 
     const goToSlide = useCallback((dataIndex) => {
@@ -47,7 +48,7 @@ const RecentlyCourses = ({token}) => {
                             key={courses[0].image}
                             src={`http://192.168.3.150:8055/assets/${courses[0].image}`}
                             alt={courses[0].name}
-                            className="w-full h-full object-cover rounded-lg"
+                            className="w-[868px] h-[468px] object-cover rounded-lg"
                         />
                     </div>
                     <div className="flex-grow pl-8">
@@ -70,7 +71,7 @@ const RecentlyCourses = ({token}) => {
                                 <div key={course.id}>
                                     <div className="flex justify-between py-4">
                                         <p className="text-left">{course.title}</p>
-                                        <a className="text-[#4790E4]">Chi tiết</a>
+                                        <span className="text-[#4790E4]">Chi tiết</span>
                                     </div>
                                     <div className="border border-[#000000] border-dashed"></div>
                                 </div>
