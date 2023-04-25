@@ -12,7 +12,7 @@ const RecentlyCourses = () => {
             const fetchData = async () => {
                 try {
                     // Make API call with token in request headers
-                    const response = await axios.get("http://192.168.3.150:8055/items/course?fields=*,notes.*&filter[notes][user_created][_eq]=$CURRENT_USER&sort=-notes.date_updated,-notes.date_created&limit=5", {
+                    const response = await axios.get("http://192.168.3.150:8055/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",

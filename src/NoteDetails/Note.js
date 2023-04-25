@@ -7,12 +7,10 @@ import {CKEditor} from "@ckeditor/ckeditor5-react";
 import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
 import React, {useState, useRef, useEffect} from "react";
 import '../App.css'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import DateRangeIcon from '@mui/icons-material/DateRange';
 import AlarmIcon from '@mui/icons-material/Alarm';
 
 const Note = ({courseData = [], idNoted}) => {
+    const storedAccessToken = localStorage.getItem('accessToken');
     let isUserInput = false;
     const editorRef = useRef();
     const [items, setItems] = useState(courseData);
@@ -20,7 +18,6 @@ const Note = ({courseData = [], idNoted}) => {
     const [inputValueCK, setInputValueCK] = useState('');
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
-    const [startDate, setStartDate] = useState(new Date());
     const [selectedTime, setSelectedTime] = useState("");
     useEffect(() => {
         setItems(courseData);
@@ -35,7 +32,8 @@ const Note = ({courseData = [], idNoted}) => {
         fetch('http://192.168.3.150:8055/items/note', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${storedAccessToken}`
             },
             body: JSON.stringify(newItem)
         }).then(response => {
@@ -97,6 +95,7 @@ const Note = ({courseData = [], idNoted}) => {
             body: JSON.stringify(dataToUpdate),
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${storedAccessToken}`
             },
         })
             .then((response) => response.json())
@@ -105,33 +104,6 @@ const Note = ({courseData = [], idNoted}) => {
                 // Handle error
                 console.error("Error updating item data:", error);
             });
-    };
-
-    const handleDateChange = (date) => {
-        const inputDate = new Date(date);
-        inputDate.setHours(12);
-        inputDate.setMinutes(0);
-        inputDate.setSeconds(0);
-        inputDate.setMilliseconds(0);
-        const year = inputDate.getFullYear();
-        const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-        const day = String(inputDate.getDate()).padStart(2, '0');
-        const outputDateString = `${year}-${month}-${day}T12:00:00`;
-        setStartDate(date);
-        clearTimeout(timeoutId);
-        const newTimeoutId = setTimeout(() => {
-            if (date) {
-                const dataToUpdate = {date_created: outputDateString};
-                updateItemData(selectedItemId, dataToUpdate)
-                    .then((updatedItem) => {
-                        const updatedItems = [...items];
-                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId);
-                        updatedItems[updatedItemIndex].date_created = date;
-                        setItems(updatedItems);
-                    });
-            }
-        }, 3000);
-        setTimeoutId(newTimeoutId);
     };
 
     const handleSelectTime = (time) => {
@@ -168,12 +140,6 @@ const Note = ({courseData = [], idNoted}) => {
             } else {
                 editor.setData(item.note);
                 setInputValue(item.title);
-                const inputDate = new Date(item.date_created);
-                inputDate.setHours(12);
-                inputDate.setMinutes(0);
-                inputDate.setSeconds(0);
-                inputDate.setMilliseconds(0);
-                setStartDate(inputDate);
                 setSelectedTime(item.learning_hour)
             }
         }
@@ -194,6 +160,7 @@ const Note = ({courseData = [], idNoted}) => {
                     body: JSON.stringify({title: inputValue}),
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedAccessToken}`
                     },
                 })
                     .then((response) => {
@@ -227,6 +194,7 @@ const Note = ({courseData = [], idNoted}) => {
                     body: JSON.stringify({note: data}),
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedAccessToken}`
                     },
                 })
                     .then((response) => {
@@ -336,12 +304,6 @@ const Note = ({courseData = [], idNoted}) => {
                         handleChangeCK(event, editor); // Call handleChangeCK event handler
                     }}
                 />
-                <div className="flex pl-[47px] items-end absolute">
-                    <DateRangeIcon/>
-                    <DatePicker selected={startDate}
-                                dateFormat="dd/MM/yy"
-                                onChange={handleDateChange}/>
-                </div>
                 <div className="flex justify-center items-center">
                     <AlarmIcon/>
                     <select

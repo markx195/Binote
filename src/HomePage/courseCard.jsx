@@ -1,16 +1,17 @@
 import React, {useState, useEffect, useCallback} from "react"
 import axios from "axios"
-import InfiniteScroll from "react-infinite-scroll-component"
-import {LoadingCard} from "../loadingCard"
 import StarRatingComponent from 'react-star-rating-component';
 import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
 
+const LIMIT_DATA = 999;
+const storedAccessToken = localStorage.getItem('accessToken');
+
 const CourseCard = () => {
+    const navigate = useNavigate()
     const [dataSource, setDataSource] = useState([])
-    const [hasMore, setHasMore] = useState("")
     const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
 
@@ -21,18 +22,41 @@ const CourseCard = () => {
                     title: searchQuery,
                     category_id: [id]
                 };
+                const config = { // Add the headers to the config object
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedAccessToken}`
+                    }
+                };
+
                 const response = await axios.post(
-                    'http://192.168.3.150:8055/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=0&limit=5&sort=sort&sort=-id',
-                    payload
+                    `http://192.168.3.150:8055/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=${page}&limit=${LIMIT_DATA}&sort=sort&sort=-id`,
+                    payload, config
                 );
                 setDataSource(response.data.data);
-                setHasMore(response.total_count > page + 1);
             } catch (error) {
                 console.error(error);
             }
         },
         [searchQuery]
     );
+
+    // useEffect(() => {
+    //     fetchData();
+    // }, [])
+
+    useEffect(() => {
+        // Debounce the API call to reduce the number of requests during rapid input changes
+        const debounceTimer = setTimeout(() => {
+            fetchData(0, 0);
+            // fetchData();
+        }, 300); // Adjust the debounce delay as needed
+        // Clean up the timer on unmount or when searchQuery changes
+        return () => {
+            clearTimeout(debounceTimer);
+        };
+    }, [searchQuery, fetchData]);
 
     useEffect(() => {
         axios
@@ -45,28 +69,11 @@ const CourseCard = () => {
             });
     }, []);
 
-    useEffect(() => {
-        // Debounce the API call to reduce the number of requests during rapid input changes
-        const debounceTimer = setTimeout(() => {
-            fetchData();
-        }, 300); // Adjust the debounce delay as needed
-
-        // Clean up the timer on unmount or when searchQuery changes
-        return () => {
-            clearTimeout(debounceTimer);
-        };
-    }, [searchQuery, fetchData]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData])
-
     const handleButtonClick = (id) => {
         console.log(id)
         fetchData(id);
     };
 
-    const navigate = useNavigate()
     const handleNoteDetails = (id) => {
         navigate(`/NoteDetails/${id}`);
     };
@@ -105,16 +112,10 @@ const CourseCard = () => {
                     />
                 </div>
             </div>
-            {/*courses component*/}
-            <InfiniteScroll
-                dataLength={dataSource?.length}
-                next={() => fetchData(dataSource.id, dataSource.length / 5)}
-                hasMore={hasMore}
-                loader={<LoadingCard/>}
-            >
+            <div dataSource={dataSource}>
                 <div
                     className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 max-w-[1300px] mx-auto'>
-                    {dataSource?.map((item, index) => (
+                    {dataSource.map((item, index) => (
                         <div
                             key={index}
                             className='border shadow-lg rounded-lg hover:scale-105 duration-300'
@@ -156,7 +157,7 @@ const CourseCard = () => {
                         </div>
                     ))}
                 </div>
-            </InfiniteScroll>
+            </div>
         </>
     );
 }

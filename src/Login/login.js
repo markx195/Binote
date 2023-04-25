@@ -1,16 +1,27 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import '../App.css';
+import "./login.css"
+import ImageSlider from "./imageSlider"
 
 const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
+    const slides = [
+        {url: "http://localhost:3000/pic1.jpg", title: "pic1"},
+        {url: "http://localhost:3000/pic2.jpg", title: "pic2"},
+        {url: "http://localhost:3000/pic3.jpg", title: "pic3"}
+    ]
+    const containerStyles = {
+        width: "100%",
+        height: "100%",
+        margin: "0 auto",
+    };
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // Check if the entered email address ends with "@biplus.com.vn"
         if (!email.endsWith("@biplus.com.vn")) {
             setErrorMessage(
@@ -18,11 +29,10 @@ const LoginForm = () => {
             );
             return;
         }
-
         try {
             // Send a POST request to the API endpoint with email in the request body
             const response = await fetch(
-                "http://onepiecenote.com:8055/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
+                "http://192.168.3.150:8055/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
                 {
                     method: "POST",
                     body: JSON.stringify({email: email}),
@@ -50,18 +60,29 @@ const LoginForm = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit">Login</button>
-            </form>
-            {errorMessage && <p>{errorMessage}</p>}
-        </div>
+        <>
+            <div style={containerStyles} className="">
+                <ImageSlider slides={slides}/>
+                <div className="text-2xl" id="loginText">
+                    <span className="font-bold">BiNote</span> nơi bạn có thể lưu giữ những kiến thức của mình
+                </div>
+
+                <div className="login-page">
+                    <div className="form">
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="email"
+                                placeholder="Nhập Gmail"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <button type="submit">Login</button>
+                        </form>
+                        {errorMessage && <p>{errorMessage}</p>}
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
