@@ -2,8 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react'
 import axios from "axios"
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import "../App.css"
+import {useNavigate} from "react-router-dom"
 
 const RecentlyCourses = () => {
+    const navigate = useNavigate()
     const storedAccessToken = localStorage.getItem('accessToken');
     const [courses, setCourses] = useState([])
     const [activeSlide, setActiveSlide] = useState(0);
@@ -39,16 +41,21 @@ const RecentlyCourses = () => {
         });
     }, []);
 
+    const handleNoteDetails = (id) => {
+        navigate(`/NoteDetails/${id}`);
+    };
+
     return (
         <>
             {courses.length > 0 && (
                 <div className="pt-12 max-w-[1300px] mx-auto flex">
                     <div className="flex-grow">
                         <img
+                            onClick={() => handleNoteDetails(courses[0].id)}
                             key={courses[0].image}
                             src={`http://192.168.3.150:8055/assets/${courses[0].image}`}
                             alt={courses[0].name}
-                            className="w-[868px] h-[468px] object-cover rounded-lg"
+                            className="w-[868px] h-[388px] object-cover rounded-lg cursor-pointer"
                         />
                     </div>
                     <div className="flex-grow pl-8">
@@ -71,7 +78,8 @@ const RecentlyCourses = () => {
                                 <div key={course.id}>
                                     <div className="flex justify-between py-4">
                                         <p className="text-left">{course.title}</p>
-                                        <span className="text-[#4790E4]">Chi tiết</span>
+                                        <span className="text-[#4790E4] cursor-pointer"
+                                              onClick={() => handleNoteDetails(courses[0].id)}>Chi tiết</span>
                                     </div>
                                     <div className="border border-[#000000] border-dashed"></div>
                                 </div>
@@ -96,7 +104,6 @@ const RecentlyCourses = () => {
                     </div>
                 ))}
             </div>
-
         </>
     );
 }

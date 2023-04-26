@@ -40,7 +40,7 @@ body::-webkit-scrollbar {
 }
 
 .noteScroll {
-    max-height: 445px;
+    max-height: 737px;
     overflow-y: auto;
     /* Customize scrollbar styles */
     scrollbar-width: thin;

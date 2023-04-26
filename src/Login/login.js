@@ -9,9 +9,9 @@ const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const slides = [
-        {url: "pic1.jpg", title: "pic1"},
-        {url: "pic2.jpg", title: "pic2"},
-        {url: "pic3.jpg", title: "pic3"}
+        {url: "Edition.png", title: "pic1"},
+        {url: "Edition.png", title: "pic2"},
+        {url: "Edition3.png", title: "pic3"}
     ]
     const containerStyles = {
         width: "100%",
@@ -68,7 +68,7 @@ const LoginForm = () => {
                 </div>
 
                 <div className="login-page">
-                    <div className="form">
+                    <div className="form rounded-2xl">
                         <form onSubmit={handleSubmit}>
                             <input
                                 type="email"

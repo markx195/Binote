@@ -1,9 +1,9 @@
 import {useState} from "react";
+import "./login.css"
 
 const slideStyles = {
     width: "100%",
     height: "100%",
-    borderRadius: "10px",
     backgroundSize: "cover",
     backgroundPosition: "center",
 };
@@ -38,6 +38,11 @@ const sliderStyles = {
 const dotsContainerStyles = {
     display: "flex",
     justifyContent: "center",
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    right: "0",
+    marginBottom: "10px",
 };
 
 const dotStyle = {
@@ -76,17 +81,18 @@ const ImageSlider = ({slides}) => {
                     ❱
                 </div>
             </div>
-            <div style={slideStylesWidthBackground}></div>
-            <div style={dotsContainerStyles}>
-                {slides.map((slide, slideIndex) => (
-                    <div
-                        style={dotStyle}
-                        key={slideIndex}
-                        onClick={() => goToSlide(slideIndex)}
-                    >
-                        ●
-                    </div>
-                ))}
+            <div style={slideStylesWidthBackground}>
+                <div style={dotsContainerStyles} id="dotSlide">
+                    {slides.map((slide, slideIndex) => (
+                        <div
+                            style={dotStyle}
+                            key={slideIndex}
+                            onClick={() => goToSlide(slideIndex)}
+                        >
+                            ●
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

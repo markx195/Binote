@@ -20,7 +20,7 @@ const HomePage = () => {
             <div className="max-w-[1300px] mx-auto flex justify-between items-center p-4 pt-8">
                 <div className="flex items-center cursor-pointer">
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl px-2" onClick={handleBackToHomePage}>
-                        Bi<span className="font-bold">Noted</span>
+                        Bi<span className="font-bold">Note</span>
                     </h1>
                 </div>
                 {/*Middle*/}

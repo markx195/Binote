@@ -19,6 +19,7 @@ const Note = ({courseData = [], idNoted}) => {
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
+
     useEffect(() => {
         setItems(courseData);
     }, [courseData])
@@ -219,9 +220,9 @@ const Note = ({courseData = [], idNoted}) => {
     };
 
     return (
-        <div className="flex max-w-[1300px] mx-auto pt-10 pb-[42px]">
+        <>
             <div
-                className="w-3/12 border-solid shrink-0 overflow-y-auto border-r-2 border-[#dddddd] bg-[#585858] h-[552px]"
+                className="w-3/12 border-solid shrink-0 overflow-y-auto border-r-2 border-[#dddddd] bg-[#585858] h-[737px]"
                 id="A"
                 style={{
                     borderWidth: "1px 0px 1px 1px",
@@ -261,14 +262,9 @@ const Note = ({courseData = [], idNoted}) => {
                     ))}
                 </div>
             </div>
-            <div className="w-9/12 border-[#979696]" id="B"
-                 style={{
-                     borderWidth: "1px 1px 1px 0px",
-                     borderRadius: "0px 16px 16px 0px",
-                     borderRight: "1px solid #979696"
-                 }}>
+            <div className="w-9/12" id="B">
                 <input type="text" placeholder="Tiêu đề"
-                       className="placeholder-gray-500 font-bold text-lg w-11/12"
+                       className="placeholder-gray-500 font-bold text-lg"
                        style={{border: "none", outline: "none", padding: "8px", borderRadius: "0px 16px 16px 0px"}}
                        value={inputValue}
                        onChange={handleInputChange}
@@ -319,7 +315,7 @@ const Note = ({courseData = [], idNoted}) => {
                     </select>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
