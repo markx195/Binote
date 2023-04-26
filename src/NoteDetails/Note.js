@@ -3,28 +3,26 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import {grey} from '@mui/material/colors';
 import {yellow} from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
-import {CKEditor} from "@ckeditor/ckeditor5-react";
-import BalloonEditor from "@ckeditor/ckeditor5-build-balloon";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 
+const storedAccessToken = localStorage.getItem('accessToken');
+
 const Note = ({courseData = [], idNoted}) => {
-    const storedAccessToken = localStorage.getItem('accessToken');
-    let isUserInput = false;
-    const editorRef = useRef();
     const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState('');
-    const [inputValueCK, setInputValueCK] = useState('');
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
+    const [showImg, setShowImg] = useState(false)
 
     useEffect(() => {
         setItems(courseData);
     }, [courseData])
 
     const handleAddItem = () => {
+        setShowImg(true)
         const newItem = {
             title: 'New Note',
             note: "",
@@ -128,26 +126,22 @@ const Note = ({courseData = [], idNoted}) => {
     };
 
     const handleItemClick = (item) => {
+        setShowImg(true)
         setSelectedItemId(item.id);
-        const editor = editorRef.current?.editor;
-        if (editor) {
-            console.log(item)
-            if (item.note === null) {
-                editor.setData("");
-                setInputValue(item.title || "");
-            } else if (item.title === null) {
-                editor.setData(item.note);
-                setInputValue("");
-            } else {
-                editor.setData(item.note);
-                setInputValue(item.title);
-                setSelectedTime(item.learning_hour)
-            }
+        console.log(item)
+        if (item.note === null) {
+            setInputValue(item.title || "");
+        } else if (item.title === null) {
+            setInputValue("");
+        } else {
+            setInputValue(item.title);
+            setSelectedTime(item.learning_hour)
         }
     };
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
+        console.log(inputValue)
         setInputValue(inputValue);
         // Clear previous timeout
         clearTimeout(timeoutId);
@@ -181,49 +175,10 @@ const Note = ({courseData = [], idNoted}) => {
         setTimeoutId(newTimeoutId);
     }
 
-    const handleChangeCK = (e, editor) => {
-        console.log(e)
-        const data = editor.getData()
-        console.log(data)
-        setInputValueCK(data);
-        clearTimeout(timeoutId);
-        const newTimeoutId = setTimeout(() => {
-            if (!isUserInput) {
-                console.log(1111111111, data)
-                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
-                    method: "PATCH", // Update method to PATCH
-                    body: JSON.stringify({note: data}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedAccessToken}`
-                    },
-                })
-                    .then((response) => {
-                        const updatedItems = [...items]; // Create a copy of items array
-                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
-                        updatedItems[updatedItemIndex].note = data; // Update the title of the item with the new input value
-                        setItems(updatedItems);
-                    })
-                    .catch((error) => {
-                    });
-            }
-        }, 5000); // 10 seconds
-        setTimeoutId(newTimeoutId);
-    }
-
-    const handleInput = () => {
-        isUserInput = true; // Set the flag to indicate user input
-    };
-
-    const handleContentChange = () => {
-        isUserInput = false; // Reset the flag after content change
-    };
-
     return (
         <>
             <div
                 className="w-3/12 border-solid shrink-0 overflow-y-auto border-r-2 border-[#dddddd] bg-[#585858] h-[737px]"
-                id="A"
                 style={{
                     borderWidth: "1px 0px 1px 1px",
                     borderRadius: "16px 0px 0px 16px",
@@ -241,7 +196,10 @@ const Note = ({courseData = [], idNoted}) => {
                             <AddIcon sx={{color: yellow[500]}} fontSize="large" onClick={handleAddItem}
                                      className="cursor-pointer"/>
                         </div>
-                        <div className="bg-[#585858] text-left text-[#D5D5D5] text-sm font-normal">Ghi chú</div>
+                        <div
+                            className="bg-[#585858] text-left text-[#D5D5D5] text-sm font-normal">
+                            {courseData.length} Ghi chú
+                        </div>
                     </div>
                 </div>
                 <div className="overflow-y-scroll noteScroll">
@@ -262,59 +220,34 @@ const Note = ({courseData = [], idNoted}) => {
                     ))}
                 </div>
             </div>
-            <div className="w-9/12" id="B">
-                <input type="text" placeholder="Tiêu đề"
-                       className="placeholder-gray-500 font-bold text-lg"
-                       style={{border: "none", outline: "none", padding: "8px", borderRadius: "0px 16px 16px 0px"}}
-                       value={inputValue}
-                       onChange={handleInputChange}
-                />
-                <CKEditor
-                    ref={editorRef}
-                    editor={BalloonEditor}
-                    data=''
-                    config={{
-                        placeholder: 'Tôi đã học được gì:',// Placeholder text
-                        toolbar: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            '|',
-                            'bulletedList',
-                            'numberedList',
-                        ]
-                    }}
-                    onReady={editor => {
-                        console.log("store the Editor and use it when needed", editor)
-                    }}
-                    onChange={(event, editor) => {
-                        handleInput(); // Call handleInput function to indicate user input
-                        handleChangeCK(event, editor); // Call handleChangeCK event handler
-                    }}
-                    onFocus={(event, editor) => {
-                        console.log("Focus", editor)
-                    }}
-                    onBlur={(event, editor) => {
-                        handleContentChange(); // Call handleContentChange function to indicate content change
-                        handleChangeCK(event, editor); // Call handleChangeCK event handler
-                    }}
-                />
-                <div className="flex justify-center items-center">
-                    <AlarmIcon/>
-                    <select
-                        className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none"
-                        value={selectedTime}
-                        onChange={handleSelectTime}
-                    >
-                        <option value="10">10m</option>
-                        <option value="15">15m</option>
-                        <option value="30">30m</option>
-                        <option value="45">45m</option>
-                        <option value="60">60m</option>
-                    </select>
+            {!showImg && (
+                <img src="/Images/defaultNoteImg.png" alt="Default" className="w-full h-[737px]"/>
+            )}
+            {showImg && (
+                <div className="w-9/12 relative" id="B">
+                    <input type="text" placeholder="Tiêu đề"
+                           className="placeholder-gray-500 font-bold text-lg w-full"
+                           style={{border: "none", outline: "none", padding: "8px", borderRadius: "0px 16px 16px 0px"}}
+                           value={inputValue}
+                           onChange={handleInputChange}
+                    />
+                    <input type="text" placeholder="THEllo"/>
+                    <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
+                        <AlarmIcon/>
+                        <select
+                            className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none"
+                            value={selectedTime}
+                            onChange={handleSelectTime}
+                        >
+                            <option value="10">10m</option>
+                            <option value="15">15m</option>
+                            <option value="30">30m</option>
+                            <option value="45">45m</option>
+                            <option value="60">60m</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+            )}
         </>
     );
 };
