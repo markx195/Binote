@@ -9,9 +9,9 @@ const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const slides = [
-        {url: "/Images/Pic1.jpg", title: "pic1"},
-        {url: "/Images/pic2.jpg", title: "pic2"},
-        {url: "/Images/pic3.jpg", title: "pic3"}
+        {url: "/Images/pic1.png", title: "Pic1"},
+        {url: "/Images/pic2.png", title: "pic2"},
+        {url: "/Images/pic3.png", title: "pic3"}
     ]
     const containerStyles = {
         width: "100%",

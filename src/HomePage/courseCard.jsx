@@ -89,6 +89,7 @@ const CourseCard = () => {
     }, []);
 
     const handleButtonClick = (id) => {
+        setPage(1)
         setSelectedCategoryId(id);
         fetchData(id);
     };

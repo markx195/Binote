@@ -45,7 +45,10 @@ const NoteDetails = () => {
                     className={`w-full h-full border-solid border border-[#979696] rounded-2xl flex ${
                         isCancelled ? "w-full" : "w-8/12"
                     }`}>
-                    <Note courseData={courseData.notes} idNoted={id.id}/>
+                    <Note courseData={courseData.notes}
+                          idNoted={id.id}
+                          setIsCancelled={setIsCancelled}
+                          setIsVisible={setIsVisible}/>
                 </div>
                 {!isCancelled && (
                     <div className="pl-6 w-4/12">

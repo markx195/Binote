@@ -13,6 +13,10 @@
     }
 }
 
+body {
+    font-family: 'Maven Pro', sans-serif;
+}
+
 body::-webkit-scrollbar {
     display: none;
 }
@@ -57,29 +61,76 @@ body::-webkit-scrollbar {
     border-radius: 5px;
 }
 
-.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
-    border: none !important;
-    box-shadow: none !important;
+/*/// RichText*/
+.RichEditor-root {
+    background: #fff;
+    border: 1px solid #ddd;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    padding: 15px;
 }
 
-
-.ggLogin {
-    position: absolute;
-    z-index: 999;
-    color: aliceblue;
-    top: 23%;
-    right: 16%
+.RichEditor-editor {
+    border-top: 1px solid #ddd;
+    cursor: text;
+    font-size: 16px;
+    margin-top: 10px;
+    max-height: 530px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
 }
 
-
-p.ck-placeholder {
-    margin-left: 39px;
+.RichEditor-editor::-webkit-scrollbar {
+    width: 0px;
+    background-color: transparent;
 }
 
-.ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-blurred {
-    margin-left: 39px;
+.RichEditor-editor .public-DraftEditorPlaceholder-root,
+.RichEditor-editor .public-DraftEditor-content {
+    margin: 0 -15px -15px;
+    padding: 15px;
 }
 
-.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
-    margin-left: 39px;
+.RichEditor-editor .public-DraftEditor-content {
+    min-height: 100px;
+}
+
+.RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
+    display: none;
+}
+
+.RichEditor-editor .RichEditor-blockquote {
+    border-left: 5px solid #eee;
+    color: #666;
+    font-family: 'Hoefler Text', 'Georgia', serif;
+    font-style: italic;
+    margin: 16px 0;
+    padding: 10px 20px;
+}
+
+.RichEditor-editor .public-DraftStyleDefault-pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+    font-size: 16px;
+    padding: 20px;
+}
+
+.RichEditor-controls {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 14px;
+    margin-bottom: 5px;
+    user-select: none;
+}
+
+.RichEditor-styleButton {
+    color: #999;
+    cursor: pointer;
+    margin-right: 16px;
+    padding: 2px 0;
+    display: inline-block;
+}
+
+.RichEditor-activeButton {
+    color: #5890ff;
 }

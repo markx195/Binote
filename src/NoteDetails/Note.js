@@ -6,12 +6,16 @@ import AddIcon from '@mui/icons-material/Add';
 import React, {useState, useEffect} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
+import RichTextEditor from "../DrafJs/RichTextEditor"
+import {EditorState, convertFromRaw, convertToRaw} from 'draft-js';
+import InfoIcon from '@mui/icons-material/Info';
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
-const Note = ({courseData = [], idNoted}) => {
+const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     const [items, setItems] = useState(courseData);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState("");
+    const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
@@ -126,53 +130,71 @@ const Note = ({courseData = [], idNoted}) => {
     };
 
     const handleItemClick = (item) => {
+        console.log(item.note)
         setShowImg(true)
         setSelectedItemId(item.id);
-        console.log(item)
         if (item.note === null) {
             setInputValue(item.title || "");
-        } else if (item.title === null) {
-            setInputValue("");
         } else {
             setInputValue(item.title);
             setSelectedTime(item.learning_hour)
+            setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(item.note))));
         }
     };
 
-    const handleInputChange = (e) => {
-        const inputValue = e.target.value;
-        console.log(inputValue)
-        setInputValue(inputValue);
+    const handleUpdate = (key, value) => {
         // Clear previous timeout
         clearTimeout(timeoutId);
-        // Set a new timeout for 10 seconds
+
+        // Set a new timeout for 3 seconds
         const newTimeoutId = setTimeout(() => {
-            if (inputValue) {
+            if (value) {
                 // Make PATCH API call to update item with selectedItemId
                 fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
                     method: "PATCH", // Update method to PATCH
-                    // Update body with inputValue as title key
-                    body: JSON.stringify({title: inputValue}),
+                    // Update body with content as note key or inputValue as title key
+                    body: JSON.stringify({[key]: value}),
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedAccessToken}`
+                        Authorization: `Bearer ${storedAccessToken}`,
                     },
                 })
                     .then((response) => {
                         // Handle response
                         const updatedItems = [...items]; // Create a copy of items array
-                        const updatedItemIndex = updatedItems.findIndex(item => item.id === selectedItemId); // Find the index of the updated item
-                        updatedItems[updatedItemIndex].title = inputValue; // Update the title of the item with the new input value
+                        const updatedItemIndex = updatedItems.findIndex(
+                            (item) => item.id === selectedItemId
+                        ); // Find the index of the updated item
+                        updatedItems[updatedItemIndex][key] = value; // Update the key of the item with the new value
                         setItems(updatedItems);
                     })
                     .catch((error) => {
                         // Handle error
                     });
             }
-        }, 3000); // 10 seconds
+        }, 3000); // 3 seconds
 
         // Update the timeoutId state with the new timeout id
         setTimeoutId(newTimeoutId);
+    };
+
+    const handleEditorChange = (editorState) => {
+        const contentState = editorState.getCurrentContent();
+        const rawDraftContentState = JSON.stringify(convertToRaw(contentState));
+        setEditorState(rawDraftContentState);
+        handleUpdate("note", rawDraftContentState);
+    };
+
+    const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        console.log(inputValue);
+        setInputValue(inputValue);
+        handleUpdate("title", inputValue);
+    };
+
+    const handleInfoAction = () => {
+        setIsCancelled(false);
+        setIsVisible(true);
     }
 
     return (
@@ -225,13 +247,23 @@ const Note = ({courseData = [], idNoted}) => {
             )}
             {showImg && (
                 <div className="w-9/12 relative" id="B">
-                    <input type="text" placeholder="Tiêu đề"
-                           className="placeholder-gray-500 font-bold text-lg w-full"
-                           style={{border: "none", outline: "none", padding: "8px", borderRadius: "0px 16px 16px 0px"}}
-                           value={inputValue}
-                           onChange={handleInputChange}
-                    />
-                    <input type="text" placeholder="THEllo"/>
+                    <div className="flex">
+                        <input type="text" placeholder="Tiêu đề"
+                               className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md"
+                               style={{
+                                   border: "none",
+                                   outline: "none",
+                                   padding: "8px",
+                                   borderRadius: "0px 16px 16px 0px"
+                               }}
+                               value={inputValue}
+                               onChange={handleInputChange}
+                        />
+                        <div className="relative cursor-pointer">
+                            <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
+                        </div>
+                    </div>
+                    <RichTextEditor onEditorStateChange={handleEditorChange} editorState={editorState}/>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
                         <select
