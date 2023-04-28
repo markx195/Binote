@@ -6,20 +6,20 @@ import AddIcon from '@mui/icons-material/Add';
 import React, {useState, useEffect} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
-import RichTextEditor from "../DrafJs/RichTextEditor"
-import {EditorState, convertFromRaw, convertToRaw} from 'draft-js';
 import InfoIcon from '@mui/icons-material/Info';
+import Editor from "../RichText/Editor"
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState("");
-    const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
     const [showImg, setShowImg] = useState(false)
+
+    const [noteData, setNoteData] = useState([])
 
     useEffect(() => {
         setItems(courseData);
@@ -130,16 +130,25 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     };
 
     const handleItemClick = (item) => {
-        console.log(item.note)
+        console.log(item)
         setShowImg(true)
         setSelectedItemId(item.id);
-        if (item.note === null) {
-            setInputValue(item.title || "");
-        } else {
-            setInputValue(item.title);
-            setSelectedTime(item.learning_hour)
-            setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(item.note))));
+        try {
+            setNoteData(JSON.parse(item.note));
+        } catch (e) {
+            console.log(e);
+            setNoteData({});
         }
+        setInputValue(item.title);
+        setSelectedTime(item.learning_hour)
+        // if (item.note === null) {
+        //     setInputValue(item.title || "");
+        //     setNoteData([])
+        // } else {
+        //     setInputValue(item.title);
+        //     setNoteData(JSON.parse(item.note))
+        //     setSelectedTime(item.learning_hour)
+        // }
     };
 
     const handleUpdate = (key, value) => {
@@ -178,11 +187,10 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         setTimeoutId(newTimeoutId);
     };
 
-    const handleEditorChange = (editorState) => {
-        const contentState = editorState.getCurrentContent();
-        const rawDraftContentState = JSON.stringify(convertToRaw(contentState));
-        setEditorState(rawDraftContentState);
-        handleUpdate("note", rawDraftContentState);
+    const handleEditorChange = (data) => {
+        console.log(data);
+        setNoteData(data);
+        handleUpdate("note", data);
     };
 
     const handleInputChange = (e) => {
@@ -263,7 +271,8 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
                             <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                         </div>
                     </div>
-                    <RichTextEditor onEditorStateChange={handleEditorChange} editorState={editorState}/>
+
+                    <Editor value={noteData} onchange={handleEditorChange}/>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
                         <select
@@ -285,3 +294,4 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
 };
 
 export default Note;
+

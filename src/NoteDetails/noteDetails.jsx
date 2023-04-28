@@ -40,7 +40,7 @@ const NoteDetails = () => {
     return (
         <>
             <HomePage/>
-            <div className="flex px-[310px] pt-10 pb-20">
+            <div className="flex px-[16%] pt-10 pb-20">
                 <div
                     className={`w-full h-full border-solid border border-[#979696] rounded-2xl flex ${
                         isCancelled ? "w-full" : "w-8/12"
