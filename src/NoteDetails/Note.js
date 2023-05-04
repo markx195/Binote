@@ -19,7 +19,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     const [selectedTime, setSelectedTime] = useState("");
     const [showImg, setShowImg] = useState(false)
 
-    const [noteData, setNoteData] = useState([])
+    const [noteData, setNoteData] = useState("")
 
     useEffect(() => {
         setItems(courseData);
@@ -133,22 +133,21 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         console.log(item)
         setShowImg(true)
         setSelectedItemId(item.id);
-        try {
-            setNoteData(JSON.parse(item.note));
-        } catch (e) {
-            console.log(e);
-            setNoteData({});
-        }
-        setInputValue(item.title);
-        setSelectedTime(item.learning_hour)
-        // if (item.note === null) {
-        //     setInputValue(item.title || "");
-        //     setNoteData([])
-        // } else {
-        //     setInputValue(item.title);
-        //     setNoteData(JSON.parse(item.note))
-        //     setSelectedTime(item.learning_hour)
+        // try {
+        //     setNoteData(JSON.parse(item.note));
+        // } catch (e) {
+        //     console.log(e);
+        //     setNoteData({});
         // }
+        // setInputValue(item.title);
+        // setSelectedTime(item.learning_hour)
+        if (item.note === null) {
+            setInputValue(item.title || "");
+        } else {
+            setInputValue(item.title);
+            setNoteData(item.note)
+            setSelectedTime(item.learning_hour)
+        }
     };
 
     const handleUpdate = (key, value) => {
@@ -187,11 +186,11 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         setTimeoutId(newTimeoutId);
     };
 
-    const handleEditorChange = (data) => {
-        console.log(data);
-        setNoteData(data);
-        handleUpdate("note", data);
-    };
+    // const handleEditorChange = (data) => {
+    //     console.log(data);
+    //     setNoteData(data);
+    //     handleUpdate("note", data);
+    // };
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
@@ -199,6 +198,13 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         setInputValue(inputValue);
         handleUpdate("title", inputValue);
     };
+
+    const handleInputChangeBody = (e) => {
+        const inputValue = e.target.value;
+        setNoteData(inputValue);
+        handleUpdate("note", inputValue);
+    };
+
 
     const handleInfoAction = () => {
         setIsCancelled(false);
@@ -272,7 +278,19 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
                         </div>
                     </div>
 
-                    <Editor value={noteData} onchange={handleEditorChange}/>
+                    {/*<Editor value={noteData} onchange={handleEditorChange}/>*/}
+                    <textarea type="text" placeholder="Tôi đã học được gì:
+Tôi có thể áp dụng gì vào công việc:"
+                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[600px]"
+                              style={{
+                                  border: "none",
+                                  outline: "none",
+                                  padding: "8px",
+                                  borderRadius: "0px 16px 16px 0px"
+                              }}
+                              value={noteData}
+                              onChange={handleInputChangeBody}
+                    />
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
                         <select
