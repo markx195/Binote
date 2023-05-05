@@ -32,7 +32,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
             note: "",
             course_id: parseInt(idNoted)
         };
-        fetch('http://192.168.3.150:8055/items/note', {
+        fetch('https://binote-api.biplus.com.vn/items/note', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     };
 
     const handleDeleteItem = (id) => {
-        fetch(`http://192.168.3.150:8055/items/note/${id}`, {
+        fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -93,7 +93,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     }
 
     const updateItemData = (itemId, dataToUpdate) => {
-        return fetch(`http://192.168.3.150:8055/items/note/${itemId}`, {
+        return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
             method: "PATCH",
             body: JSON.stringify(dataToUpdate),
             headers: {
@@ -158,7 +158,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         const newTimeoutId = setTimeout(() => {
             if (value) {
                 // Make PATCH API call to update item with selectedItemId
-                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
+                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
                     method: "PATCH", // Update method to PATCH
                     // Update body with content as note key or inputValue as title key
                     body: JSON.stringify({[key]: value}),
