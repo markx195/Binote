@@ -3,12 +3,13 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import {grey} from '@mui/material/colors';
 import {yellow} from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect,useRef,useMemo} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
-import Editor from "../RichText/Editor"
-
+import { createReactEditorJS } from "react-editor-js";
+import DragDrop from "editorjs-drag-drop";
+import { EDITOR_JS_TOOLS } from "../RichText/Editor";
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
@@ -18,8 +19,25 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
     const [showImg, setShowImg] = useState(false)
-
     const [noteData, setNoteData] = useState("")
+
+    // const instanceRef = useRef(null);
+    const instanceRef = React.useRef(null);
+    const memoizedRef = useMemo(() => instanceRef, []);
+    const ReactEditorJS = createReactEditorJS();
+
+    console.log(memoizedRef);
+
+    const editorCore = React.useRef(null);
+
+    const handleInitialize = React.useCallback((instance) => {
+        editorCore.current = instance;
+    }, []);
+
+    const handleReady = () => {
+        const editor = editorCore.current._editorJS;
+        new DragDrop(editor);
+    };
 
     useEffect(() => {
         setItems(courseData);
@@ -279,18 +297,24 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
                     </div>
 
                     {/*<Editor value={noteData} onchange={handleEditorChange}/>*/}
-                    <textarea type="text" placeholder="Tôi đã học được gì:
-Tôi có thể áp dụng gì vào công việc:"
-                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[600px]"
-                              style={{
-                                  border: "none",
-                                  outline: "none",
-                                  padding: "8px",
-                                  borderRadius: "0px 16px 16px 0px"
-                              }}
-                              value={noteData}
-                              onChange={handleInputChangeBody}
+                    <ReactEditorJS
+                        memoizedRef={(instance) => (memoizedRef.current = instance)}
+                        tools={EDITOR_JS_TOOLS}
+                        onReady={handleReady}
+                        onInitialize={handleInitialize}
                     />
+{/*                    <textarea type="text" placeholder="Tôi đã học được gì:*/}
+{/*Tôi có thể áp dụng gì vào công việc:"*/}
+{/*                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[600px]"*/}
+{/*                              style={{*/}
+{/*                                  border: "none",*/}
+{/*                                  outline: "none",*/}
+{/*                                  padding: "8px",*/}
+{/*                                  borderRadius: "0px 16px 16px 0px"*/}
+{/*                              }}*/}
+{/*                              value={noteData}*/}
+{/*                              onChange={handleInputChangeBody}*/}
+{/*                    />*/}
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
                         <select
