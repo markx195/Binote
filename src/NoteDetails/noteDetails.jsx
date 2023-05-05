@@ -11,6 +11,13 @@ const NoteDetails = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [isCancelled, setIsCancelled] = useState(false);
 
+    function formatString(str) {
+        if (str == null) {
+            return "";
+        }
+        return str.replace(/\n/g, '<br>');
+    }
+
     const handleCancelClick = () => {
         setIsCancelled(true);
         setIsVisible(false);
@@ -40,7 +47,7 @@ const NoteDetails = () => {
     return (
         <>
             <HomePage/>
-            <div className="flex px-[16%] pt-10 pb-20">
+            <div className="flex px-[5%] pt-10 pb-20">
                 <div
                     className={`w-full h-full border-solid border border-[#979696] rounded-2xl flex ${
                         isCancelled ? "w-full" : "w-8/12"
@@ -57,7 +64,7 @@ const NoteDetails = () => {
                                 className="rounded-2xl border-[#979696] border-solid border">
                                 <div className="px-6 h-[737px] overflow-y-auto" id="hideScroll">
                                     <div className="relative cursor-pointer">
-                                        <CancelIcon onClick={handleCancelClick} className="absolute right-0 top-0 m-2"/>
+                                        <CancelIcon onClick={handleCancelClick} className="absolute right-0 top-0 my-2"/>
                                     </div>
                                     {courseData && (
                                         <>
@@ -74,8 +81,7 @@ const NoteDetails = () => {
                                                     Đi tới khóa học
                                                 </a>
                                             </div>
-
-                                            <div className="text-left">{courseData.description}</div>
+                                            <div className="text-left"dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>
                                         </>
                                     )}
                                 </div>

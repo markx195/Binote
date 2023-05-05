@@ -17,7 +17,6 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
-    const [showImg, setShowImg] = useState(false)
 
     const [noteData, setNoteData] = useState("")
 
@@ -25,11 +24,18 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         setItems(courseData);
     }, [courseData])
 
+    useEffect(() => {
+        // Set the first item in the courseData array as the selected item
+        if (courseData.length > 0) {
+            handleItemClick(courseData[0]);
+        }
+    }, [courseData])
+
     const handleAddItem = () => {
-        setShowImg(true)
         const newItem = {
             title: 'New Note',
-            note: "",
+            note: `Tôi đã học được gì:
+Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };
         fetch('https://binote-api.biplus.com.vn/items/note', {
@@ -131,16 +137,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
 
     const handleItemClick = (item) => {
         console.log(item)
-        setShowImg(true)
         setSelectedItemId(item.id);
-        // try {
-        //     setNoteData(JSON.parse(item.note));
-        // } catch (e) {
-        //     console.log(e);
-        //     setNoteData({});
-        // }
-        // setInputValue(item.title);
-        // setSelectedTime(item.learning_hour)
         if (item.note === null) {
             setInputValue(item.title || "");
         } else {
@@ -186,12 +183,6 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         setTimeoutId(newTimeoutId);
     };
 
-    // const handleEditorChange = (data) => {
-    //     console.log(data);
-    //     setNoteData(data);
-    //     handleUpdate("note", data);
-    // };
-
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
         console.log(inputValue);
@@ -205,12 +196,10 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
         handleUpdate("note", inputValue);
     };
 
-
     const handleInfoAction = () => {
         setIsCancelled(false);
         setIsVisible(true);
     }
-
     return (
         <>
             <div
@@ -242,24 +231,28 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
                     {items?.map(item => (
                         <div key={item.id}
                              onClick={() => handleItemClick(item)}
-                             className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left">
+                             className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left group">
                             <div className="text-[#F4F4F4] text-sm font-bold">{item.title}</div>
                             <div className="flex justify-between">
-                                <div
-                                    className="text-[#D5D5D5] text-xs font-medium">{formatDate(item.date_created)}</div>
-                                <DeleteIcon fontSize="small" sx={{color: grey[100]}}
-                                            onClick={() => handleDeleteItem(item.id)}
-                                            className="transition-opacity duration-300 opacity-0 hover:opacity-100"
-                                />
+                                <div className="text-[#D5D5D5] text-xs font-medium">{formatDate(item.date_created)}</div>
+                                <div className="group-hover:block hidden">
+                                    <DeleteIcon fontSize="small" sx={{color: grey[100]}} onClick={() => handleDeleteItem(item.id)} />
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            {!showImg && (
-                <img src="/Images/defaultNoteImg.png" alt="Default" className="w-full h-[737px]"/>
+            {courseData.length === 0 && (
+                <div className="relative w-full">
+                    <img src="/Images/defaultNoteImg.png" alt="Default" className="h-[737px] w-full"/>
+                    <div className="absolute top-0 right-0 m-2 cursor-pointer"
+                         onClick={handleInfoAction}>
+                        <InfoIcon/>
+                    </div>
+                </div>
             )}
-            {showImg && (
+            {courseData.length > 0 && (
                 <div className="w-9/12 relative" id="B">
                     <div className="flex">
                         <input type="text" placeholder="Tiêu đề"
@@ -277,16 +270,14 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
                             <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                         </div>
                     </div>
-
-                    {/*<Editor value={noteData} onchange={handleEditorChange}/>*/}
-                    <textarea type="text" placeholder="Tôi đã học được gì:
-Tôi có thể áp dụng gì vào công việc:"
+                    <textarea type="text"
                               className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[600px]"
                               style={{
                                   border: "none",
                                   outline: "none",
                                   padding: "8px",
-                                  borderRadius: "0px 16px 16px 0px"
+                                  borderRadius: "0px 16px 16px 0px",
+                                  resize: "none"
                               }}
                               value={noteData}
                               onChange={handleInputChangeBody}
