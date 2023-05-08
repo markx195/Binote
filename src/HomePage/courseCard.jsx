@@ -158,7 +158,7 @@ const CourseCard = () => {
                                 >Đi tới khóa học
                                 </a>
                             </div>
-                            <div className='flex justify-between px-4 pt-4'>
+                            <div className='flex justify-between px-4 pb-4'>
                                 <p className="inline-flex items-center">
                                     <StickyNote2Icon></StickyNote2Icon>
                                     <span className='p-1'>
@@ -169,11 +169,6 @@ const CourseCard = () => {
                         </div>
                     ))}
                 </div>
-                {/*<div className="pb-14">*/}
-                {/*    {hasMoreItems && (*/}
-                {/*        <button onClick={handleLoadMore}>Load More</button>*/}
-                {/*    )}*/}
-                {/*</div>*/}
             </div>
         </>
     );
