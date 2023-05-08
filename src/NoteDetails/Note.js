@@ -7,7 +7,6 @@ import React, {useState, useEffect} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
-import Editor from "../RichText/Editor"
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -92,10 +91,27 @@ Tôi có thể áp dụng gì vào công việc:`,
             });
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const options = {day: '2-digit', month: '2-digit', year: '2-digit'};
-        return date.toLocaleDateString('en-GB', options);
+    function compareDate(dateString) {
+        const date1 = new Date(dateString);
+        const date2 = new Date();
+
+        const diffInSeconds = Math.floor((date2 - date1) / 1000);
+
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds}s`;
+        } else if (diffInSeconds < 3600) {
+            const diffInMinutes = Math.floor(diffInSeconds / 60);
+            return `${diffInMinutes}m`;
+        } else if (diffInSeconds < 86400) {
+            const diffInHours = Math.floor(diffInSeconds / 3600);
+            return `${diffInHours}h`;
+        } else if (diffInSeconds < 2592000) {
+            const diffInDays = Math.floor(diffInSeconds / 86400);
+            return `${diffInDays}d`;
+        } else {
+            const diffInMonths = Math.floor(diffInSeconds / 2592000);
+            return `${diffInMonths}M`;
+        }
     }
 
     const updateItemData = (itemId, dataToUpdate) => {
@@ -234,7 +250,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                              className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left group">
                             <div className="text-[#F4F4F4] text-sm font-bold">{item.title}</div>
                             <div className="flex justify-between">
-                                <div className="text-[#D5D5D5] text-xs font-medium">{formatDate(item.date_created)}</div>
+                                <div className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago</div>
                                 <div className="group-hover:block hidden">
                                     <DeleteIcon fontSize="small" sx={{color: grey[100]}} onClick={() => handleDeleteItem(item.id)} />
                                 </div>
