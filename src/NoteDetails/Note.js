@@ -3,14 +3,14 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import {grey} from '@mui/material/colors';
 import {yellow} from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect,useCallback} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
-const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
+const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem}) => {
     const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
@@ -37,61 +37,14 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled}) => {
 Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };
-        fetch('https://binote-api.biplus.com.vn/items/note', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${storedAccessToken}`
-            },
-            body: JSON.stringify(newItem)
-        }).then(response => {
-            if (response.ok) {
-                // Item successfully added, handle success
-                console.log('Item added successfully');
-                // Get response data as JSON
-                return response.json(); // This returns a Promise
-            } else {
-                // Item addition failed, handle error
-                console.error('Failed to add item:', response.status);
-                // Perform any error handling or state updates as needed
-            }
-        }).then(data => {
-            // Handle response data
-            console.log(data.data);
-            setItems(prevItems => [data.data, ...prevItems]);
-            // Perform any additional actions or state updates as needed
-        }).catch(error => {
-            // Fetch failed, handle error
-            console.error('Failed to add item:', error);
-            // Perform any error handling or state updates as needed
-        });
+        onAddItem(newItem);
     };
 
-    const handleDeleteItem = (id) => {
-        fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Item successfully deleted, handle success
-                    console.log('Item deleted successfully');
-                    // Update state with new list of items after deleting item
-                    setItems(prevItems => prevItems.filter(item => item.id !== id));
-                    // Update state
-                    // Perform any additional actions or state updates as needed
-                } else {
-                    // Item deletion failed, handle error
-                    console.error('Failed to delete item:', response.status);
-                    // Perform any error handling or state updates as needed
-                }
-            })
-            .catch(error => {
-                console.error('Failed to delete item:', error);
-                // Perform any error handling or state updates as needed
-            });
+    const handleDeleteItem = id => {
+        onDeleteItem(id);
     };
 
-    function compareDate(dateString) {
+    const compareDate = useCallback((dateString) => {
         const date1 = new Date(dateString);
         const date2 = new Date();
 
@@ -112,7 +65,7 @@ Tôi có thể áp dụng gì vào công việc:`,
             const diffInMonths = Math.floor(diffInSeconds / 2592000);
             return `${diffInMonths}M`;
         }
-    }
+    }, [])
 
     const updateItemData = (itemId, dataToUpdate) => {
         return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
@@ -250,9 +203,12 @@ Tôi có thể áp dụng gì vào công việc:`,
                              className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left group">
                             <div className="text-[#F4F4F4] text-sm font-bold">{item.title}</div>
                             <div className="flex justify-between">
-                                <div className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago</div>
+                                <div
+                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
+                                </div>
                                 <div className="group-hover:block hidden">
-                                    <DeleteIcon fontSize="small" sx={{color: grey[100]}} onClick={() => handleDeleteItem(item.id)} />
+                                    <DeleteIcon fontSize="small" sx={{color: grey[100]}}
+                                                onClick={() => handleDeleteItem(item.id)}/>
                                 </div>
                             </div>
                         </div>
