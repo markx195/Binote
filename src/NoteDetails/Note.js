@@ -227,17 +227,21 @@ Tôi có thể áp dụng gì vào công việc:`,
             {courseData.length > 0 && (
                 <div className="w-9/12 relative" id="B">
                     <div className="flex">
-                        <input type="text" placeholder="Tiêu đề"
-                               className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md"
-                               style={{
-                                   border: "none",
-                                   outline: "none",
-                                   padding: "8px",
-                                   borderRadius: "0px 16px 16px 0px"
-                               }}
-                               value={inputValue}
-                               onChange={handleInputChange}
+                        <input
+                            type="text"
+                            className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md"
+                            style={{
+                                border: "none",
+                                outline: "none",
+                                padding: "8px",
+                                borderRadius: "0px 16px 16px 0px",
+                                fontWeight: "700",
+                                fontSize: "24px"
+                            }}
+                            value={inputValue}
+                            onChange={handleInputChange}
                         />
+
                         <div className="relative cursor-pointer">
                             <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                         </div>
