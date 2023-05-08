@@ -63,7 +63,7 @@ const RecentlyCourses = () => {
                         <p className="text-left font-bold text-4xl">{courses[0].title}</p>
                         <div className="pb-8 pt-2.5">
                             <a
-                                className="flex justify-center items-center w-[177.67px] h-[52.67px] block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
+                                className="flex justify-center items-center w-[177.67px] h-[52.67px] block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
                                 href={courses[0].link}
                                 target="_blank"
                                 rel="noopener noreferrer"

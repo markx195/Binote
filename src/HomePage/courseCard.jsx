@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react"
+import React, {useState, useEffect, useCallback, useRef} from "react"
 import axios from "axios"
 import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
@@ -8,13 +8,13 @@ import {useNavigate} from "react-router-dom"
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const CourseCard = () => {
-    const LIMIT_DATA = 8;
+    const LIMIT_DATA = 999;
     const navigate = useNavigate()
     const [dataSource, setDataSource] = useState([])
     const [page, setPage] = useState(1);
+    const [hasMoreItems, setHasMoreItems] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
-    const [hasMoreItems, setHasMoreItems] = useState(true);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
     const fetchData = useCallback(
@@ -58,12 +58,6 @@ const CourseCard = () => {
     useEffect(() => {
         fetchData(0);
     }, []);
-
-    const handleLoadMore = () => {
-        if (hasMoreItems) {
-            setPage(prevPage => prevPage + 1);
-        }
-    };
 
     useEffect(() => {
         // Debounce the API call to reduce the number of requests during rapid input changes
@@ -141,7 +135,7 @@ const CourseCard = () => {
                     {dataSource?.map((item, index) => (
                         <div
                             key={index}
-                            className='border shadow-lg rounded-lg hover:scale-105 duration-300'
+                            className='border shadow-md rounded-lg hover:scale-105 duration-300'
                             onClick={() => handleNoteDetails(item.id)}
                         >
                             <div className="p-4">
@@ -157,7 +151,7 @@ const CourseCard = () => {
                             </p>
                             <div className="px-4 pb-4">
                                 <a
-                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md shadow-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
+                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
                                     href={item?.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -175,11 +169,11 @@ const CourseCard = () => {
                         </div>
                     ))}
                 </div>
-                <div className="pb-14">
-                    {hasMoreItems && (
-                        <button onClick={handleLoadMore}>Load More</button>
-                    )}
-                </div>
+                {/*<div className="pb-14">*/}
+                {/*    {hasMoreItems && (*/}
+                {/*        <button onClick={handleLoadMore}>Load More</button>*/}
+                {/*    )}*/}
+                {/*</div>*/}
             </div>
         </>
     );
