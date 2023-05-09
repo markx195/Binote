@@ -3,7 +3,7 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import {grey} from '@mui/material/colors';
 import {yellow} from '@mui/material/colors';
 import AddIcon from '@mui/icons-material/Add';
-import React, {useState, useEffect,useCallback} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
@@ -43,6 +43,15 @@ Tôi có thể áp dụng gì vào công việc:`,
     const handleDeleteItem = id => {
         onDeleteItem(id);
     };
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+    }
+
 
     const compareDate = useCallback((dateString) => {
         const date1 = new Date(dateString);
@@ -200,12 +209,20 @@ Tôi có thể áp dụng gì vào công việc:`,
                     {items?.map(item => (
                         <div key={item.id}
                              onClick={() => handleItemClick(item)}
-                             className="sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] hover:border-[#F0C528] p-6 text-left group">
-                            <div className="text-[#F4F4F4] text-sm font-bold">{item.title}</div>
+                             className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696]' : ''} p-6 text-left group`}
+                        >
+                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{item.title}</div>
                             <div className="flex justify-between">
-                                <div
-                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
-                                </div>
+                                {item.user_updated !== null && (
+                                    < div
+                                        className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
+                                    </div>
+                                )}
+                                {item.user_updated === null && (
+                                    < div
+                                        className="text-[#D5D5D5] text-xs font-medium">{formatDate(item.date_created)}
+                                    </div>
+                                )}
                                 <div className="group-hover:block hidden">
                                     <DeleteIcon fontSize="small" sx={{color: grey[100]}}
                                                 onClick={() => handleDeleteItem(item.id)}/>
@@ -227,21 +244,21 @@ Tôi có thể áp dụng gì vào công việc:`,
             {courseData.length > 0 && (
                 <div className="w-9/12 relative" id="B">
                     <div className="flex">
-                        <input
+                        <textarea
                             type="text"
-                            className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md"
+                            className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block"
                             style={{
                                 border: "none",
                                 outline: "none",
-                                padding: "8px",
+                                padding: "40px 40px 0px 40px",
                                 borderRadius: "0px 16px 16px 0px",
                                 fontWeight: "700",
-                                fontSize: "24px"
+                                fontSize: "24px",
+                                resize: "none"
                             }}
                             value={inputValue}
                             onChange={handleInputChange}
                         />
-
                         <div className="relative cursor-pointer">
                             <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                         </div>
@@ -251,7 +268,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                               style={{
                                   border: "none",
                                   outline: "none",
-                                  padding: "8px",
+                                  padding: "0px 40px 0px 40px",
                                   borderRadius: "0px 16px 16px 0px",
                                   resize: "none"
                               }}
