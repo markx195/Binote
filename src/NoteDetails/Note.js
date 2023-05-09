@@ -249,7 +249,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         </div>
                     </div>
                     <textarea type="text"
-                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[600px]"
+                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
                               style={{
                                   border: "none",
                                   outline: "none",
