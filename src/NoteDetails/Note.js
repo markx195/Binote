@@ -44,15 +44,6 @@ Tôi có thể áp dụng gì vào công việc:`,
         onDeleteItem(id);
     };
 
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
-    }
-
-
     const compareDate = useCallback((dateString) => {
         const date1 = new Date(dateString);
         const date2 = new Date();
@@ -213,16 +204,9 @@ Tôi có thể áp dụng gì vào công việc:`,
                         >
                             <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{item.title}</div>
                             <div className="flex justify-between">
-                                {item.user_updated !== null && (
-                                    < div
-                                        className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
-                                    </div>
-                                )}
-                                {item.user_updated === null && (
-                                    < div
-                                        className="text-[#D5D5D5] text-xs font-medium">{formatDate(item.date_created)}
-                                    </div>
-                                )}
+                                <div
+                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
+                                </div>
                                 <div className="group-hover:block hidden">
                                     <DeleteIcon fontSize="small" sx={{color: grey[100]}}
                                                 onClick={() => handleDeleteItem(item.id)}/>

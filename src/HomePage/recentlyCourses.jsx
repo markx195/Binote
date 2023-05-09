@@ -49,7 +49,7 @@ const RecentlyCourses = () => {
         <>
             {courses.length > 0 && (
                 <div className="pt-12 max-w-[1300px] mx-auto flex">
-                    <div className="flex-grow">
+                    <div className="flex-1 ">
                         <img
                             onClick={() => handleNoteDetails(courses[0].id)}
                             key={courses[0].image}
@@ -58,7 +58,7 @@ const RecentlyCourses = () => {
                             className="w-[868px] h-[388px] object-cover rounded-lg cursor-pointer"
                         />
                     </div>
-                    <div className="flex-grow pl-8">
+                    <div className="flex-1 pl-8">
                         <p className="text-left">Khóa học gần đây</p>
                         <p className="text-left font-bold text-4xl">{courses[0].title}</p>
                         <div className="pb-8 pt-2.5">
@@ -77,7 +77,7 @@ const RecentlyCourses = () => {
                             {courses[0].notes?.map(course => (
                                 <div key={course.id}>
                                     <div className="flex justify-between py-4">
-                                        <p className="text-left">{course.title}</p>
+                                        <p className="text-left text-left overflow-hidden truncate max-w-[400px]">{course.title}</p>
                                         <span className="text-[#4790E4] cursor-pointer"
                                               onClick={() => handleNoteDetails(courses[0].id)}>Chi tiết</span>
                                     </div>
