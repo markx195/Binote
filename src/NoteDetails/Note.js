@@ -172,7 +172,8 @@ Tôi có thể áp dụng gì vào công việc:`,
     return (
         <>
             <div
-                className="w-3/12 border-solid shrink-0 overflow-y-auto border-r-2 border-[#dddddd] bg-[#585858] h-[737px]"
+                id="hideScroll"
+                className="w-3/12 border-solid shrink-0 overflow-y-auto border-r-2 border-[#dddddd] bg-[#585858] h-[76.7vh]"
                 style={{
                     borderWidth: "1px 0px 1px 1px",
                     borderRadius: "16px 0px 0px 16px",
@@ -218,7 +219,7 @@ Tôi có thể áp dụng gì vào công việc:`,
             </div>
             {courseData.length === 0 && (
                 <div className="relative w-full">
-                    <img src="/Images/defaultNoteImg.png" alt="Default" className="h-[737px] w-full"/>
+                    <img src="/Images/defaultNoteImg.png" alt="Default" className="h-[76.7vh] w-full"/>
                     <div className="absolute top-0 right-0 m-2 cursor-pointer"
                          onClick={handleInfoAction}>
                         <InfoIcon/>
@@ -226,7 +227,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                 </div>
             )}
             {courseData.length > 0 && (
-                <div className="w-9/12 relative" id="B">
+                <div className="w-9/12 relative">
                     <div className="flex">
                         <textarea
                             type="text"

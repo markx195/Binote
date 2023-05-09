@@ -96,7 +96,7 @@ const NoteDetails = () => {
             {!isCancelled && (<div className="pl-6 w-4/12">
                 {isVisible && (<div
                     className="rounded-2xl border-[#979696] border-solid border">
-                    <div className="px-6 h-[737px] overflow-y-auto" id="hideScroll">
+                    <div className="px-6 h-[76.7vh] overflow-y-auto" id="hideScroll">
                         <div className="relative cursor-pointer">
                             <CancelIcon onClick={handleCancelClick}
                                         className="absolute right-0 top-0 my-2"/>
