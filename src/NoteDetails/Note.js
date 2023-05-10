@@ -7,10 +7,16 @@ import React, {useState, useEffect, useCallback} from "react";
 import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
+import ContentEditable from 'react-contenteditable';
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem}) => {
+    const handleKeyDownTitle = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
     const [items, setItems] = useState(courseData);
     const [inputValue, setInputValue] = useState("");
     const [selectedItemId, setSelectedItemId] = useState(null);
@@ -105,7 +111,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         setItems(updatedItems);
                     });
             }
-        }, 1500);
+        }, 1000);
         setTimeoutId(newTimeoutId);
     };
 
@@ -159,7 +165,6 @@ Tôi có thể áp dụng gì vào công việc:`,
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
-        console.log(inputValue);
         setInputValue(inputValue);
         handleUpdate("title", inputValue);
     };
@@ -233,10 +238,12 @@ Tôi có thể áp dụng gì vào công việc:`,
             )}
             {courseData.length > 0 && (
                 <div className="w-9/12 relative">
-                    <div className="overflow-y-auto">
+                    <div className="overflow-y-auto h-[70vh]" id="hideScroll">
                         <div className="flex pb-4 w-full">
-                            <textarea
-                                className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block"
+                            <ContentEditable
+                                html={inputValue}
+                                onChange={handleInputChange}
+                                className="font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block h-full text-left"
                                 style={{
                                     border: "none",
                                     outline: "none",
@@ -244,15 +251,8 @@ Tôi có thể áp dụng gì vào công việc:`,
                                     borderRadius: "0px 16px 16px 0px",
                                     fontWeight: "700",
                                     fontSize: "24px",
-                                    resize: "none"
                                 }}
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                onKeyDown={(event) => {
-                                    if (event.keyCode === 13) {
-                                        event.preventDefault(); // prevent line breaks
-                                    }
-                                }}
+                                onKeyDown={handleKeyDownTitle}
                             />
                             <div className="relative cursor-pointer">
                                 <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
