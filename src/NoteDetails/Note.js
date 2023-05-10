@@ -32,7 +32,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
 
     const handleAddItem = () => {
         const newItem = {
-            title: 'New Note',
+            title: 'Tiêu đề',
             note: `Tôi đã học được gì:
             
 Tôi có thể áp dụng gì vào công việc:`,
@@ -52,19 +52,19 @@ Tôi có thể áp dụng gì vào công việc:`,
         const diffInSeconds = Math.floor((date2 - date1) / 1000);
 
         if (diffInSeconds < 60) {
-            return `${diffInSeconds}s`;
+            return `Vừa xong`;
         } else if (diffInSeconds < 3600) {
             const diffInMinutes = Math.floor(diffInSeconds / 60);
-            return `${diffInMinutes}m`;
+            return `${diffInMinutes}phút trước`;
         } else if (diffInSeconds < 86400) {
             const diffInHours = Math.floor(diffInSeconds / 3600);
-            return `${diffInHours}h`;
+            return `${diffInHours}giờ trước`;
         } else if (diffInSeconds < 2592000) {
             const diffInDays = Math.floor(diffInSeconds / 86400);
-            return `${diffInDays}d`;
+            return `${diffInDays}ngày trước`;
         } else {
             const diffInMonths = Math.floor(diffInSeconds / 2592000);
-            return `${diffInMonths}M`;
+            return `${diffInMonths}tháng trước`;
         }
     }, [])
 
@@ -101,7 +101,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         setItems(updatedItems);
                     });
             }
-        }, 2000);
+        }, 1500);
         setTimeoutId(newTimeoutId);
     };
 
@@ -207,7 +207,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                             <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{item.title}</div>
                             <div className="flex justify-between">
                                 <div
-                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)} ago
+                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
                                 </div>
                                 <div className="group-hover:block hidden">
                                     <DeleteIcon fontSize="small" sx={{color: grey[100]}}
