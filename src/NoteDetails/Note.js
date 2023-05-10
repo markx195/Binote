@@ -34,6 +34,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
         const newItem = {
             title: 'New Note',
             note: `Tôi đã học được gì:
+            
 Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };
@@ -100,7 +101,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         setItems(updatedItems);
                     });
             }
-        }, 3000);
+        }, 2000);
         setTimeoutId(newTimeoutId);
     };
 
@@ -177,7 +178,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                 style={{
                     borderWidth: "1px 0px 1px 1px",
                     borderRadius: "16px 0px 0px 16px",
-                    borderRight: "1px solid #979696"
+                    borderRight: "1px solid #979696",
                 }}>
                 <div className="bg-[#585858] border-b-2 border-solid border-[#979696]">
                     <div className="p-6">
@@ -201,7 +202,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                     {items?.map(item => (
                         <div key={item.id}
                              onClick={() => handleItemClick(item)}
-                             className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696]' : ''} p-6 text-left group`}
+                             className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''} p-6 text-left group`}
                         >
                             <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{item.title}</div>
                             <div className="flex justify-between">
@@ -227,39 +228,46 @@ Tôi có thể áp dụng gì vào công việc:`,
                 </div>
             )}
             {courseData.length > 0 && (
-                <div className="w-9/12 relative">
-                    <div className="flex">
-                        <textarea
-                            type="text"
-                            className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block"
-                            style={{
-                                border: "none",
-                                outline: "none",
-                                padding: "40px 40px 0px 40px",
-                                borderRadius: "0px 16px 16px 0px",
-                                fontWeight: "700",
-                                fontSize: "24px",
-                                resize: "none"
-                            }}
-                            value={inputValue}
-                            onChange={handleInputChange}
-                        />
-                        <div className="relative cursor-pointer">
-                            <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
+                <div className="w-9/12 relative w-full">
+                    <div className="overflow-y-auto">
+                        <div className="flex pb-4 w-full">
+                     <textarea
+                         className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block w-full"
+                         style={{
+                             border: "none",
+                             outline: "none",
+                             padding: "40px 40px 0px 40px",
+                             borderRadius: "0px 16px 16px 0px",
+                             fontWeight: "700",
+                             fontSize: "24px",
+                             resize: "none",
+                         }}
+                         // rows={1} // start with one row
+                         value={inputValue}
+                         onChange={handleInputChange}
+                         onKeyDown={(event) => {
+                             if (event.keyCode === 13) {
+                                 event.preventDefault(); // prevent line breaks
+                             }
+                         }}
+                     />
+                            <div className="relative cursor-pointer">
+                                <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
+                            </div>
                         </div>
+                        <textarea type="text"
+                                  className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
+                                  style={{
+                                      border: "none",
+                                      outline: "none",
+                                      padding: "0px 40px 0px 40px",
+                                      borderRadius: "0px 16px 16px 0px",
+                                      resize: "none"
+                                  }}
+                                  value={noteData}
+                                  onChange={handleInputChangeBody}
+                        />
                     </div>
-                    <textarea type="text"
-                              className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
-                              style={{
-                                  border: "none",
-                                  outline: "none",
-                                  padding: "0px 40px 0px 40px",
-                                  borderRadius: "0px 16px 16px 0px",
-                                  resize: "none"
-                              }}
-                              value={noteData}
-                              onChange={handleInputChangeBody}
-                    />
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
                         <select

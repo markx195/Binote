@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useRef} from "react"
+import React, {useState, useEffect, useCallback} from "react"
 import axios from "axios"
 import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
@@ -94,9 +94,9 @@ const CourseCard = () => {
 
     return (<>
             <RecentlyCourses></RecentlyCourses>
-            <div className="border border-solid border-[#D5D5D5] max-w-[1300px] mx-auto"></div>
+            <div className="border border-solid border-[#D5D5D5] mx-[5%]"></div>
             {/*Course catalog*/}
-            <div className="flex flex-wrap pt-10 pb-6 gap-4 max-w-[1300px] mx-auto">
+            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[5%] mx-auto">
                 <button
                     onClick={() => handleButtonClick()}
                     className={`h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528] ${
@@ -115,7 +115,7 @@ const CourseCard = () => {
                 ))}
             </div>
             {/*Searching*/}
-            <div className="max-w-[1300px] mx-auto w-full">
+            <div className="px-[5%] mx-auto w-full">
                 <div className="relative flex">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <SearchIcon className="text-gray-400"/>
@@ -131,7 +131,7 @@ const CourseCard = () => {
             {/*Courses*/}
             <div>
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 max-w-[1300px] mx-auto'>
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto'>
                     {dataSource?.map((item, index) => (
                         <div
                             key={index}

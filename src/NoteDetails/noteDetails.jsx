@@ -12,10 +12,19 @@ const NoteDetails = () => {
     const [isCancelled, setIsCancelled] = useState(false);
 
     const handleAddItem = newItem => {
+        // Add the new item to the list of notes first
+        setCourseData(prevData => ({
+            ...prevData,
+            notes: [newItem, ...prevData.notes],
+        }));
+        // Send a request to the API to add the new item
         fetch('https://binote-api.biplus.com.vn/items/note', {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json', Authorization: `Bearer ${storedAccessToken}`
-            }, body: JSON.stringify(newItem)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${storedAccessToken}`,
+            },
+            body: JSON.stringify(newItem),
         })
             .then(response => {
                 if (response.ok) {
@@ -25,14 +34,22 @@ const NoteDetails = () => {
                 }
             })
             .then(data => {
-                setCourseData((prevData) => ({
-                    ...prevData, notes: [data.data, ...prevData.notes],
+                // Update the list of notes in state with the new item returned by the API
+                setCourseData(prevData => ({
+                    ...prevData,
+                    notes: [data.data, ...prevData.notes.filter(item => item.id !== newItem.id)],
                 }));
             })
             .catch(error => {
                 console.error('Failed to add item:', error);
+                // If there is an error, remove the new item from the list of notes
+                setCourseData(prevData => ({
+                    ...prevData,
+                    notes: prevData.notes.filter(item => item.id !== newItem.id),
+                }));
             });
     };
+
     const handleDeleteItem = id => {
         fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
             method: 'DELETE'
@@ -50,7 +67,6 @@ const NoteDetails = () => {
                 console.error('Failed to delete item:', error);
             });
     };
-
 
     function formatString(str) {
         if (str == null) {
