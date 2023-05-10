@@ -232,29 +232,28 @@ Tôi có thể áp dụng gì vào công việc:`,
                 </div>
             )}
             {courseData.length > 0 && (
-                <div className="w-9/12 relative w-full">
+                <div className="w-9/12 relative">
                     <div className="overflow-y-auto">
                         <div className="flex pb-4 w-full">
-                     <textarea
-                         className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block w-full"
-                         style={{
-                             border: "none",
-                             outline: "none",
-                             padding: "40px 40px 0px 40px",
-                             borderRadius: "0px 16px 16px 0px",
-                             fontWeight: "700",
-                             fontSize: "24px",
-                             resize: "none",
-                         }}
-                         // rows={1} // start with one row
-                         value={inputValue}
-                         onChange={handleInputChange}
-                         onKeyDown={(event) => {
-                             if (event.keyCode === 13) {
-                                 event.preventDefault(); // prevent line breaks
-                             }
-                         }}
-                     />
+                            <textarea
+                                className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block"
+                                style={{
+                                    border: "none",
+                                    outline: "none",
+                                    padding: "40px 40px 0px 40px",
+                                    borderRadius: "0px 16px 16px 0px",
+                                    fontWeight: "700",
+                                    fontSize: "24px",
+                                    resize: "none"
+                                }}
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                onKeyDown={(event) => {
+                                    if (event.keyCode === 13) {
+                                        event.preventDefault(); // prevent line breaks
+                                    }
+                                }}
+                            />
                             <div className="relative cursor-pointer">
                                 <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                             </div>
