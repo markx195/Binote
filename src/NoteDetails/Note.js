@@ -55,16 +55,20 @@ Tôi có thể áp dụng gì vào công việc:`,
             return `Vừa xong`;
         } else if (diffInSeconds < 3600) {
             const diffInMinutes = Math.floor(diffInSeconds / 60);
-            return `${diffInMinutes}phút trước`;
+            return `${diffInMinutes}` + " " + "phút trước";
         } else if (diffInSeconds < 86400) {
             const diffInHours = Math.floor(diffInSeconds / 3600);
-            return `${diffInHours}giờ trước`;
+            return `${diffInHours}` + " " + "giờ trước";
         } else if (diffInSeconds < 2592000) {
             const diffInDays = Math.floor(diffInSeconds / 86400);
-            return `${diffInDays}ngày trước`;
+            return `${diffInDays}` + " " + "ngày trước";
         } else {
             const diffInMonths = Math.floor(diffInSeconds / 2592000);
-            return `${diffInMonths}tháng trước`;
+            if (!isNaN(diffInMonths)) {
+                return `${diffInMonths}` + " " + "tháng trước";
+            } else {
+                return `Vừa xong`;
+            }
         }
     }, [])
 
