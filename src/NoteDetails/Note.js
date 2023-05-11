@@ -131,37 +131,77 @@ Tôi có thể áp dụng gì vào công việc:`,
         // Clear previous timeout
         clearTimeout(timeoutId);
 
+        // Update items state with the new value
+        const updatedItems = [...items];
+        const updatedItemIndex = updatedItems.findIndex(
+            (item) => item.id === selectedItemId
+        );
+        updatedItems[updatedItemIndex][key] = value;
+        setItems(updatedItems);
+
+        // Send API request to update item if value has changed
+        if (value && value !== items[updatedItemIndex][key]) {
+            fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
+                method: "PATCH",
+                body: JSON.stringify({ [key]: value }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${storedAccessToken}`,
+                },
+            })
+                .then((response) => {
+                    // Handle response if necessary
+                })
+                .catch((error) => {
+                    // Handle error if necessary
+                });
+        }
+
         // Set a new timeout for 3 seconds
         const newTimeoutId = setTimeout(() => {
-            if (value) {
-                // Make PATCH API call to update item with selectedItemId
-                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
-                    method: "PATCH", // Update method to PATCH
-                    // Update body with content as note key or inputValue as title key
-                    body: JSON.stringify({[key]: value}),
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${storedAccessToken}`,
-                    },
-                })
-                    .then((response) => {
-                        // Handle response
-                        const updatedItems = [...items]; // Create a copy of items array
-                        const updatedItemIndex = updatedItems.findIndex(
-                            (item) => item.id === selectedItemId
-                        ); // Find the index of the updated item
-                        updatedItems[updatedItemIndex][key] = value; // Update the key of the item with the new value
-                        setItems(updatedItems);
-                    })
-                    .catch((error) => {
-                        // Handle error
-                    });
-            }
-        }, 3000); // 3 seconds
+            // Clear items state after 3 seconds to remove the temporary change
+            setItems(items);
+        }, 3000);
 
         // Update the timeoutId state with the new timeout id
         setTimeoutId(newTimeoutId);
     };
+
+    // const handleUpdate = (key, value) => {
+    //     // Clear previous timeout
+    //     clearTimeout(timeoutId);
+    //
+    //     // Set a new timeout for 3 seconds
+    //     const newTimeoutId = setTimeout(() => {
+    //         if (value) {
+    //             // Make PATCH API call to update item with selectedItemId
+    //             fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
+    //                 method: "PATCH", // Update method to PATCH
+    //                 // Update body with content as note key or inputValue as title key
+    //                 body: JSON.stringify({[key]: value}),
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     Authorization: `Bearer ${storedAccessToken}`,
+    //                 },
+    //             })
+    //                 .then((response) => {
+    //                     // Handle response
+    //                     const updatedItems = [...items]; // Create a copy of items array
+    //                     const updatedItemIndex = updatedItems.findIndex(
+    //                         (item) => item.id === selectedItemId
+    //                     ); // Find the index of the updated item
+    //                     updatedItems[updatedItemIndex][key] = value; // Update the key of the item with the new value
+    //                     setItems(updatedItems);
+    //                 })
+    //                 .catch((error) => {
+    //                     // Handle error
+    //                 });
+    //         }
+    //     }, 3000); // 3 seconds
+    //
+    //     // Update the timeoutId state with the new timeout id
+    //     setTimeoutId(newTimeoutId);
+    // };
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
