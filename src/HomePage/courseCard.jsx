@@ -8,13 +8,13 @@ import {useNavigate} from "react-router-dom"
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const CourseCard = () => {
-    const LIMIT_DATA = 8;
+    const LIMIT_DATA = 999;
     const navigate = useNavigate()
     const [dataSource, setDataSource] = useState([])
     const [page, setPage] = useState(1);
+    const [hasMoreItems, setHasMoreItems] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [courses, setCourses] = useState([]);
-    const [hasMoreItems, setHasMoreItems] = useState(true);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
     const fetchData = useCallback(
@@ -59,12 +59,6 @@ const CourseCard = () => {
         fetchData(0);
     }, []);
 
-    const handleLoadMore = () => {
-        if (hasMoreItems) {
-            setPage(prevPage => prevPage + 1);
-        }
-    };
-
     useEffect(() => {
         // Debounce the API call to reduce the number of requests during rapid input changes
         const debounceTimer = setTimeout(() => {
@@ -100,9 +94,9 @@ const CourseCard = () => {
 
     return (<>
             <RecentlyCourses></RecentlyCourses>
-            <div className="border border-solid border-[#D5D5D5] max-w-[1300px] mx-auto"></div>
+            <div className="border border-solid border-[#D5D5D5] mx-[5%]"></div>
             {/*Course catalog*/}
-            <div className="flex flex-wrap pt-10 pb-6 gap-4 max-w-[1300px] mx-auto">
+            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[5%] mx-auto">
                 <button
                     onClick={() => handleButtonClick()}
                     className={`h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528] ${
@@ -121,7 +115,7 @@ const CourseCard = () => {
                 ))}
             </div>
             {/*Searching*/}
-            <div className="max-w-[1300px] mx-auto w-full">
+            <div className="px-[5%] mx-auto w-full">
                 <div className="relative flex">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <SearchIcon className="text-gray-400"/>
@@ -137,11 +131,11 @@ const CourseCard = () => {
             {/*Courses*/}
             <div>
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 max-w-[1300px] mx-auto'>
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto'>
                     {dataSource?.map((item, index) => (
                         <div
                             key={index}
-                            className='border shadow-lg rounded-lg hover:scale-105 duration-300'
+                            className='border shadow-md rounded-lg hover:scale-105 duration-300'
                             onClick={() => handleNoteDetails(item.id)}
                         >
                             <div className="p-4">
@@ -157,14 +151,14 @@ const CourseCard = () => {
                             </p>
                             <div className="px-4 pb-4">
                                 <a
-                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md shadow-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
+                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
                                     href={item?.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >Đi tới khóa học
                                 </a>
                             </div>
-                            <div className='flex justify-between px-4 pt-4'>
+                            <div className='flex justify-between px-4 pb-4'>
                                 <p className="inline-flex items-center">
                                     <StickyNote2Icon></StickyNote2Icon>
                                     <span className='p-1'>
@@ -174,11 +168,6 @@ const CourseCard = () => {
                             </div>
                         </div>
                     ))}
-                </div>
-                <div className="pb-14">
-                    {hasMoreItems && (
-                        <button onClick={handleLoadMore}>Load More</button>
-                    )}
                 </div>
             </div>
         </>
