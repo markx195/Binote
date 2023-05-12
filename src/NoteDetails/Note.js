@@ -8,6 +8,8 @@ import '../App.css'
 import AlarmIcon from '@mui/icons-material/Alarm';
 import InfoIcon from '@mui/icons-material/Info';
 import ContentEditable from 'react-contenteditable';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -22,7 +24,6 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [timeoutId, setTimeoutId] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
-
     const [noteData, setNoteData] = useState("")
 
     useEffect(() => {
@@ -143,7 +144,7 @@ Tôi có thể áp dụng gì vào công việc:`,
         if (value && value !== items[updatedItemIndex][key]) {
             fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
                 method: "PATCH",
-                body: JSON.stringify({ [key]: value }),
+                body: JSON.stringify({[key]: value}),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${storedAccessToken}`,
@@ -167,42 +168,6 @@ Tôi có thể áp dụng gì vào công việc:`,
         setTimeoutId(newTimeoutId);
     };
 
-    // const handleUpdate = (key, value) => {
-    //     // Clear previous timeout
-    //     clearTimeout(timeoutId);
-    //
-    //     // Set a new timeout for 3 seconds
-    //     const newTimeoutId = setTimeout(() => {
-    //         if (value) {
-    //             // Make PATCH API call to update item with selectedItemId
-    //             fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
-    //                 method: "PATCH", // Update method to PATCH
-    //                 // Update body with content as note key or inputValue as title key
-    //                 body: JSON.stringify({[key]: value}),
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     Authorization: `Bearer ${storedAccessToken}`,
-    //                 },
-    //             })
-    //                 .then((response) => {
-    //                     // Handle response
-    //                     const updatedItems = [...items]; // Create a copy of items array
-    //                     const updatedItemIndex = updatedItems.findIndex(
-    //                         (item) => item.id === selectedItemId
-    //                     ); // Find the index of the updated item
-    //                     updatedItems[updatedItemIndex][key] = value; // Update the key of the item with the new value
-    //                     setItems(updatedItems);
-    //                 })
-    //                 .catch((error) => {
-    //                     // Handle error
-    //                 });
-    //         }
-    //     }, 3000); // 3 seconds
-    //
-    //     // Update the timeoutId state with the new timeout id
-    //     setTimeoutId(newTimeoutId);
-    // };
-
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
         setInputValue(inputValue);
@@ -219,6 +184,9 @@ Tôi có thể áp dụng gì vào công việc:`,
         setIsCancelled(false);
         setIsVisible(true);
     }
+
+    const [checkDelete, setCheckDelete] = useState(null);
+
     return (
         <>
             <div
@@ -259,8 +227,21 @@ Tôi có thể áp dụng gì vào công việc:`,
                                     className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
                                 </div>
                                 <div className="group-hover:block hidden">
-                                    <DeleteIcon fontSize="small" sx={{color: grey[100]}}
-                                                onClick={() => handleDeleteItem(item.id)}/>
+                                    {checkDelete === item.id ? (
+                                        <>
+                                            <CheckIcon fontSize="small" sx={{color: '#A4EA7A'}}
+                                                       onClick={() => handleDeleteItem(item.id)}/>
+                                            |
+                                            <CloseIcon fontSize="small" sx={{color: '#EA7A7A'}}
+                                                       onClick={() => setCheckDelete(null)}/>
+                                        </>
+                                    ) : (
+                                        <DeleteIcon fontSize="small" sx={{color: grey[100]}}
+                                                    onClick={() => setCheckDelete(item.id)}/>
+                                    )}
+
+                                    {/*<DeleteIcon fontSize="small" sx={{color: grey[100]}}*/}
+                                    {/*            onClick={() => handleDeleteItem(item.id)}/>*/}
                                 </div>
                             </div>
                         </div>

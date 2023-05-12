@@ -51,20 +51,28 @@ const NoteDetails = () => {
     };
 
     const handleDeleteItem = id => {
+        // Update the UI first
+        setCourseData(prevData => ({
+            ...prevData,
+            notes: prevData.notes.filter(item => item.id !== id),
+        }));
+
+        // Send the DELETE request to the server
         fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
         })
             .then(response => {
-                if (response.ok) {
-                    setCourseData((prevData) => ({
-                        ...prevData, notes: prevData.notes.filter((item) => item.id !== id),
-                    }));
-                } else {
+                if (!response.ok) {
                     throw new Error('Failed to delete item');
                 }
             })
             .catch(error => {
                 console.error('Failed to delete item:', error);
+                // If the request fails, revert the UI back to the original state
+                setCourseData(prevData => ({
+                    ...prevData,
+                    notes: [...prevData.notes, { id }], // Add the deleted item back
+                }));
             });
     };
 
