@@ -1,0 +1,18 @@
+/* Override default */
+.Draftail-Toolbar {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Override default */
+.Draftail-Editor {
+    border: none !important;
+    padding: 0px 40px 0px 40px;
+    /*width: 60% !important;*/
+    /*margin-left: auto !important;*/
+    /*margin-right: auto !important;*/
+}
+
+.Draftail-Editor .public-DraftEditor-content, .Draftail-Editor .public-DraftEditorPlaceholder-root{
+    padding: unset !important;
+}

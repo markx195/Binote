@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import DraftJS from "../RichText/Draft"
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -286,18 +287,19 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                             </div>
                         </div>
-                        <textarea type="text"
-                                  className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
-                                  style={{
-                                      border: "none",
-                                      outline: "none",
-                                      padding: "0px 40px 0px 40px",
-                                      borderRadius: "0px 16px 16px 0px",
-                                      resize: "none"
-                                  }}
-                                  value={noteData}
-                                  onChange={handleInputChangeBody}
-                        />
+                        {/*<textarea type="text"*/}
+                        {/*          className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"*/}
+                        {/*          style={{*/}
+                        {/*              border: "none",*/}
+                        {/*              outline: "none",*/}
+                        {/*              padding: "0px 40px 0px 40px",*/}
+                        {/*              borderRadius: "0px 16px 16px 0px",*/}
+                        {/*              resize: "none"*/}
+                        {/*          }}*/}
+                        {/*          value={noteData}*/}
+                        {/*          onChange={handleInputChangeBody}*/}
+                        {/*/>*/}
+                        <DraftJS  className="w-full px-8 py-2 rounded-r-md h-[50vh]"/>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
