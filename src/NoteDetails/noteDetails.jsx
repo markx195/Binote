@@ -60,6 +60,10 @@ const NoteDetails = () => {
         // Send the DELETE request to the server
         fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${storedAccessToken}`,
+            },
         })
             .then(response => {
                 if (!response.ok) {
@@ -71,7 +75,7 @@ const NoteDetails = () => {
                 // If the request fails, revert the UI back to the original state
                 setCourseData(prevData => ({
                     ...prevData,
-                    notes: [...prevData.notes, { id }], // Add the deleted item back
+                    notes: [...prevData.notes, {id}], // Add the deleted item back
                 }));
             });
     };
