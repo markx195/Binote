@@ -41,7 +41,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
         const newItem = {
             title: 'Tiêu đề',
             note: `Tôi đã học được gì:
-            
+ 
 Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };
@@ -195,6 +195,11 @@ Tôi có thể áp dụng gì vào công việc:`,
 
     const [checkDelete, setCheckDelete] = useState(null);
 
+    const pasteAsPlainText = (event) => {
+        event.preventDefault();
+        const text = event.clipboardData.getData('text/plain');
+        document.execCommand('insertHTML', false, text);
+    };
     return (
         <>
             <div
@@ -269,6 +274,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                     <div className="overflow-y-auto h-[70vh]" id="hideScroll">
                         <div className="flex pb-4 w-full">
                             <ContentEditable
+                                onPaste={pasteAsPlainText}
                                 html={inputValue}
                                 onChange={handleInputChange}
                                 className="font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md block h-full text-left"
