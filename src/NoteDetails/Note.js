@@ -174,6 +174,14 @@ Tôi có thể áp dụng gì vào công việc:`,
         handleUpdate("title", inputValue);
     };
 
+    function replaceSpecialCharacters(str) {
+        return str
+            .replace(/&nbsp;/g, '')
+            .replace(/&amp;/g, '&')
+            .replace(/&gt;/g, '>')
+            .replace(/&lt;/g, '<');
+    }
+
     const handleInputChangeBody = (e) => {
         const inputValue = e.target.value;
         setNoteData(inputValue);
@@ -221,7 +229,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                              onClick={() => handleItemClick(item)}
                              className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''} p-6 text-left group`}
                         >
-                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{item.title}</div>
+                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
                             <div className="flex justify-between">
                                 <div
                                     className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
