@@ -237,10 +237,9 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 <div className="group-hover:block hidden">
                                     {checkDelete === item.id ? (
                                         <>
-                                            <CheckIcon fontSize="small" sx={{color: '#A4EA7A'}}
+                                            <CheckIcon fontSize="small" sx={{color: grey[100]}}
                                                        onClick={() => handleDeleteItem(item.id)}/>
-                                            |
-                                            <CloseIcon fontSize="small" sx={{color: '#EA7A7A'}}
+                                            <CloseIcon fontSize="small" sx={{color: grey[100]}}
                                                        onClick={() => setCheckDelete(null)}/>
                                         </>
                                     ) : (
