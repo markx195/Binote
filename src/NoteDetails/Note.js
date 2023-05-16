@@ -11,6 +11,7 @@ import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DraftJS from "../RichText/Draft"
+import debounce from "lodash/debounce";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -129,23 +130,19 @@ Tôi có thể áp dụng gì vào công việc:`,
         }
     };
 
-    const handleUpdate = (key, value) => {
-        // Clear previous timeout
-        clearTimeout(timeoutId);
+    const handleUpdate = useCallback(
+        debounce((key, value) => {
+            // Update items state with the new value
+            const updatedItems = [...items];
+            const updatedItemIndex = updatedItems.findIndex(
+                (item) => item.id === selectedItemId
+            );
+            updatedItems[updatedItemIndex][key] = value;
+            setItems(updatedItems);
 
-        // Update items state with the new value
-        const updatedItems = [...items];
-        const updatedItemIndex = updatedItems.findIndex(
-            (item) => item.id === selectedItemId
-        );
-        updatedItems[updatedItemIndex][key] = value;
-        setItems(updatedItems);
-
-        // Send API request to update item if value has changed
-        if (value && value !== items[updatedItemIndex][key]) {
             fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
                 method: "PATCH",
-                body: JSON.stringify({[key]: value}),
+                body: JSON.stringify({ [key]: value }),
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${storedAccessToken}`,
@@ -157,17 +154,9 @@ Tôi có thể áp dụng gì vào công việc:`,
                 .catch((error) => {
                     // Handle error if necessary
                 });
-        }
-
-        // Set a new timeout for 3 seconds
-        const newTimeoutId = setTimeout(() => {
-            // Clear items state after 3 seconds to remove the temporary change
-            setItems(items);
-        }, 3000);
-
-        // Update the timeoutId state with the new timeout id
-        setTimeoutId(newTimeoutId);
-    };
+        }, 1000),
+        [items, selectedItemId, storedAccessToken]
+    );
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
@@ -193,7 +182,7 @@ Tôi có thể áp dụng gì vào công việc:`,
         const plainText = editorState.getCurrentContent().getPlainText('\u0001');
         console.log(plainText)
         setNoteData(plainText);
-        handleUpdate("note", plainText);
+        // handleUpdate("note", plainText);
     }
 
     const handleInfoAction = () => {
