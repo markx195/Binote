@@ -90,14 +90,11 @@ class CustomInlineToolbarEditor extends Component {
         }
     }
 
-    onChange = editorState => {
-        const hehe = editorState.getCurrentContent().getPlainText('\u0001')
-        console.log(hehe)
-
-        this.setState({
-            editorState
-        })
-    }
+    onChange = (editorState) => {
+        this.setState({ editorState });
+        // Call the onChange function passed from the parent component
+        this.props.onChange(editorState);
+    };
 
     focus = () => {
         this.editor.focus()

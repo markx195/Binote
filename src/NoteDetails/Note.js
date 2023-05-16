@@ -42,7 +42,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
         const newItem = {
             title: 'Tiêu đề',
             note: `Tôi đã học được gì:
-            
+ 
 Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };
@@ -189,6 +189,13 @@ Tôi có thể áp dụng gì vào công việc:`,
         handleUpdate("note", inputValue);
     };
 
+    const handleEditorChange = (editorState) => {
+        const plainText = editorState.getCurrentContent().getPlainText('\u0001');
+        console.log(plainText)
+        setNoteData(plainText);
+        handleUpdate("note", plainText);
+    }
+
     const handleInfoAction = () => {
         setIsCancelled(false);
         setIsVisible(true);
@@ -300,7 +307,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         {/*          value={noteData}*/}
                         {/*          onChange={handleInputChangeBody}*/}
                         {/*/>*/}
-                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh]" value={noteData}/>
+                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh]" value={noteData} onChange={handleEditorChange}/>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
