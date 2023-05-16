@@ -1,18 +1,33 @@
-/* Override default */
-.Draftail-Toolbar {
-    background: transparent !important;
-    border: none !important;
+.editor {
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    cursor: text;
+    padding: 0 40px 0px 40px;
+    margin-bottom: 2em;
+    box-shadow: inset 0px 1px 8px -3px #ABABAB;
+    background: #fefefe;
 }
 
-/* Override default */
-.Draftail-Editor {
-    border: none !important;
-    padding: 0px 40px 0px 40px;
-    /*width: 60% !important;*/
-    /*margin-left: auto !important;*/
-    /*margin-right: auto !important;*/
+.editor :global(.public-DraftEditor-content) {
+    min-height: 140px;
 }
 
-.Draftail-Editor .public-DraftEditor-content, .Draftail-Editor .public-DraftEditorPlaceholder-root{
-    padding: unset !important;
+.headlineButtonWrapper {
+    display: inline-block;
+}
+
+.headlineButton {
+    background: #fbfbfb;
+    color: #888;
+    font-size: 18px;
+    border: 0;
+    padding-top: 5px;
+    vertical-align: bottom;
+    height: 34px;
+    width: 36px;
+}
+
+.headlineButton:hover,
+.headlineButton:focus {
+    background: #f3f3f3;
 }

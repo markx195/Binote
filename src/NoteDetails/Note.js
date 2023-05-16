@@ -230,7 +230,8 @@ Tôi có thể áp dụng gì vào công việc:`,
                              onClick={() => handleItemClick(item)}
                              className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''} p-6 text-left group`}
                         >
-                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
+                            <div
+                                className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
                             <div className="flex justify-between">
                                 <div
                                     className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
@@ -299,7 +300,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         {/*          value={noteData}*/}
                         {/*          onChange={handleInputChangeBody}*/}
                         {/*/>*/}
-                        <DraftJS  className="w-full px-8 py-2 rounded-r-md h-[50vh]"/>
+                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh]" value={noteData}/>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
