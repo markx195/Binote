@@ -11,6 +11,7 @@ import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DraftJS from "../RichText/Draft"
+import RichText from "../RichText/RichText"
 import debounce from "lodash/debounce";
 
 const storedAccessToken = localStorage.getItem('accessToken');
@@ -174,16 +175,9 @@ Tôi có thể áp dụng gì vào công việc:`,
             .replace(/&lt;/g, '<');
     }
 
-    const handleInputChangeBody = (e) => {
-        const inputValue = e.target.value;
-        setNoteData(inputValue);
-        handleUpdate("note", inputValue);
-    };
-
     const handleEditorChange = (editorState) => {
-        const plainText = editorState.getCurrentContent().getPlainText('\u0001');
-        console.log(plainText)
-        // setNoteData(plainText);
+        console.log(editorState)
+        // setNoteData(editorState);
         // handleUpdate("note", plainText);
     }
 
@@ -286,8 +280,9 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                             </div>
                         </div>
-                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh] text-left" value={noteData}
-                                 onChange={handleEditorChange}/>
+                        {/*<DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh] text-left" value={noteData}*/}
+                        {/*         onChange={handleEditorChange}/>*/}
+                        <RichText value={noteData} onChange={handleEditorChange}></RichText>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
