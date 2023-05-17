@@ -14,7 +14,7 @@ import {
     UnorderedListButton,
     OrderedListButton,
     BlockquoteButton,
-    CodeBlockButton
+    // CodeBlockButton
 } from "@draft-js-plugins/buttons"
 import "./draft.css"
 
@@ -125,7 +125,7 @@ class CustomInlineToolbarEditor extends Component {
                                 <UnorderedListButton {...externalProps} />
                                 <OrderedListButton {...externalProps} />
                                 <BlockquoteButton {...externalProps} />
-                                <CodeBlockButton {...externalProps} />
+                                {/*<CodeBlockButton {...externalProps} />*/}
                             </div>
                         )}
                 </InlineToolbar>

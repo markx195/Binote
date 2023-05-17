@@ -137,23 +137,25 @@ Tôi có thể áp dụng gì vào công việc:`,
             const updatedItemIndex = updatedItems.findIndex(
                 (item) => item.id === selectedItemId
             );
-            updatedItems[updatedItemIndex][key] = value;
-            setItems(updatedItems);
+            if (updatedItemIndex !== -1) {
+                updatedItems[updatedItemIndex][key] = value;
+                setItems(updatedItems);
 
-            fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
-                method: "PATCH",
-                body: JSON.stringify({ [key]: value }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedAccessToken}`,
-                },
-            })
-                .then((response) => {
-                    // Handle response if necessary
+                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({[key]: value}),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedAccessToken}`,
+                    },
                 })
-                .catch((error) => {
-                    // Handle error if necessary
-                });
+                    .then((response) => {
+                        // Handle response if necessary
+                    })
+                    .catch((error) => {
+                        // Handle error if necessary
+                    });
+            }
         }, 1000),
         [items, selectedItemId, storedAccessToken]
     );
@@ -181,7 +183,7 @@ Tôi có thể áp dụng gì vào công việc:`,
     const handleEditorChange = (editorState) => {
         const plainText = editorState.getCurrentContent().getPlainText('\u0001');
         console.log(plainText)
-        setNoteData(plainText);
+        // setNoteData(plainText);
         // handleUpdate("note", plainText);
     }
 
@@ -284,19 +286,8 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
                             </div>
                         </div>
-                        {/*<textarea type="text"*/}
-                        {/*          className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"*/}
-                        {/*          style={{*/}
-                        {/*              border: "none",*/}
-                        {/*              outline: "none",*/}
-                        {/*              padding: "0px 40px 0px 40px",*/}
-                        {/*              borderRadius: "0px 16px 16px 0px",*/}
-                        {/*              resize: "none"*/}
-                        {/*          }}*/}
-                        {/*          value={noteData}*/}
-                        {/*          onChange={handleInputChangeBody}*/}
-                        {/*/>*/}
-                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh]" value={noteData} onChange={handleEditorChange}/>
+                        <DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh] text-left" value={noteData}
+                                 onChange={handleEditorChange}/>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>
