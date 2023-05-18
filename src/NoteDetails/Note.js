@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import debounce from "lodash/debounce";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -128,45 +129,35 @@ Tôi có thể áp dụng gì vào công việc:`,
         }
     };
 
-    const handleUpdate = (key, value) => {
-        // Clear previous timeout
-        clearTimeout(timeoutId);
+    const handleUpdate = useCallback(
+        debounce((key, value) => {
+            // Update items state with the new value
+            const updatedItems = [...items];
+            const updatedItemIndex = updatedItems.findIndex(
+                (item) => item.id === selectedItemId
+            );
+            if (updatedItemIndex !== -1) {
+                updatedItems[updatedItemIndex][key] = value;
+                setItems(updatedItems);
 
-        // Update items state with the new value
-        const updatedItems = [...items];
-        const updatedItemIndex = updatedItems.findIndex(
-            (item) => item.id === selectedItemId
-        );
-        updatedItems[updatedItemIndex][key] = value;
-        setItems(updatedItems);
-
-        // Send API request to update item if value has changed
-        if (value && value !== items[updatedItemIndex][key]) {
-            fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
-                method: "PATCH",
-                body: JSON.stringify({[key]: value}),
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedAccessToken}`,
-                },
-            })
-                .then((response) => {
-                    // Handle response if necessary
+                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({[key]: value}),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${storedAccessToken}`,
+                    },
                 })
-                .catch((error) => {
-                    // Handle error if necessary
-                });
-        }
-
-        // Set a new timeout for 3 seconds
-        const newTimeoutId = setTimeout(() => {
-            // Clear items state after 3 seconds to remove the temporary change
-            setItems(items);
-        }, 3000);
-
-        // Update the timeoutId state with the new timeout id
-        setTimeoutId(newTimeoutId);
-    };
+                    .then((response) => {
+                        // Handle response if necessary
+                    })
+                    .catch((error) => {
+                        // Handle error if necessary
+                    });
+            }
+        }, 1000),
+        [items, selectedItemId, storedAccessToken]
+    );
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
@@ -229,7 +220,8 @@ Tôi có thể áp dụng gì vào công việc:`,
                              onClick={() => handleItemClick(item)}
                              className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''} p-6 text-left group`}
                         >
-                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
+                            <div
+                                className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
                             <div className="flex justify-between">
                                 <div
                                     className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
