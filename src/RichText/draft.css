@@ -34,12 +34,6 @@
 
 /*///////////////////////////////////////////////////////////////////////////////////*/
 
-.App {
-    font-family: sans-serif;
-    text-align: center;
-    display: block;
-}
-
 /* Override default */
 .Draftail-Toolbar {
     background: transparent !important;
@@ -53,16 +47,6 @@
     margin-top: 100px !important;
     margin-left: auto !important;
     margin-right: auto !important;
-}
-
-/* Override default */
-.public-DraftEditor-content {
-    font-family: Georgia, "Times New Roman", Times, serif !important;
-}
-
-/* Override default */
-.public-DraftEditorPlaceholder-inner {
-    font-family: Georgia, "Times New Roman", Times, serif !important;
 }
 
 h2 {

@@ -10,9 +10,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import DraftJS from "../RichText/Draft"
 import RichText from "../RichText/RichText"
 import debounce from "lodash/debounce";
+import {convertToRaw} from "draft-js";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -43,9 +43,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
     const handleAddItem = () => {
         const newItem = {
             title: 'Tiêu đề',
-            note: `Tôi đã học được gì:
- 
-Tôi có thể áp dụng gì vào công việc:`,
+            note: ``,
             course_id: parseInt(idNoted)
         };
         onAddItem(newItem);
@@ -176,9 +174,10 @@ Tôi có thể áp dụng gì vào công việc:`,
     }
 
     const handleEditorChange = (editorState) => {
-        console.log(editorState)
-        // setNoteData(editorState);
-        // handleUpdate("note", plainText);
+        const contentState = editorState.getCurrentContent();
+        const text = contentState.getPlainText();
+        setNoteData(text);
+        handleUpdate("note", text);
     }
 
     const handleInfoAction = () => {
@@ -282,7 +281,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         </div>
                         {/*<DraftJS className="w-[200px] px-8 py-2 rounded-r-md h-[50vh] text-left" value={noteData}*/}
                         {/*         onChange={handleEditorChange}/>*/}
-                        <RichText value={noteData} onChange={handleEditorChange}></RichText>
+                        <RichText className="text-left" value={noteData} onChange={handleEditorChange}></RichText>
                     </div>
                     <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
                         <AlarmIcon/>

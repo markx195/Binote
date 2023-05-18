@@ -28,7 +28,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const { value } = this.props;
+        const {value} = this.props;
         if (value) {
             const contentState = convertFromRaw(JSON.parse(value));
             this.setState({
@@ -38,7 +38,7 @@ class App extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { value } = this.props;
+        const {value} = this.props;
         if (value !== prevProps.value) {
             const contentState = convertFromRaw(JSON.parse(value));
             this.setState({
@@ -48,20 +48,13 @@ class App extends React.Component {
     }
 
     changeState(editorState) {
-        this.setState({ editorState }, () => {
-            const { onChange } = this.props;
+        this.setState({editorState}, () => {
+            const {onChange} = this.props;
             const contentState = this.state.editorState.getCurrentContent();
             const serializedContent = JSON.stringify(convertToRaw(contentState));
             onChange(serializedContent);
         });
     }
-
-    // changeState(state) {
-    //     console.log(state)
-    //     this.setState({
-    //         editorState: state,
-    //     });
-    // }
 
     render() {
         return (
