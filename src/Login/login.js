@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import '../App.css';
 import "./login.css"
@@ -18,39 +18,6 @@ const LoginForm = () => {
         height: "100%",
         margin: "0 auto",
     };
-
-    const getCookie = (name) => {
-        const cookies = document.cookie.split('; ');
-
-        for (let i = 0; i < cookies.length; i++) {
-            const [cookieName, cookieValue] = cookies[i].split('=');
-
-            if (cookieName === name) {
-                return cookieValue;
-            }
-        }
-
-        return null; // Cookie not found
-    };
-    const cookieValue = getCookie('directus_refresh_token');
-    console.log(cookieValue)
-
-    useEffect(() => {
-        const getCookieValue = (name) => {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.startsWith(`${name}=`)) {
-                    const [, value] = cookie.split('=');
-                    return decodeURIComponent(value);
-                }
-            }
-            return '';
-        };
-
-        const myCookieValue = getCookieValue('directus_refresh_token');
-        console.log('Cookie Value:', myCookieValue);
-    }, [])
 
     // Function to handle form submission
     const handleSubmit = async (e) => {
@@ -92,6 +59,27 @@ const LoginForm = () => {
         }
     };
 
+    const handleLogin = async () => {
+        // Perform login logic with your API
+        try {
+            await fetch('https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000', {
+                method: 'GET',
+            });
+
+            // If login is successful, refresh Directus tokens
+            await fetch('https://localhost:3000/auth/refresh', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            // Navigate to HomePage
+            navigate('/HomePage');
+        } catch (error) {
+            console.error('Login failed', error);
+        }
+    };
+
+
     return (
         <>
             <div style={containerStyles} className="">
@@ -102,16 +90,17 @@ const LoginForm = () => {
 
                 <div className="login-page">
                     <div className="form rounded-2xl">
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="email"
-                                placeholder="Nhập Gmail"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <button type="submit">Login</button>
-                        </form>
-                        {errorMessage && <p>{errorMessage}</p>}
+                        <button onClick={handleLogin}>Login</button>
+                        {/*<form onSubmit={handleSubmit}>*/}
+                        {/*    <input*/}
+                        {/*        type="email"*/}
+                        {/*        placeholder="Nhập Gmail"*/}
+                        {/*        value={email}*/}
+                        {/*        onChange={(e) => setEmail(e.target.value)}*/}
+                        {/*    />*/}
+                        {/*    <button type="submit">Login</button>*/}
+                        {/*</form>*/}
+                        {/*{errorMessage && <p>{errorMessage}</p>}*/}
                     </div>
                 </div>
             </div>
