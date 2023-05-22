@@ -1,18 +1,74 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import {Outlet} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
+import axios from 'axios';
 
 const HomePage = () => {
-    const [data, setData] = useState({})
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user_info'));
-        setData(user);
-    }, [])
-
+    const [userInfo, setUserInfo] = useState(null);
+    const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
+    const storedAccessToken = localStorage.getItem('accessToken');
+    const storedRefreshAccessToken = localStorage.getItem('refreshToken');
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${storedAccessToken}`
+                    }
+                });
+
+                const data = await response.json();
+                setUserInfo(data.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleBackToHomePage = () => {
         navigate("/HomePage"); // Use the appropriate route path here
+    };
+
+    const handleDropdownToggle = () => {
+        setShowDropdown(!showDropdown);
+    };
+
+    const handleSignOut = () => {
+        console.log(1)
+        axios
+            .post('https://binote-api.biplus.com.vn/auth/logout', {
+                refresh_token: {storedRefreshAccessToken},
+            })
+            .then(() => {
+                // Logout successful
+                console.log('Logged out successfully');
+                navigate('/');
+            })
+            .catch((error) => {
+                // Error occurred while logging out
+                console.error('Error logging out:', error);
+                navigate('/');
+            });
+    };
+
+    const handleChangeLanguage = () => {
+        // Implement language change logic here
+        console.log('Change language');
+    };
+
+    const handleBlur = () => {
+        // Delay the closing of the dropdown to allow click events on the dropdown menu items to trigger
+        setTimeout(() => {
+            setShowDropdown(false);
+        }, 100);
     };
 
     return (
@@ -56,13 +112,34 @@ const HomePage = () => {
                     <p className="p-2 text-[#979696]">Notes</p>
                 </div>
                 {/*right avatar*/}
-                <div className="item-center py-2">
-                    {data &&
-                        <div className="flex">
-                            <h3 className="pr-2 inline-flex items-center">{data.name}</h3>
-                            <img src={data.picture} alt="" className="w-[32px] h-[32px] rounded"></img>
+                <div className="item-center py-2 cursor-pointer relative">
+                    <div className="flex" onClick={handleDropdownToggle} onBlur={handleBlur} ref={dropdownRef}>
+                        {userInfo && (
+                            <>
+                                <h3 className="pr-2 inline-flex items-center">
+                                    {userInfo.first_name} {userInfo.last_name}
+                                </h3>
+                                <img src={userInfo.avatar} alt="" className="w-[32px] h-[32px] rounded"/>
+                            </>
+                        )}
+                    </div>
+
+                    {showDropdown && (
+                        <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2">
+                            {/*<div*/}
+                            {/*    className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"*/}
+                            {/*    onClick={handleChangeLanguage}*/}
+                            {/*>*/}
+                            {/*    Change Language*/}
+                            {/*</div>*/}
+                            <div
+                                className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                                onClick={handleSignOut}
+                            >
+                                Sign Out
+                            </div>
                         </div>
-                    }
+                    )}
                 </div>
             </div>
             <Outlet/>
