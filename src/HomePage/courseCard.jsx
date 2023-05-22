@@ -149,15 +149,15 @@ const CourseCard = () => {
                             <p className='font-bold flex justify-between px-4 pb-4 text-sm truncate hover:text-clip hover:whitespace-normal hover:break-all'>
                                 {item?.title}
                             </p>
-                            <div className="px-4 pb-4">
-                                <a
-                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
-                                    href={item?.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >Đi tới khóa học
-                                </a>
-                            </div>
+                            {/*<div className="px-4 pb-4">*/}
+                            {/*    <a*/}
+                            {/*        className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"*/}
+                            {/*        href={item?.link}*/}
+                            {/*        target="_blank"*/}
+                            {/*        rel="noopener noreferrer"*/}
+                            {/*    >Đi tới khóa học*/}
+                            {/*    </a>*/}
+                            {/*</div>*/}
                             <div className='flex justify-between px-4 pb-4'>
                                 <p className="inline-flex items-center">
                                     <StickyNote2Icon></StickyNote2Icon>
