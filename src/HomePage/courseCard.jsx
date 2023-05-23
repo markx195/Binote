@@ -5,10 +5,12 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
 
-const storedAccessToken = localStorage.getItem('accessToken');
-console.log(storedAccessToken)
-
 const CourseCard = () => {
+    const [storedAccessToken, setStoredAccessToken] = useState(null);
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        setStoredAccessToken(accessToken);
+    }, []);
     const LIMIT_DATA = 999;
     const navigate = useNavigate()
     const [dataSource, setDataSource] = useState([])
@@ -53,7 +55,7 @@ const CourseCard = () => {
                 console.error(error);
             }
         },
-        [searchQuery, page]
+        [searchQuery, page,storedAccessToken]
     );
 
     useEffect(() => {
