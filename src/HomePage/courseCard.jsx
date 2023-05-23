@@ -6,6 +6,7 @@ import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
 
 const storedAccessToken = localStorage.getItem('accessToken');
+console.log(storedAccessToken)
 
 const CourseCard = () => {
     const LIMIT_DATA = 999;

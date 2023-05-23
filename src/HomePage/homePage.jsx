@@ -117,9 +117,10 @@ const HomePage = () => {
                         {userInfo && (
                             <>
                                 <h3 className="pr-2 inline-flex items-center">
-                                    {userInfo.first_name} {userInfo.last_name}
+                                    {userInfo.email.split("@")[0]}
                                 </h3>
-                                <img src={userInfo.avatar} alt="" className="w-[32px] h-[32px] rounded"/>
+                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
+                                     className="w-[32px] h-[32px] rounded"/>
                             </>
                         )}
                     </div>

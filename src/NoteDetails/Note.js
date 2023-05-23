@@ -99,6 +99,7 @@ Tôi có thể áp dụng gì vào công việc:`,
 
     const handleSelectTime = (time) => {
         const changeTypeTime = parseInt(time.target.value);
+        console.log(changeTypeTime)
         setSelectedTime(changeTypeTime);
         clearTimeout(timeoutId);
         // Set a new timeout for 3 seconds
@@ -238,9 +239,6 @@ Tôi có thể áp dụng gì vào công việc:`,
                                         <DeleteIcon fontSize="small" sx={{color: grey[100]}}
                                                     onClick={() => setCheckDelete(item.id)}/>
                                     )}
-
-                                    {/*<DeleteIcon fontSize="small" sx={{color: grey[100]}}*/}
-                                    {/*            onClick={() => handleDeleteItem(item.id)}/>*/}
                                 </div>
                             </div>
                         </div>
@@ -298,11 +296,11 @@ Tôi có thể áp dụng gì vào công việc:`,
                             value={selectedTime}
                             onChange={handleSelectTime}
                         >
-                            <option value="10">10m</option>
-                            <option value="15">15m</option>
-                            <option value="30">30m</option>
-                            <option value="45">45m</option>
-                            <option value="60">60m</option>
+                            <option value="0.1666666667">10m</option>
+                            <option value="0.25 ">15m</option>
+                            <option value="0.5">30m</option>
+                            <option value="0.75">45m</option>
+                            <option value="1">60m</option>
                         </select>
                     </div>
                 </div>

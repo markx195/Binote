@@ -43,11 +43,8 @@ const LoginForm = () => {
             );
 
             if (response.ok) {
-                // If the response is successful, parse the JSON response and retrieve the access token
                 const data = await response.json();
                 const accessToken = data.data.access_token;
-                console.log(accessToken)
-                // Set the access token in the state and clear the error message
                 localStorage.setItem('accessToken', accessToken);
                 navigate("/HomePage");
             } else {
