@@ -3,8 +3,10 @@ import {useParams} from "react-router-dom";
 import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
+import {useTranslation} from "react-i18next";
 
 const NoteDetails = () => {
+    const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
     const [courseData, setCourseData] = useState({notes: []});
@@ -71,7 +73,7 @@ const NoteDetails = () => {
                 // If the request fails, revert the UI back to the original state
                 setCourseData(prevData => ({
                     ...prevData,
-                    notes: [...prevData.notes, { id }], // Add the deleted item back
+                    notes: [...prevData.notes, {id}], // Add the deleted item back
                 }));
             });
     };
@@ -136,7 +138,7 @@ const NoteDetails = () => {
                                     rel="noopener noreferrer"
                                     href={courseData.link}
                                 >
-                                    Đi tới khóa học
+                                    {t("goToCourse")}
                                 </a>
                             </div>
                             <div className="text-left"

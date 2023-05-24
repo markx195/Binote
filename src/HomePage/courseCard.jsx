@@ -4,8 +4,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
+import {useTranslation} from "react-i18next";
 
 const CourseCard = () => {
+    const {t} = useTranslation()
     const [storedAccessToken, setStoredAccessToken] = useState(null);
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
@@ -104,7 +106,7 @@ const CourseCard = () => {
                     onClick={() => handleButtonClick()}
                     className={`h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528] ${
                         selectedCategoryId === null ? "bg-[#2F2E2E] text-[#F0C528]" : ""}`}
-                >Tất Cả
+                >{t("all")}
                 </button>
                 {courses.map((item) => (
                     <button
@@ -125,7 +127,7 @@ const CourseCard = () => {
                     </div>
                     <input
                         type="text"
-                        placeholder="Tìm kiếm khóa học"
+                        placeholder={t("Search")}
                         className="bg-white border-solid border-[#D5D5D5] border rounded-lg w-full h-[52px] pl-10 pr-3 text-left"
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />

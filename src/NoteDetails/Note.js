@@ -11,10 +11,13 @@ import ContentEditable from 'react-contenteditable';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import debounce from "lodash/debounce";
+import {useTranslation} from "react-i18next";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
+
 const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem}) => {
+    const {t} = useTranslation()
     const handleKeyDownTitle = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -203,7 +206,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                             <div className="flex items-center">
                                 <StickyNote2Icon sx={{color: grey[100]}}/>
                                 <div className="flex items-center ml-2">
-                                    <div className="font-bold text-xl text-[#F4F4F4]">Ghi chú</div>
+                                    <div className="font-bold text-xl text-[#F4F4F4]">{t("notes")}</div>
                                 </div>
                             </div>
                             <AddIcon sx={{color: yellow[500]}} fontSize="large" onClick={handleAddItem}
@@ -211,7 +214,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         </div>
                         <div
                             className="bg-[#585858] text-left text-[#D5D5D5] text-sm font-normal">
-                            {courseData.length} Ghi chú
+                            {courseData.length} {t("notes")}
                         </div>
                     </div>
                 </div>
@@ -296,7 +299,6 @@ Tôi có thể áp dụng gì vào công việc:`,
                             value={selectedTime}
                             onChange={handleSelectTime}
                         >
-                            <option value="0.1666666667">10m</option>
                             <option value="0.25 ">15m</option>
                             <option value="0.5">30m</option>
                             <option value="0.75">45m</option>

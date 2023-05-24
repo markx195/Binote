@@ -3,8 +3,10 @@ import axios from "axios"
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import "../App.css"
 import {useNavigate} from "react-router-dom"
+import {useTranslation} from "react-i18next";
 
 const RecentlyCourses = () => {
+    const {t} = useTranslation()
     const navigate = useNavigate()
     const storedAccessToken = localStorage.getItem('accessToken');
     const [courses, setCourses] = useState([])
@@ -60,7 +62,7 @@ const RecentlyCourses = () => {
                     </div>
                     <div className="flex-1 pl-8 h-full overflow-y-auto" style={{flexGrow: 1}} id="hideScroll">
                         <div className="w-full h-full">
-                            <p className="text-left">Khóa học gần đây</p>
+                            <p className="text-left">{t("recentlyCourse")}</p>
                             <p className="text-left font-bold text-4xl  ">{courses[0].title}</p>
                             {/*<div className="pb-8 pt-2.5">*/}
                             {/*    <a*/}
@@ -73,14 +75,14 @@ const RecentlyCourses = () => {
                             {/*    </a>*/}
                             {/*</div>*/}
                             {/*<div className="w-[554.67px] border border-[#D5D5D5] border-solid"></div>*/}
-                            <p className="font-bold text-left pt-6">Ghi chú</p>
+                            <p className="font-bold text-left pt-6">{t("notes")}</p>
                             <div className="overflow-y-scroll scroll-container h-[22vh]">
                                 {courses[0].notes?.map(course => (
                                     <div key={course.id}>
                                         <div className="flex justify-between py-4">
                                             <p className="text-left text-left overflow-hidden truncate max-w-[400px]">{course.title}</p>
                                             <span className="text-[#4790E4] cursor-pointer"
-                                                  onClick={() => handleNoteDetails(courses[0].id)}>Chi tiết</span>
+                                                  onClick={() => handleNoteDetails(courses[0].id)}>{t("Details")}</span>
                                         </div>
                                         <div className="border border-[#000000] border-dashed"></div>
                                     </div>

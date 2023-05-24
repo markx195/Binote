@@ -2,8 +2,11 @@ import React, {useEffect, useState, useRef} from "react"
 import {Outlet} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
+import {useTranslation} from "react-i18next";
+import i18next from "i18next";
 
 const HomePage = () => {
+    const {i18n, t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
@@ -12,6 +15,9 @@ const HomePage = () => {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
+        if (localStorage.getItem("i18nextLng")?.length > 2) {
+            i18next.changeLanguage("en");
+        }
         const fetchData = async () => {
             try {
                 const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
@@ -59,8 +65,8 @@ const HomePage = () => {
             });
     };
 
-    const handleChangeLanguage = () => {
-        // Implement language change logic here
+    const handleChangeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
         console.log('Change language');
     };
 
@@ -95,7 +101,7 @@ const HomePage = () => {
                             d="M11.5609 14.3075C11.9176 14.3127 12.2689 14.3127 12.6256 14.318C12.6948 14.318 12.7693 14.3285 12.8385 14.3338C12.8385 14.3338 12.8332 14.3285 12.8332 14.3338C12.8225 14.6649 12.8172 15.0013 12.8066 15.3324C12.7959 15.6899 12.5989 15.9317 12.2689 15.9947C11.9495 16.0526 11.5769 15.837 11.5556 15.5217C11.5236 15.1169 11.5556 14.707 11.5609 14.3075Z"
                             fill="#F0C528"/>
                     </svg>
-                    <p className="text-[#F0C528] rounded-full p-2">Khóa học</p>
+                    <p className="text-[#F0C528] rounded-full p-2">{t("course")}</p>
                     <p className="w-[22px] border border-solid rotate-90"></p>
                     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clipPath="url(#clip0_57_1627)">
@@ -124,20 +130,19 @@ const HomePage = () => {
                             </>
                         )}
                     </div>
-
                     {showDropdown && (
                         <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2">
-                            {/*<div*/}
-                            {/*    className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"*/}
-                            {/*    onClick={handleChangeLanguage}*/}
-                            {/*>*/}
-                            {/*    Change Language*/}
-                            {/*</div>*/}
+                            <li className="list-none">
+                                <select value={localStorage.getItem("i18nextLng")} onChange={handleChangeLanguage}>
+                                    <option value="en">English</option>
+                                    <option value="vn">Vietnamese</option>
+                                </select>
+                            </li>
                             <div
                                 className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
                                 onClick={handleSignOut}
                             >
-                                Sign Out
+                                {t("signOut")}
                             </div>
                         </div>
                     )}
