@@ -3,18 +3,20 @@ import {Outlet, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 
-const HomePage = () => {
+const HomePage = ({handleSignOut}) => {
     const {i18n, t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
     const storedAccessToken = localStorage.getItem('accessToken');
-    const storedRefreshAccessToken = localStorage.getItem('refreshToken');
     const dropdownRef = useRef(null);
 
     useEffect(() => {
         if (localStorage.getItem("i18nextLng")?.length > 2) {
             i18next.changeLanguage("en");
+        }
+        if (!storedAccessToken) {
+            navigate("/")
         }
         const fetchData = async () => {
             try {
@@ -45,9 +47,11 @@ const HomePage = () => {
         setShowDropdown(!showDropdown);
     };
 
-    const handleSignOut = () => {
-        localStorage.removeItem("accessToken")
-        navigate("/")
+    const handleLogout = () => {
+        // localStorage.removeItem("accessToken")
+        // localStorage.removeItem("loggedIn")
+        // navigate("/")
+        handleSignOut();
     };
 
     const handleChangeLanguage = (e) => {
@@ -123,7 +127,7 @@ const HomePage = () => {
                             </li>
                             <div
                                 className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
-                                onClick={handleSignOut}
+                                onClick={handleLogout}
                             >
                                 {t("signOut")}
                             </div>

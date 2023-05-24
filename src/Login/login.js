@@ -46,6 +46,7 @@ const LoginForm = () => {
                 const data = await response.json();
                 const accessToken = data.data.access_token;
                 localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('loggedIn', true);
                 navigate("/HomePage");
             } else {
                 // If the response is not successful, handle the error
