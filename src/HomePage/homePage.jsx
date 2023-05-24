@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useRef} from "react"
-import {Outlet} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
-import axios from 'axios';
+import {Outlet, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 
@@ -48,30 +46,15 @@ const HomePage = () => {
     };
 
     const handleSignOut = () => {
-        console.log(1)
-        axios
-            .post('https://binote-api.biplus.com.vn/auth/logout', {
-                refresh_token: {storedRefreshAccessToken},
-            })
-            .then(() => {
-                // Logout successful
-                console.log('Logged out successfully');
-                navigate('/');
-            })
-            .catch((error) => {
-                // Error occurred while logging out
-                console.error('Error logging out:', error);
-                navigate('/');
-            });
+        localStorage.removeItem("accessToken")
+        navigate("/")
     };
 
     const handleChangeLanguage = (e) => {
         i18n.changeLanguage(e.target.value);
-        console.log('Change language');
     };
 
     const handleBlur = () => {
-        // Delay the closing of the dropdown to allow click events on the dropdown menu items to trigger
         setTimeout(() => {
             setShowDropdown(false);
         }, 100);
