@@ -29,7 +29,7 @@ function App() {
                 <Route path="/HomePage" element={<HomePage handleSignOut={handleSignOut}/>}>
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
-                <Route path='/NoteDetails/:id' element={<NoteDetails/>}/>
+                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
             </Routes>
         </div>
     );

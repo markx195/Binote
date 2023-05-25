@@ -5,7 +5,7 @@ import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useTranslation} from "react-i18next";
 
-const NoteDetails = () => {
+const NoteDetails = ({handleSignOut}) => {
     const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
@@ -108,7 +108,7 @@ const NoteDetails = () => {
     }, [id.id, storedAccessToken]);
 
     return (<>
-        <HomePage/>
+        <HomePage handleSignOut={handleSignOut}/>
         <div className="flex px-[5%] pt-10 pb-20">
             <div
                 className={`w-full border-solid border h-[76.7vh] border-[#979696] rounded-2xl flex ${isCancelled ? "w-full" : "w-8/12"}`}>

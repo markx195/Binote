@@ -3,7 +3,7 @@ import {Outlet, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 
-const HomePage = ({handleSignOut}) => {
+const HomePage = (props) => {
     const {i18n, t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -48,10 +48,7 @@ const HomePage = ({handleSignOut}) => {
     };
 
     const handleLogout = () => {
-        // localStorage.removeItem("accessToken")
-        // localStorage.removeItem("loggedIn")
-        // navigate("/")
-        handleSignOut();
+        props.handleSignOut();
     };
 
     const handleChangeLanguage = (e) => {
