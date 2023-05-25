@@ -33,9 +33,6 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
 
     useEffect(() => {
         setItems(courseData);
-    }, [courseData])
-
-    useEffect(() => {
         // Set the first item in the courseData array as the selected item
         if (courseData.length > 0) {
             handleItemClick(courseData[0]);
@@ -57,6 +54,7 @@ Tôi có thể áp dụng gì vào công việc:`,
         onDeleteItem(id);
     };
 
+    // Sending Learning Time
     const compareDate = useCallback((dateString) => {
         const date1 = new Date(dateString);
         const date2 = new Date();
@@ -83,24 +81,6 @@ Tôi có thể áp dụng gì vào công việc:`,
             }
         }
     }, [])
-
-    const updateItemData = (itemId, dataToUpdate) => {
-        return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
-            method: "PATCH",
-            body: JSON.stringify(dataToUpdate),
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${storedAccessToken}`
-            },
-        })
-            .then((response) => response.json())
-            .then((updatedItem) => updatedItem)
-            .catch((error) => {
-                // Handle error
-                console.error("Error updating item data:", error);
-            });
-    };
-
     const handleSelectTime = (time) => {
         const changeTypeTime = parseInt(time.target.value);
         console.log(changeTypeTime)
@@ -121,6 +101,23 @@ Tôi có thể áp dụng gì vào công việc:`,
         }, 1000);
         setTimeoutId(newTimeoutId);
     };
+    const updateItemData = (itemId, dataToUpdate) => {
+        return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
+            method: "PATCH",
+            body: JSON.stringify(dataToUpdate),
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${storedAccessToken}`
+            },
+        })
+            .then((response) => response.json())
+            .then((updatedItem) => updatedItem)
+            .catch((error) => {
+                // Handle error
+                console.error("Error updating item data:", error);
+            });
+    };
+    // Close tag Learning Time
 
     const handleItemClick = (item) => {
         console.log(item)
@@ -257,6 +254,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                     </div>
                 </div>
             )}
+            {/*//////////////////////////  Where to Type/////////////////////////////////*/}
             {courseData.length > 0 && (
                 <div className="w-9/12 relative">
                     <div className="overflow-y-auto h-[70vh]" id="hideScroll">
@@ -289,6 +287,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                                       resize: "none"
                                   }}
                                   value={noteData}
+                                  onFocus={focusOnText}
                                   onChange={handleInputChangeBody}
                         />
                     </div>
