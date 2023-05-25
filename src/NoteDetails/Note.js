@@ -12,6 +12,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import debounce from "lodash/debounce";
 import {useTranslation} from "react-i18next";
+import {showToast} from '../common/Toast'
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -153,10 +154,9 @@ Tôi có thể áp dụng gì vào công việc:`,
                     },
                 })
                     .then((response) => {
-                        // Handle response if necessary
                     })
                     .catch((error) => {
-                        // Handle error if necessary
+                        showToast(t("error"), "warning")
                     });
             }
         }, 1000),

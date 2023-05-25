@@ -70,7 +70,7 @@ const LoginForm = () => {
                         <form onSubmit={handleSubmit}>
                             <input
                                 type="email"
-                                placeholder="Nhập Gmail"
+                                placeholder="Nhập mail biplus của bạn"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
