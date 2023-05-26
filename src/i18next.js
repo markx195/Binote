@@ -11,7 +11,7 @@ i18n.use(Backend)
             // translation file path
             loadPath: "/assets/i18n/{{lng}}.json",
         },
-        fallbackLng: "en",
+        fallbackLng: "vi",
         // disabled in production
         debug: false,
         ns: ["common", "home", "profile"],
