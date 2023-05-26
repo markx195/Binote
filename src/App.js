@@ -7,6 +7,7 @@ import CourseCard from "./HomePage/courseCard"
 import NoteDetails from "./NoteDetails/noteDetails"
 import {ToastContainerComponent} from './common/Toast';
 import "react-toastify/dist/ReactToastify.css"
+import Profile from "./Profile/profile";
 
 function App() {
     const isLoggedIn = localStorage.getItem('loggedIn');
@@ -30,6 +31,7 @@ function App() {
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
+                <Route path='/profile' element={<Profile/>}/>
             </Routes>
         </div>
     );
