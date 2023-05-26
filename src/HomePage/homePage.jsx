@@ -2,6 +2,8 @@ import React, {useEffect, useState, useRef} from "react"
 import {Outlet, useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const HomePage = (props) => {
     const {i18n, t} = useTranslation();
@@ -116,18 +118,26 @@ const HomePage = (props) => {
                     </div>
                     {showDropdown && (
                         <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2">
+                            <div
+                                className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                                onClick={handleLogout}
+                            >
+                                <PersonIcon/>
+                                {t("profile")}
+                            </div>
+                            <div
+                                className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                                onClick={handleLogout}
+                            >
+                                <LogoutIcon/>
+                                {t("signOut")}
+                            </div>
                             <li className="list-none">
                                 <select value={localStorage.getItem("i18nextLng")} onChange={handleChangeLanguage}>
                                     <option value="en">English</option>
                                     <option value="vn">Vietnamese</option>
                                 </select>
                             </li>
-                            <div
-                                className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer"
-                                onClick={handleLogout}
-                            >
-                                {t("signOut")}
-                            </div>
                         </div>
                     )}
                 </div>

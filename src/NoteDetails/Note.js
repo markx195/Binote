@@ -119,18 +119,7 @@ Tôi có thể áp dụng gì vào công việc:`,
     };
     // Close tag Learning Time
 
-    const handleItemClick = (item) => {
-        console.log(item)
-        setSelectedItemId(item.id);
-        if (item.note === null) {
-            setInputValue(item.title || "");
-        } else {
-            setInputValue(item.title);
-            setNoteData(item.note)
-            setSelectedTime(item.learning_hour)
-        }
-    };
-
+    // Catch Change and updateNote//
     const handleUpdate = useCallback(
         debounce((key, value) => {
             // Update items state with the new value
@@ -159,11 +148,28 @@ Tôi có thể áp dụng gì vào công việc:`,
         }, 1000),
         [items, selectedItemId, storedAccessToken]
     );
-
     const handleInputChange = (e) => {
         const inputValue = e.target.value;
         setInputValue(inputValue);
         handleUpdate("title", inputValue);
+    };
+    const handleInputChangeBody = (e) => {
+        const inputValue = e.target.value;
+        setNoteData(inputValue);
+        handleUpdate("note", inputValue);
+    };
+    // Close Change and updateNote//
+
+    const handleItemClick = (item) => {
+        console.log(item)
+        setSelectedItemId(item.id);
+        if (item.note === null) {
+            setInputValue(item.title || "");
+        } else {
+            setInputValue(item.title);
+            setNoteData(item.note)
+            setSelectedTime(item.learning_hour)
+        }
     };
 
     function replaceSpecialCharacters(str) {
@@ -173,12 +179,6 @@ Tôi có thể áp dụng gì vào công việc:`,
             .replace(/&gt;/g, '>')
             .replace(/&lt;/g, '<');
     }
-
-    const handleInputChangeBody = (e) => {
-        const inputValue = e.target.value;
-        setNoteData(inputValue);
-        handleUpdate("note", inputValue);
-    };
 
     const handleInfoAction = () => {
         setIsCancelled(false);
@@ -245,6 +245,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                     ))}
                 </div>
             </div>
+            {/*//////////////////////////Default img/////////////////////////////////*/}
             {courseData.length === 0 && (
                 <div className="relative w-full">
                     <img src="/Images/defaultNoteImg.png" alt="Default" className="h-[76.7vh] w-full"/>
@@ -287,7 +288,6 @@ Tôi có thể áp dụng gì vào công việc:`,
                                       resize: "none"
                                   }}
                                   value={noteData}
-                                  onFocus={focusOnText}
                                   onChange={handleInputChangeBody}
                         />
                     </div>
