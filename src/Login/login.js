@@ -5,8 +5,7 @@ import "./login.css"
 import ImageSlider from "./imageSlider"
 
 const LoginForm = () => {
-    const [email, setEmail] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
     const slides = [
         {url: "/Images/pic1.png", title: "Pic1"},
@@ -19,65 +18,35 @@ const LoginForm = () => {
         margin: "0 auto",
     };
 
-    // Function to handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Check if the entered email address ends with "@biplus.com.vn"
-        if (!email.endsWith("@biplus.com.vn")) {
-            setErrorMessage(
-                'Please enter a valid email address ending with "@biplus.com.vn"'
-            );
-            return;
-        }
-        try {
-            // Send a POST request to the API endpoint with email in the request body
-            const response = await fetch(
-                "https://binote-api.biplus.com.vn/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
-                {
-                    method: "POST",
-                    body: JSON.stringify({email: email}),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+    function handleLogin() {
+        window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
+    }
 
-            if (response.ok) {
-                // If the response is successful, parse the JSON response and retrieve the access token
-                const data = await response.json();
-                const accessToken = data.data.access_token;
-                console.log(accessToken)
-                // Set the access token in the state and clear the error message
-                localStorage.setItem('accessToken', accessToken);
-                navigate("/HomePage");
-            } else {
-                // If the response is not successful, handle the error
-                console.error("Failed to login with email:", response);
+    async function refreshTokens() {
+        try {
+            const response = await fetch('https://binote-api.biplus.com.vn/auth/refresh', {
+                method: 'POST',
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+            setToken(data.data.access_token);
+
+            if (token) {
+                navigate('/HomePage');
             }
         } catch (error) {
-            console.error("Failed to login with email:", error);
+            console.error('Token refresh failed', error);
         }
-    };
+    }
 
-    const handleLogin = async () => {
-        // Perform login logic with your API
-        try {
-            await fetch('https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000', {
-                method: 'GET',
-            });
+// Check if the user has been redirected back from Google login
+    const urlParams = new URLSearchParams(window.location.search);
+    const reason = urlParams.get('reason');
 
-            // If login is successful, refresh Directus tokens
-            await fetch('https://localhost:3000/auth/refresh', {
-                method: 'POST',
-                credentials: 'include',
-            });
-
-            // Navigate to HomePage
-            navigate('/HomePage');
-        } catch (error) {
-            console.error('Login failed', error);
-        }
-    };
+    if (reason !== 'INVALID_PROVIDER') {
+        refreshTokens();
+    }
 
 
     return (
@@ -91,16 +60,6 @@ const LoginForm = () => {
                 <div className="login-page">
                     <div className="form rounded-2xl">
                         <button onClick={handleLogin}>Login</button>
-                        {/*<form onSubmit={handleSubmit}>*/}
-                        {/*    <input*/}
-                        {/*        type="email"*/}
-                        {/*        placeholder="Nhập Gmail"*/}
-                        {/*        value={email}*/}
-                        {/*        onChange={(e) => setEmail(e.target.value)}*/}
-                        {/*    />*/}
-                        {/*    <button type="submit">Login</button>*/}
-                        {/*</form>*/}
-                        {/*{errorMessage && <p>{errorMessage}</p>}*/}
                     </div>
                 </div>
             </div>
