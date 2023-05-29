@@ -57,7 +57,7 @@ const CourseCard = () => {
                 console.error(error);
             }
         },
-        [searchQuery, page,storedAccessToken]
+        [searchQuery, page, storedAccessToken]
     );
 
     useEffect(() => {

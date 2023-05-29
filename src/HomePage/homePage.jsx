@@ -72,7 +72,6 @@ const HomePage = (props) => {
                 });
 
                 const data = await response.json();
-                console.log(data.data)
                 setUserInfo(data.data);
             } catch (error) {
                 console.error(error);
@@ -98,10 +97,6 @@ const HomePage = (props) => {
         navigate("/profile");
     }
 
-    const handleChangeLanguage = (e) => {
-        i18n.changeLanguage(e.target.value);
-    };
-
     const handleBlur = () => {
         setTimeout(() => {
             setShowDropdown(false);
@@ -110,7 +105,7 @@ const HomePage = (props) => {
 
     const [checked, setChecked] = useState(localStorage.getItem("i18nextLng") === 'en');
 
-    const handleChange = checked => {
+    const handleChangeLang = checked => {
         setChecked(checked);
         const language = checked ? 'en' : 'vn';
         localStorage.setItem("i18nextLng", language);
@@ -135,10 +130,12 @@ const HomePage = (props) => {
                 </div>
                 {/*right avatar*/}
                 <div className="item-center py-2 cursor-pointer relative w-[200px]">
-                    <div className="flex justify-between" onClick={handleDropdownToggle} onBlur={handleBlur} ref={dropdownRef}>
+                    <div className="flex justify-between" onClick={handleDropdownToggle} onBlur={handleBlur}
+                         ref={dropdownRef}>
                         {userInfo && (
                             <>
-                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt="" className="w-[32px] h-[32px] rounded" />
+                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
+                                     className="w-[32px] h-[32px] rounded"/>
                                 <h3 className="pl-2 inline-flex items-center">
                                     {userInfo.email.split("@")[0]}
                                 </h3>
@@ -165,7 +162,7 @@ const HomePage = (props) => {
                                 <label className="ml-auto" htmlFor="icon-switch">
                                     <Switch
                                         checked={checked}
-                                        onChange={handleChange}
+                                        onChange={handleChangeLang}
                                         uncheckedIcon={<div>VN</div>}
                                         offColor="#F42F4C"
                                         checkedIcon={<div>EN</div>}
