@@ -6,6 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import Switch from "react-switch";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import "./LangSwitch.css"
 
 const vnIcon = (
     <svg width="16" height="18" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,15 +104,15 @@ const HomePage = (props) => {
         }, 100);
     };
 
-    const [checked, setChecked] = useState(localStorage.getItem("i18nextLng") === 'en');
+    const [checked, setChecked] = useState(localStorage.getItem('i18nextLng') === 'en');
 
-    const handleChangeLang = checked => {
-        setChecked(checked);
-        const language = checked ? 'en' : 'vn';
-        localStorage.setItem("i18nextLng", language);
+    const handleChangeLang = () => {
+        const newChecked = !checked;
+        setChecked(newChecked);
+        const language = newChecked ? 'en' : 'vn';
+        localStorage.setItem('i18nextLng', language);
         i18n.changeLanguage(language);
     };
-
     return (
         <>
             <div className="px-[5%] mx-auto flex justify-between items-center p-4 pt-8">
@@ -159,18 +160,22 @@ const HomePage = (props) => {
                             <div
                                 className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
                                 <span>{t("language")}</span>
-                                <label className="ml-auto" htmlFor="icon-switch">
-                                    <Switch
-                                        checked={checked}
-                                        onChange={handleChangeLang}
-                                        uncheckedIcon={<div>VN</div>}
-                                        offColor="#F42F4C"
-                                        checkedIcon={<div>EN</div>}
-                                        onColor="#00427D"
-                                        className="react-switch"
-                                        id="language-switch"
-                                    />
-                                </label>
+                                {/*<label className="ml-auto" htmlFor="icon-switch">*/}
+                                {/*    <Switch*/}
+                                {/*        checked={checked}*/}
+                                {/*        onChange={handleChangeLang}*/}
+                                {/*        uncheckedIcon={<div>VN</div>}*/}
+                                {/*        offColor="#F42F4C"*/}
+                                {/*        checkedIcon={<div>EN</div>}*/}
+                                {/*        onColor="#00427D"*/}
+                                {/*        className="react-switch"*/}
+                                {/*        id="language-switch"*/}
+                                {/*    />*/}
+                                {/*</label>*/}
+                                <div className="flag-switch">
+                                    <input type="checkbox" id="check2" checked={checked} onChange={handleChangeLang}/>
+                                    <label htmlFor="check2"></label>
+                                </div>
                             </div>
                         </div>
                     )}
