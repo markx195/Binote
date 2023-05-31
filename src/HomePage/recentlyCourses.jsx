@@ -82,7 +82,7 @@ const RecentlyCourses = () => {
                                         <div className="flex justify-between py-4">
                                             <p className="text-left text-left overflow-hidden truncate max-w-[400px]">{course.title}</p>
                                             <span className="text-[#4790E4] cursor-pointer"
-                                                  onClick={() => handleNoteDetails(courses[0].id)}>{t("Details")}</span>
+                                                  onClick={() => handleNoteDetails(courses[0].id)}>{t("details")}</span>
                                         </div>
                                         <div className="border border-[#000000] border-dashed"></div>
                                     </div>

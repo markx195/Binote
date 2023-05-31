@@ -6,6 +6,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./LangSwitch.css"
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
+const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
 
 const logoutBtn = (
     <svg width="24" height="24" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,6 +40,7 @@ const noteLogo = (<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xm
 )
 
 const HomePage = (props) => {
+    const [permission, setPermission] = useState("")
     const {i18n, t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -63,6 +67,7 @@ const HomePage = (props) => {
                 });
 
                 const data = await response.json();
+                setPermission(data.data.role)
                 setUserInfo(data.data);
             } catch (error) {
                 console.error(error);
@@ -113,11 +118,22 @@ const HomePage = (props) => {
                 </div>
                 {/*Middle*/}
                 <div className="bg-[#2F2E2E] hidden lg:flex items-center rounded-2xl p-4 text-[14px]">
-                    <SchoolIcon sx={{color: '#F0C528'}}/>
-                    <p className="text-[#F0C528] rounded-full p-2">{t("course")}</p>
+                    <div className="flex items-center ">
+                        <DashboardIcon sx={{color: '#979696'}}/>
+                        <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">
+                            Dashboard
+                        </p>
+                    </div>
                     <p className="w-[22px] border border-solid rotate-90"></p>
-                    {noteLogo}
-                    <p className="p-2 text-[#979696]">{t("notes")}</p>
+                    <div className="flex items-center">
+                        <SchoolIcon sx={{color: '#979696'}}/>
+                        <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">{t("course")}</p>
+                    </div>
+                    <p className="w-[22px] border border-solid rotate-90"></p>
+                    <div className="flex items-center">
+                        {noteLogo}
+                        <p className="p-2 text-[#979696] hover:text-[#F0C528]">{t("notes")}</p>
+                    </div>
                 </div>
                 {/*right avatar*/}
                 <div className="item-center py-2 cursor-pointer relative w-[200px]">
@@ -147,8 +163,13 @@ const HomePage = (props) => {
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <div className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
-                                <span style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>{t("language")}</span>
+                            <div
+                                className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
+                                <span style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    marginRight: '10px'
+                                }}>{t("language")}</span>
                                 <div className="flag-switch">
                                     <input type="checkbox" id="check2" checked={checked} onChange={handleChangeLang}/>
                                     <label htmlFor="check2"></label>
