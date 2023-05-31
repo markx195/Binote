@@ -4,18 +4,8 @@ import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
-import Switch from "react-switch";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./LangSwitch.css"
-
-const vnIcon = (
-    <svg width="16" height="18" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-            d="M4.26667 6.13333L6.90667 8L5.92 4.96L8.53333 2.98667H5.28L4.26667 0L3.28 2.98667H0L2.61333 4.96L1.62667 8L4.26667 6.13333Z"
-            fill="#FFE62E"
-        />
-    </svg>
-);
 
 const logoutBtn = (
     <svg width="24" height="24" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,21 +147,8 @@ const HomePage = (props) => {
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <div
-                                className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
-                                <span>{t("language")}</span>
-                                {/*<label className="ml-auto" htmlFor="icon-switch">*/}
-                                {/*    <Switch*/}
-                                {/*        checked={checked}*/}
-                                {/*        onChange={handleChangeLang}*/}
-                                {/*        uncheckedIcon={<div>VN</div>}*/}
-                                {/*        offColor="#F42F4C"*/}
-                                {/*        checkedIcon={<div>EN</div>}*/}
-                                {/*        onColor="#00427D"*/}
-                                {/*        className="react-switch"*/}
-                                {/*        id="language-switch"*/}
-                                {/*    />*/}
-                                {/*</label>*/}
+                            <div className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
+                                <span style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>{t("language")}</span>
                                 <div className="flag-switch">
                                     <input type="checkbox" id="check2" checked={checked} onChange={handleChangeLang}/>
                                     <label htmlFor="check2"></label>
