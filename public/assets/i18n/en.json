@@ -24,5 +24,6 @@
   "individual": "Individual",
   "team": "Team",
   "company": "Company",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "name": "Name"
 }

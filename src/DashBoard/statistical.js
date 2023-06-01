@@ -23,6 +23,7 @@ const Statistical = () => {
     const [type, setType] = useState('month');
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [dataSource, setDataSource] = useState([]);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -79,7 +80,7 @@ const Statistical = () => {
 
     const sendDataTable = () => {
         const url = "http://192.168.3.150:8055/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
-        const data = {
+        const requestData = {
             from_date: startDate,
             to_date: endDate,
             option: selectedValue,
@@ -92,15 +93,42 @@ const Statistical = () => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${storedAccessToken}`
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(requestData)
         })
-            .then(response => {
-                // Handle response
+            .then(response => response.json())
+            .then(data => {
+                // Update the tableData state with the fetched data
+                setDataSource(data.data);
             })
             .catch(error => {
                 // Handle error
             });
-    };
+    }
+
+    const columns = [
+        {
+            title: 'Họ tên',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'T1',
+            dataIndex: 'timePeriods',
+            key: 'T1',
+            render: (text, record) => {
+                const timePeriod = record.timePeriods[0];
+                return timePeriod ? timePeriod.period : '';
+            },
+        },
+        {
+            title: 'T2',
+            dataIndex: 'timePeriods',
+            key: 'T2',
+            render: (text, record) => {
+                const timePeriod = record.timePeriods[1];
+                return timePeriod ? timePeriod.period : '';
+            },
+        },];
 
     return (<>
             <HomePage/>
@@ -196,7 +224,7 @@ const Statistical = () => {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value="individual" // Set the default value to "individual"
+                                            defaultValue="individual"
                                             onChange={handleSelectChange}
                                         >
                                             <MenuItem value="individual">{t("individual")}</MenuItem>
@@ -214,13 +242,14 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            {/*<Table*/}
-                            {/*    columns={columns}*/}
-                            {/*    dataSource={data}*/}
-                            {/*    scroll={{*/}
-                            {/*        y: 240,*/}
-                            {/*    }}*/}
-                            {/*/>*/}
+                            <Table
+                                pagination={false}
+                                columns={columns}
+                                dataSource={dataSource}
+                                scroll={{
+                                    y: 240,
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
