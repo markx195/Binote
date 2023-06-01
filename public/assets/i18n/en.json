@@ -10,5 +10,19 @@
   "goToCourse": "Go to course",
   "error": "Something went wrong. Your note hasn't been saved yet",
   "profile": "Profile",
-  "language": "Language"
+  "language": "Language",
+  "onlineUser": "Online user",
+  "averageOnlineTime": "Average online time",
+  "averageTimeTime": "average study time",
+  "featuredCourse": "Featured course",
+  "learningHoursStatistics": "Learning hours statistics",
+  "learner": "Leaner",
+  "quarter": "Quarter",
+  "month": "Month",
+  "year": "Year",
+  "selectStatisticalObject": "Select Statistical Object",
+  "individual": "Individual",
+  "team": "Team",
+  "company": "Company",
+  "confirm": "Confirm"
 }

@@ -78,8 +78,12 @@ const HomePage = (props) => {
     }, []);
 
     const handleBackToHomePage = () => {
-        navigate("/HomePage"); // Use the appropriate route path here
+        navigate("/HomePage");
     };
+
+    const goToStatistical = () => {
+        navigate("/Statistical");
+    }
 
     const handleDropdownToggle = () => {
         setShowDropdown(!showDropdown);
@@ -90,7 +94,7 @@ const HomePage = (props) => {
     };
 
     const handleProfile = () => {
-        navigate("/profile");
+        navigate("/Profile");
     }
 
     const handleBlur = () => {
@@ -118,7 +122,7 @@ const HomePage = (props) => {
                 </div>
                 {/*Middle*/}
                 <div className="bg-[#2F2E2E] hidden lg:flex items-center rounded-2xl p-4 text-[14px]">
-                    <div className="flex items-center ">
+                    <div className="flex items-center cursor-pointer" onClick={goToStatistical}>
                         <DashboardIcon sx={{color: '#979696'}}/>
                         <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">
                             Dashboard

@@ -10,5 +10,19 @@
   "goToCourse": "Đi tới khóa học",
   "error": "Có lỗi xảy ra. Ghi chú của bạn chưa được lưu",
   "profile": "Hồ sơ",
-  "language": "Ngôn ngữ"
+  "language": "Ngôn ngữ",
+  "onlineUser": "Số người online",
+  "averageOnlineTime": "Thời gian online trung bình",
+  "averageTimeTime": "Thời gian học trung bình",
+  "featuredCourse": "Khóa học nổi bật",
+  "learningHoursStatistics": "Thống kê giờ học",
+  "learner": "Người học",
+  "quarter": "Quý",
+  "month": "Tháng",
+  "year": "Năm",
+  "selectStatisticalObject": "Chọn đối tượng thống kê",
+  "individual": "Cá nhân",
+  "team": "Đội nhóm",
+  "company": "Công ty",
+  "confirm": "Xác nhận"
 }
