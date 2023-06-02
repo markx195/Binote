@@ -13,17 +13,22 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import {Table} from 'antd';
+import "../App.css"
+import BarChart from "../common/BarChart"
 
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
 const Statistical = () => {
     const {t} = useTranslation()
     const [courses, setCourses] = useState([]);
-    const [selectedValue, setSelectedValue] = useState('');
+    const [selectedValue, setSelectedValue] = useState('individual');
     const [type, setType] = useState('month');
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [dataSource, setDataSource] = useState([]);
+    const [tableName, setTableName] = useState([]);
+    const [dataTable, setDataTable] = useState([]);
+    const [totalLearningHours, setTotalLearningHours] = useState([]);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -99,11 +104,25 @@ const Statistical = () => {
             .then(data => {
                 // Update the tableData state with the fetched data
                 setDataSource(data.data);
+                setTableName(data.data.map(item => item.name));
+                setDataTable(data.data.map(item => item.totalLearningHours));
+                setTotalLearningHours(data.totalLearningHours)
             })
             .catch(error => {
                 // Handle error
             });
     }
+
+    const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
+    const dynamicColumns = timePeriods.map((timePeriod, index) => ({
+        title: `T${index + 1}`,
+        dataIndex: `timePeriods[${index}].learningHour`, // Updated dataIndex
+        key: `T${index + 1}`,
+        render: (text, record) => {
+            const learningHour = record.timePeriods[index].learningHour;
+            return <span>{learningHour}</span>;
+        },
+    }));
 
     const columns = [
         {
@@ -111,25 +130,8 @@ const Statistical = () => {
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: 'T1',
-            dataIndex: 'timePeriods',
-            key: 'T1',
-            render: (text, record) => {
-                const timePeriod = record.timePeriods[0];
-                return timePeriod ? timePeriod.period : '';
-            },
-        },
-        {
-            title: 'T2',
-            dataIndex: 'timePeriods',
-            key: 'T2',
-            render: (text, record) => {
-                const timePeriod = record.timePeriods[1];
-                return timePeriod ? timePeriod.period : '';
-            },
-        },];
-
+        ...dynamicColumns,
+    ];
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
@@ -180,7 +182,8 @@ const Statistical = () => {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            ))
+                            }
                         </div>
                     </div>
                     <div className="w-8/12 ml-6">
@@ -224,7 +227,7 @@ const Statistical = () => {
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            defaultValue="individual"
+                                            value={selectedValue}
                                             onChange={handleSelectChange}
                                         >
                                             <MenuItem value="individual">{t("individual")}</MenuItem>
@@ -240,19 +243,23 @@ const Statistical = () => {
                                 {t("confirm")}
                             </Button>
                         </div>
-                        <div className="rounded-lg p-4"
+                        <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <Table
-                                pagination={false}
                                 columns={columns}
                                 dataSource={dataSource}
-                                scroll={{
-                                    y: 240,
-                                }}
+                                scroll={{y: 360}}
+                                pagination={false}
+                                footer={() => (
+                                    <div className="sticky-bottom-row">
+                                        Tổng (giờ):
+                                    </div>
+                                )}
                             />
                         </div>
                     </div>
                 </div>
+                <BarChart labels={tableName} data={dataTable}/>
             </div>
         </>
     )

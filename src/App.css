@@ -126,3 +126,8 @@ body::-webkit-scrollbar {
     padding: .2em;
     height: 2em;
 }
+
+.sticky-bottom-row {
+    position: sticky;
+    bottom: 0;
+}
