@@ -14,7 +14,8 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import {Table} from 'antd';
 import "../App.css"
-import BarChart from "../common/BarChart"
+import BarChart from "../common/BarChart";
+import dayjs from 'dayjs';
 
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
@@ -33,11 +34,23 @@ const Statistical = () => {
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-
+    const monthFormat = 'YYYY/MM';
     const renderDatePicker = () => {
+        const currentYear = dayjs().format('YYYY');
+        const firstMonth = `${currentYear}/01`;
+        const lastMonth = `${currentYear}/12`;
+
         switch (type) {
             case 'month':
-                return <RangePicker className="mr-6" onChange={handleDateChange} picker="month"/>;
+                return (
+                    <RangePicker
+                        defaultValue={[dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]}
+                        format={monthFormat}
+                        className="mr-6"
+                        onChange={handleDateChange}
+                        picker="month"
+                    />
+                );
             case 'quarter':
                 return <RangePicker className="mr-6" picker="quarter"/>;
             case 'year':
@@ -132,6 +145,7 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
+
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
@@ -245,21 +259,30 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            <Table
-                                columns={columns}
-                                dataSource={dataSource}
-                                scroll={{y: 360}}
-                                pagination={false}
-                                footer={() => (
-                                    <div className="sticky-bottom-row">
-                                        Tổng (giờ):
-                                    </div>
-                                )}
-                            />
+                            {type === 'month' && (
+                                <Table
+                                    columns={columns}
+                                    dataSource={dataSource}
+                                    scroll={{y: 360}}
+                                    pagination={false}
+                                    footer={() => (
+                                        <div className="sticky-bottom-row">
+                                            <span>Tổng (giờ):</span>
+                                            {totalLearningHours.map((record, index) => (
+                                                <span key={index} style={{marginLeft: '8px'}}>
+          {record.totalLearningHours}
+        </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
-                <BarChart labels={tableName} data={dataTable}/>
+                {type !== 'month' && (
+                    <BarChart labels={tableName} data={dataTable}/>
+                )}
             </div>
         </>
     )
