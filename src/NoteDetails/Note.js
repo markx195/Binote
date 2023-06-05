@@ -43,7 +43,7 @@ const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem
         const newItem = {
             title: 'Tiêu đề',
             note: `Tôi đã học được gì:
-            
+
 Tôi có thể áp dụng gì vào công việc:`,
             course_id: parseInt(idNoted)
         };

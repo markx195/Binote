@@ -7,7 +7,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import {DatePicker} from 'antd';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -34,12 +33,13 @@ const Statistical = () => {
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-    const monthFormat = 'YYYY/MM';
-    const renderDatePicker = () => {
-        const currentYear = dayjs().format('YYYY');
-        const firstMonth = `${currentYear}/01`;
-        const lastMonth = `${currentYear}/12`;
 
+    const monthFormat = 'YYYY/MM';
+    const currentYear = dayjs().format('YYYY');
+    const firstMonth = `${currentYear}/01`;
+    const lastMonth = `${currentYear}/12`;
+
+    const renderDatePicker = () => {
         switch (type) {
             case 'month':
                 return (
@@ -49,6 +49,7 @@ const Statistical = () => {
                         className="mr-6"
                         onChange={handleDateChange}
                         picker="month"
+                        style={{width: '100%'}}
                     />
                 );
             case 'quarter':
@@ -60,23 +61,27 @@ const Statistical = () => {
         }
     };
 
-    const handleDateChange = (date, dateString) => {
-        const startDate = new Date(dateString[0]);
-        const endDate = new Date(dateString[1]);
+    const handleDateChange = (date) => {
+        if (date && date.length === 2) {
+            const startDate = new Date(date[0]);
+            const endDate = new Date(date[1]);
 
-        if (!isNaN(startDate) && !isNaN(endDate)) {
-            setStartDate(startDate.toISOString());
-            setEndDate(endDate.toISOString());
-        } else {
-            console.log('Invalid date format');
+            if (!isNaN(startDate) && !isNaN(endDate)) {
+                setStartDate(startDate.toISOString());
+                setEndDate(endDate.toISOString());
+            } else {
+                console.log('Invalid date format');
+            }
         }
     };
+
 
     const handleRadioChange = (event) => {
         setType(event.target.value);
     };
 
     useEffect(() => {
+        handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
         const fetchData = async () => {
             try {
                 const response = await axios.get(
@@ -234,22 +239,18 @@ const Statistical = () => {
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <div className="flex">
                                 {renderDatePicker()}
-                                <Box sx={{minWidth: 260}}>
-                                    <FormControl fullWidth>
-                                        <InputLabel
-                                            id="demo-simple-select-label">{t("selectStatisticalObject")}</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={selectedValue}
-                                            onChange={handleSelectChange}
-                                        >
-                                            <MenuItem value="individual">{t("individual")}</MenuItem>
-                                            <MenuItem value="team">{t("team")}</MenuItem>
-                                            <MenuItem value="company">{t("company")}</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Box>
+                                <FormControl fullWidth>
+                                    <InputLabel>{t("selectStatisticalObject")}</InputLabel>
+                                    <Select
+                                        value={selectedValue}
+                                        label={t("selectStatisticalObject")}
+                                        onChange={handleSelectChange}
+                                    >
+                                        <MenuItem value="individual">{t("individual")}</MenuItem>
+                                        <MenuItem value="team">{t("team")}</MenuItem>
+                                        <MenuItem value="company">{t("company")}</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
                             <Button variant="contained" size="medium"
                                     style={{backgroundColor: '#F0C528', color: "black", minWidth: 200}}
