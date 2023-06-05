@@ -131,3 +131,9 @@ body::-webkit-scrollbar {
     position: sticky;
     bottom: 0;
 }
+.sticky-summary .ant-table-summary {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    z-index: 1;
+}

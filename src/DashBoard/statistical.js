@@ -11,11 +11,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import {Table} from 'antd';
+import {Table, Typography} from 'antd';
 import "../App.css"
 import BarChart from "../common/BarChart";
 import dayjs from 'dayjs';
 
+const {Text} = Typography;
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
 const Statistical = () => {
@@ -130,15 +131,20 @@ const Statistical = () => {
                 // Handle error
             });
     }
-
+////////////////////////////////////////// table/////////////////////////////////////////
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => ({
         title: `T${index + 1}`,
-        dataIndex: `timePeriods[${index}].learningHour`, // Updated dataIndex
+        dataIndex: `timePeriods[${index}].learningHour`,
         key: `T${index + 1}`,
         render: (text, record) => {
             const learningHour = record.timePeriods[index].learningHour;
-            return <span>{learningHour}</span>;
+            return (
+                <>
+                    <span>{learningHour}</span>
+                    {index < timePeriods.length - 1 && <br/>} {/* Add a line break if it's not the last column */}
+                </>
+            );
         },
     }));
 
@@ -147,6 +153,10 @@ const Statistical = () => {
             title: 'Họ tên',
             dataIndex: 'name',
             key: 'name',
+            render: (text) => {
+                const username = text.split('@')[0];
+                return <span>{username}</span>;
+            },
         },
         ...dynamicColumns,
     ];
@@ -264,18 +274,25 @@ const Statistical = () => {
                                 <Table
                                     columns={columns}
                                     dataSource={dataSource}
-                                    scroll={{y: 360}}
                                     pagination={false}
-                                    footer={() => (
-                                        <div className="sticky-bottom-row">
-                                            <span>Tổng (giờ):</span>
-                                            {totalLearningHours.map((record, index) => (
-                                                <span key={index} style={{marginLeft: '8px'}}>
-          {record.totalLearningHours}
-        </span>
-                                            ))}
-                                        </div>
-                                    )}
+                                    bordered
+                                    scroll={{y: 360}}
+                                    summary={(pageData) => {
+                                        return (
+                                            <>
+                                                <Table.Summary.Row>
+                                                    <Table.Summary.Cell style={{fontWeight: 'bold'}}>Tổng
+                                                        (giờ)</Table.Summary.Cell>
+                                                    {totalLearningHours.map((record, index) => (
+                                                        <Table.Summary.Cell key={index}>
+                                                            <Text>{record.totalLearningHours}</Text>
+                                                        </Table.Summary.Cell>
+                                                    ))}
+                                                </Table.Summary.Row>
+                                            </>
+                                        );
+                                    }}
+                                    className="sticky-summary"
                                 />
                             )}
                         </div>
