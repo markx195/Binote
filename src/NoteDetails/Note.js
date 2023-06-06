@@ -17,11 +17,13 @@ import {showToast} from '../common/Toast'
 const storedAccessToken = localStorage.getItem('accessToken');
 
 
-const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem}) => {
+const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem, isInfoVisible}) => {
     const {t} = useTranslation()
     const handleKeyDownTitle = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
+            const textarea = document.getElementById('textarea'); // Add an id to the textarea element
+            textarea.focus();
         }
     };
     const [items, setItems] = useState(courseData);
@@ -274,11 +276,14 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 }}
                                 onKeyDown={handleKeyDownTitle}
                             />
-                            <div className="relative cursor-pointer">
-                                <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
-                            </div>
+                            {isInfoVisible && (
+                                <div className="relative cursor-pointer">
+                                    <InfoIcon className="absolute right-0 top-0 m-2" onClick={handleInfoAction}/>
+                                </div>
+                            )}
                         </div>
                         <textarea type="text"
+                                  id="textarea"
                                   className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
                                   style={{
                                       border: "none",

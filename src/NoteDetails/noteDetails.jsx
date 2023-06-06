@@ -12,6 +12,7 @@ const NoteDetails = ({handleSignOut}) => {
     const [courseData, setCourseData] = useState({notes: []});
     const [isVisible, setIsVisible] = useState(true);
     const [isCancelled, setIsCancelled] = useState(false);
+    const [isInfoVisible, setIsInfoVisible] = useState(false);
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -86,6 +87,7 @@ const NoteDetails = ({handleSignOut}) => {
     }
 
     const handleCancelClick = () => {
+        setIsInfoVisible(!isInfoVisible)
         setIsCancelled(true);
         setIsVisible(false);
     };
@@ -116,6 +118,7 @@ const NoteDetails = ({handleSignOut}) => {
                       idNoted={id.id}
                       setIsCancelled={setIsCancelled}
                       setIsVisible={setIsVisible}
+                      isInfoVisible={isInfoVisible}
                       onAddItem={handleAddItem}
                       onDeleteItem={handleDeleteItem}/>
             </div>
