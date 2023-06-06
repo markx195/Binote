@@ -140,7 +140,7 @@ const HomePage = (props) => {
                     </div>
                 </div>
                 {/*right avatar*/}
-                <div className="item-center py-2 cursor-pointer relative w-[200px]">
+                <div className="item-center py-2 cursor-pointer relative w-[200px] z-50">
                     <div className="flex justify-between" onClick={handleDropdownToggle} onBlur={handleBlur}
                          ref={dropdownRef}>
                         {userInfo && (

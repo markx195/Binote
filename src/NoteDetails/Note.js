@@ -17,7 +17,16 @@ import {showToast} from '../common/Toast'
 const storedAccessToken = localStorage.getItem('accessToken');
 
 
-const Note = ({courseData = [], idNoted, setIsVisible, setIsCancelled, onAddItem, onDeleteItem, isInfoVisible}) => {
+const Note = ({
+                  courseData = [],
+                  idNoted,
+                  setIsVisible,
+                  setIsCancelled,
+                  onAddItem,
+                  onDeleteItem,
+                  isInfoVisible,
+                  setIsInfoVisible
+              }) => {
     const {t} = useTranslation()
     const handleKeyDownTitle = (event) => {
         if (event.key === 'Enter') {
@@ -183,6 +192,7 @@ Tôi có thể áp dụng gì vào công việc:`,
     }
 
     const handleInfoAction = () => {
+        setIsInfoVisible(!isInfoVisible);
         setIsCancelled(false);
         setIsVisible(true);
     }

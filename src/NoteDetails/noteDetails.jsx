@@ -118,6 +118,7 @@ const NoteDetails = ({handleSignOut}) => {
                       idNoted={id.id}
                       setIsCancelled={setIsCancelled}
                       setIsVisible={setIsVisible}
+                      setIsInfoVisible={setIsInfoVisible}
                       isInfoVisible={isInfoVisible}
                       onAddItem={handleAddItem}
                       onDeleteItem={handleDeleteItem}/>
