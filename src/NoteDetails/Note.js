@@ -228,28 +228,25 @@ Tôi có thể áp dụng gì vào công việc:`,
                     </div>
                 </div>
                 <div className="overflow-y-scroll noteScroll">
-                    {items?.map(item => (
-                        <div key={item.id}
-                             onClick={() => handleItemClick(item)}
-                             className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''} p-6 text-left group`}
+                    {items?.map((item) => (
+                        <div
+                            key={item.id}
+                            onClick={() => handleItemClick(item)}
+                            className={`sm:w-full cursor-pointer bg-[#585858] hover:bg-[#979696] border-b-2 border-solid border-[#979696] ${
+                                item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''
+                            } p-6 text-left group`}
                         >
-                            <div
-                                className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
+                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
                             <div className="flex justify-between">
-                                <div
-                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}
-                                </div>
-                                <div className="group-hover:block hidden">
+                                <div className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}</div>
+                                <div className={checkDelete === item.id ? 'block' : 'group-hover:block hidden'}>
                                     {checkDelete === item.id ? (
                                         <>
-                                            <CheckIcon fontSize="small" sx={{color: grey[100]}}
-                                                       onClick={() => handleDeleteItem(item.id)}/>
-                                            <CloseIcon fontSize="small" sx={{color: grey[100]}}
-                                                       onClick={() => setCheckDelete(null)}/>
+                                            <CheckIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => handleDeleteItem(item.id)} />
+                                            <CloseIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => setCheckDelete(null)} />
                                         </>
                                     ) : (
-                                        <DeleteIcon fontSize="small" sx={{color: grey[100]}}
-                                                    onClick={() => setCheckDelete(item.id)}/>
+                                        <DeleteIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => setCheckDelete(item.id)} />
                                     )}
                                 </div>
                             </div>
