@@ -84,13 +84,13 @@ Tôi có thể áp dụng gì vào công việc:`,
         }
     }, [])
     const handleSelectTime = (time) => {
-        const changeTypeTime = parseInt(time.target.value);
+        const changeTypeTime = parseFloat(time.target.value);
         console.log(changeTypeTime)
         setSelectedTime(changeTypeTime);
         clearTimeout(timeoutId);
         // Set a new timeout for 3 seconds
         const newTimeoutId = setTimeout(() => {
-            if (time) {
+            if (changeTypeTime) {
                 const dataToUpdate = {learning_hour: changeTypeTime};
                 updateItemData(selectedItemId, dataToUpdate)
                     .then((updatedItem) => {
