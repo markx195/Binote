@@ -24,8 +24,8 @@ const Statistical = () => {
     const [courses, setCourses] = useState([]);
     const [selectedValue, setSelectedValue] = useState('individual');
     const [type, setType] = useState('month');
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState(new Date("2023-01-01").toISOString());
+    const [endDate, setEndDate] = useState(new Date("2023-12-31").toISOString());
     const [dataSource, setDataSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
@@ -76,12 +76,12 @@ const Statistical = () => {
         }
     };
 
-
     const handleRadioChange = (event) => {
         setType(event.target.value);
     };
 
     useEffect(() => {
+        sendDataTable()
         handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
         const fetchData = async () => {
             try {
@@ -196,6 +196,7 @@ const Statistical = () => {
                 </div>
                 {/*Body*/}
                 <div className="flex pt-[34px]">
+                    {/*featuredCourse*/}
                     <div className="w-4/12">
                         <p className="text-left font-bold pb-4">{t("featuredCourse")}</p>
                         <div className="rounded-lg" style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
@@ -215,6 +216,7 @@ const Statistical = () => {
                             }
                         </div>
                     </div>
+                    {/*learningHoursStatistics*/}
                     <div className="w-8/12 ml-6">
                         <div className="flex items-center">
                             <p className="text-left flex-grow font-bold pb-4">{t("learningHoursStatistics")}</p>
