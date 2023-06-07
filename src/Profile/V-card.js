@@ -74,8 +74,7 @@ const Vcard = () => {
                     const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
 
                     const response = await fetch(apiUrl, {
-                        method: 'GET',
-                        headers: {
+                        method: 'GET', headers: {
                             'Authorization': `Bearer ${storedAccessToken}`
                         }
                     });
@@ -108,9 +107,18 @@ const Vcard = () => {
         setIsDarkMode(!isDarkMode);
     };
 
+    const [showProfileImage, setShowProfileImage] = useState(true);
+    const [showQRCode, setShowQRCode] = useState(false);
+
+    const toggleContent = () => {
+        setShowProfileImage(!showProfileImage);
+        setShowQRCode(!showQRCode);
+    };
+
     return (
         <div className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-full">
-            <div className="flex flex-col items-center rounded-lg p-4 shadow-md w-[400px] bg-white pt-10">
+            <div
+                className={`flex flex-col items-center rounded-lg p-4 shadow-md w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -118,17 +126,13 @@ const Vcard = () => {
                      }}>
                     <div className="flex justify-between w-full mb-2">
                         <div className="flex pt-3">
-                            {isDarkMode ? (
-                                <WbSunnyIcon className="bg-[#E3B100] rounded-full"
-                                             onClick={toggleDarkMode}
-                                             style={{color: 'white'}}
-                                />
-                            ) : (
-                                <NightlightRoundIcon className="bg-[#8303E8] rounded-full"
-                                                     onClick={toggleDarkMode}
-                                                     style={{color: 'white'}}
-                                />
-                            )}
+                            {isDarkMode ? (<WbSunnyIcon className="bg-[#E3B100] rounded-full"
+                                                        onClick={toggleDarkMode}
+                                                        style={{color: 'white'}}
+                            />) : (<NightlightRoundIcon className="bg-[#8303E8] rounded-full"
+                                                        onClick={toggleDarkMode}
+                                                        style={{color: 'white'}}
+                            />)}
                         </div>
                         <div>
                             <button
@@ -162,24 +166,47 @@ const Vcard = () => {
                             </Menu>
                         </div>
                     </div>
-                    <img
+                    {showProfileImage && (<img
                         src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
                         alt="Profile"
                         className="w-40 h-40 rounded-full mb-2"
-                    />
+                    />)}
+                    {showQRCode && (<img
+                        src="path/to/your/QR/code.png"
+                        alt="Profile"
+                        className="w-40 h-40 rounded-full mb-2"
+                    />)}
                     <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">John Doe</div>
-                    <div className="text-base text-white pb-[11px]">Software Engineer</div>
+                    <div className="text-base text-white">Software Engineer</div>
                     {/* Add your slide component here */}
+                    <div className="flex justify-center py-[11px]">
+                        <div
+                            className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
+                            onClick={() => {
+                                setShowProfileImage(true);
+                                setShowQRCode(false);
+                            }}
+                        ></div>
+                        <div
+                            className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
+                            onClick={() => {
+                                setShowProfileImage(false);
+                                setShowQRCode(true);
+                            }}
+                        ></div>
+                    </div>
+                    {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
                         <button
-                            className="w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none">
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                             {t("call")}
                         </button>
-                        <button className="w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none">
+                        <button
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                             Email
                         </button>
                         <button
-                            className="w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none">
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                             {t("add")}
                         </button>
                     </div>
@@ -229,8 +256,7 @@ const Vcard = () => {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        </div>);
 };
 
 export default Vcard;

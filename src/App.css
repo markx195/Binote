@@ -139,4 +139,13 @@ body::-webkit-scrollbar {
     z-index: 1;
 }
 
-/*Vcard colo mode*/
+/*Vcard color mode*/
+.light-mode {
+    background-color: white;
+}
+
+/* Dark Mode */
+.dark-mode {
+    background-color: #3E3A3A;
+    color: white;
+}
