@@ -30,6 +30,7 @@ const Statistical = () => {
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
+    const [columnName, setColumnName] = useState("")
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -54,15 +55,17 @@ const Statistical = () => {
                     />
                 );
             case 'quarter':
-                return <RangePicker className="mr-6" picker="quarter"/>;
+                return <RangePicker className="mr-6" picker="quarter" style={{width: '100%'}}
+                                    onChange={handleDateChange}/>;
             case 'year':
-                return <RangePicker className="mr-6" picker="year"/>;
+                return <RangePicker className="mr-6" picker="year" style={{width: '100%'}}
+                                    onChange={handleDateChange}/>;
             default:
                 return null;
         }
     };
 
-    const handleDateChange = (date) => {
+    const handleDateChange = (date, dateString) => {
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
             const endDate = new Date(date[1]);
@@ -164,7 +167,7 @@ const Statistical = () => {
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
-                {/*Header*/}
+                {/*Header//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                 <div className="grid gap-[24px] md:grid-cols-3">
                     <div
                         className="max-w-full rounded-lg overflow-hidden border border-solid border-blue-500 shadow-lg">
@@ -194,9 +197,9 @@ const Statistical = () => {
                         </div>
                     </div>
                 </div>
-                {/*Body*/}
+                {/*Body//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                 <div className="flex pt-[34px]">
-                    {/*featuredCourse*/}
+                    {/*featuredCourse//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                     <div className="w-4/12">
                         <p className="text-left font-bold pb-4">{t("featuredCourse")}</p>
                         <div className="rounded-lg" style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
@@ -216,7 +219,7 @@ const Statistical = () => {
                             }
                         </div>
                     </div>
-                    {/*learningHoursStatistics*/}
+                    {/*learningHoursStatistics//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                     <div className="w-8/12 ml-6">
                         <div className="flex items-center">
                             <p className="text-left flex-grow font-bold pb-4">{t("learningHoursStatistics")}</p>
@@ -272,31 +275,29 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            {type === 'month' && (
-                                <Table
-                                    columns={columns}
-                                    dataSource={dataSource}
-                                    pagination={false}
-                                    bordered
-                                    scroll={{y: 360}}
-                                    summary={(pageData) => {
-                                        return (
-                                            <>
-                                                <Table.Summary.Row>
-                                                    <Table.Summary.Cell style={{fontWeight: 'bold'}}>Tổng
-                                                        (giờ)</Table.Summary.Cell>
-                                                    {totalLearningHours.map((record, index) => (
-                                                        <Table.Summary.Cell key={index}>
-                                                            <Text>{record.totalLearningHours}</Text>
-                                                        </Table.Summary.Cell>
-                                                    ))}
-                                                </Table.Summary.Row>
-                                            </>
-                                        );
-                                    }}
-                                    className="sticky-summary"
-                                />
-                            )}
+                            <Table
+                                columns={columns}
+                                dataSource={dataSource}
+                                pagination={false}
+                                bordered
+                                scroll={{y: 360}}
+                                summary={(pageData) => {
+                                    return (
+                                        <>
+                                            <Table.Summary.Row>
+                                                <Table.Summary.Cell style={{fontWeight: 'bold'}}>Tổng
+                                                    (giờ)</Table.Summary.Cell>
+                                                {totalLearningHours.map((record, index) => (
+                                                    <Table.Summary.Cell key={index}>
+                                                        <Text>{record.totalLearningHours}</Text>
+                                                    </Table.Summary.Cell>
+                                                ))}
+                                            </Table.Summary.Row>
+                                        </>
+                                    );
+                                }}
+                                className="sticky-summary"
+                            />
                         </div>
                     </div>
                 </div>

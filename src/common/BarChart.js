@@ -6,9 +6,7 @@ const BarChart = ({labels, data}) => {
     const chartRef = useRef(null);
 
     useEffect(() => {
-        console.log(chartRef.current);
         let chartInstance = null;
-
         const createChart = (labels, data) => {
             const ctx = chartRef.current.getContext('2d');
             chartInstance = new Chart(ctx, {
