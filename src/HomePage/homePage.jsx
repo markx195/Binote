@@ -97,6 +97,10 @@ const HomePage = (props) => {
         navigate("/Profile");
     }
 
+    const handleVcard = () => {
+        navigate("/V-card");
+    }
+
     const handleBlur = () => {
         setTimeout(() => {
             setShowDropdown(false);
@@ -160,6 +164,11 @@ const HomePage = (props) => {
                                  onClick={handleProfile}>
                                 <PersonIcon/>
                                 <span className="pl-2">{t("profile")}</span>
+                            </div>
+                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
+                                 onClick={handleVcard}>
+                                <PersonIcon/>
+                                <span className="pl-2">V-card</span>
                             </div>
                             <div
                                 className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left"
