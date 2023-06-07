@@ -25,5 +25,10 @@
   "team": "Team",
   "company": "Company",
   "confirm": "Confirm",
-  "name": "Name"
+  "name": "Name",
+  "call": "Call",
+  "add": "Add",
+  "tell": "Phone number",
+  "department": "Department",
+  "location": "Location"
 }

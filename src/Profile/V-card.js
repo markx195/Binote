@@ -9,9 +9,12 @@ import BusinessIcon from '@mui/icons-material/Business';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LanguageIcon from '@mui/icons-material/Language';
+import {useTranslation} from "react-i18next";
+import i18next from "i18next";
+import "../App.css"
 
 const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_63_734)">
+    <g clipPath="url(#clip0_63_734)">
         <path
             d="M5.50005 15.075V11.625L2.92505 13.525C3.65005 14.2 4.52505 14.725 5.50005 15.075ZM10.5 15.075C11.475 14.725 12.35 14.2 13.075 13.525L10.5 11.6V15.075ZM0.925049 10.5C1.00005 10.75 1.10005 10.975 1.22505 11.225L2.20005 10.5H0.925049ZM13.8 10.5L14.775 11.225C14.875 11 14.975 10.75 15.075 10.5H13.8Z"
             fill="#2A5F9E"/>
@@ -42,7 +45,7 @@ const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns
 </svg>
 
 const vnLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_63_730)">
+    <g clipPath="url(#clip0_63_730)">
         <path
             d="M8 15.5C12.1421 15.5 15.5 12.1421 15.5 8C15.5 3.85786 12.1421 0.5 8 0.5C3.85786 0.5 0.5 3.85786 0.5 8C0.5 12.1421 3.85786 15.5 8 15.5Z"
             fill="#F42F4C"/>
@@ -57,10 +60,11 @@ const vnLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns
 </svg>
 
 const Vcard = () => {
+    const {i18n, t} = useTranslation();
     const storedAccessToken = localStorage.getItem('accessToken');
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedLanguage, setSelectedLanguage] = useState('Tiếng Việt');
+    const [selectedLanguage, setSelectedLanguage] = useState("Tiếng việt");
     const [data, setData] = useState([])
 
     useEffect(() => {
@@ -86,17 +90,18 @@ const Vcard = () => {
         }
     }, [storedAccessToken]);
 
+    const handleLanguageSelect = (language) => {
+        setSelectedLanguage(language);
+        i18next.changeLanguage(language);
+        handleMenuClose();
+    };
+
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-    };
-
-    const handleLanguageSelect = (language) => {
-        setSelectedLanguage(language);
-        handleMenuClose();
     };
 
     const toggleDarkMode = () => {
@@ -125,15 +130,16 @@ const Vcard = () => {
                                 />
                             )}
                         </div>
-
                         <div>
                             <button
                                 className="text-white px-4 py-2 rounded border-none flex items-center pt-3 px-0"
                                 onClick={handleMenuOpen}
                             >
-                                <div className="mr-1">{selectedLanguage}</div>
+                                <div className="mr-1">
+                                    {selectedLanguage === "en" ? "English" : "Tiếng việt"}
+                                </div>
                                 <div className="flex items-center">
-                                    {vnLogo}
+                                    {selectedLanguage === "en" ? enLogo : vnLogo}
                                 </div>
                             </button>
                             <Menu
@@ -142,11 +148,14 @@ const Vcard = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleMenuClose}
                             >
-                                <MenuItem onClick={() => handleLanguageSelect('Tiếng Việt')}>
+                                <MenuItem onClick={() => handleLanguageSelect("vn")}>
                                     <div className="mr-1">Tiếng Việt</div>
                                     {vnLogo}
                                 </MenuItem>
-                                <MenuItem onClick={() => handleLanguageSelect('English')} className="text-[#2B3F6C]">
+                                <MenuItem
+                                    onClick={() => handleLanguageSelect("en")}
+                                    className="text-[#2B3F6C]"
+                                >
                                     <div className="mr-1">English</div>
                                     {enLogo}
                                 </MenuItem>
@@ -164,14 +173,14 @@ const Vcard = () => {
                     <div className="flex pb-6 w-full">
                         <button
                             className="w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none">
-                            Gọi
+                            {t("call")}
                         </button>
                         <button className="w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none">
                             Email
                         </button>
                         <button
                             className="w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none">
-                            Thêm
+                            {t("add")}
                         </button>
                     </div>
                 </div>
@@ -186,28 +195,28 @@ const Vcard = () => {
                     <div className="flex items-center pb-4">
                         <EmailIcon/>
                         <div className="ml-2">
-                            <div className="text-left">Điện thoại</div>
+                            <div className="text-left">{t("tell")}</div>
                             {data.phone_number}
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <BusinessIcon/>
                         <div className="ml-2">
-                            <div className="text-left">Công ty</div>
+                            <div className="text-left">{t("company")}</div>
                             Biplus Vietnam Software Solution JSC
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <BusinessCenterIcon/>
                         <div className="ml-2">
-                            <div className="text-left">Bộ phận</div>
+                            <div className="text-left">{t("department")}</div>
                             {data.department}
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <LocationOnIcon/>
                         <div className="ml-2">
-                            <div className="text-left">Văn phòng</div>
+                            <div className="text-left">{t("location")}</div>
                             {data.location}
                         </div>
                     </div>
@@ -219,7 +228,6 @@ const Vcard = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );

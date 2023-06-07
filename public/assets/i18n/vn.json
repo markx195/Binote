@@ -25,5 +25,10 @@
   "team": "Đội nhóm",
   "company": "Công ty",
   "confirm": "Xác nhận",
-  "name": "Họ tên"
+  "name": "Họ tên",
+  "call": "Gọi",
+  "add": "Thêm",
+  "tell": "Điện thoại",
+  "department": "Bộ phận",
+  "location": "Văn phòng"
 }
