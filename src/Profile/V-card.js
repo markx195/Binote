@@ -73,7 +73,7 @@ const Vcard = () => {
     const [data, setData] = useState([])
     const params = useParams();
     const id = params.id;
-    console.log(1212, id)
+    const imgQr = `http://192.168.3.150:90/V-card/${id}`;
 
     useEffect(() => {
         if (storedAccessToken) {
@@ -82,9 +82,7 @@ const Vcard = () => {
                     const apiUrl = `http://192.168.3.150:8055/users/${id}`;
 
                     const response = await fetch(apiUrl, {
-                        method: 'GET', headers: {
-                            'Authorization': `Bearer ${storedAccessToken}`
-                        }
+                        method: 'GET'
                     });
                     const data = await response.json();
                     setData(data.data)
@@ -117,11 +115,6 @@ const Vcard = () => {
 
     const [showProfileImage, setShowProfileImage] = useState(true);
     const [showQRCode, setShowQRCode] = useState(false);
-
-    const toggleContent = () => {
-        setShowProfileImage(!showProfileImage);
-        setShowQRCode(!showQRCode);
-    };
 
     return (
         <div className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-full">
@@ -180,7 +173,7 @@ const Vcard = () => {
                         className="w-40 h-40 rounded-full mb-2"
                     />)}
                     {showQRCode && (
-                        <QRCode className="rounded-lg" value="http://192.168.3.150:90/V-card/{id}"/>
+                        <QRCode className="rounded-lg w-40 h-40" value={imgQr}/>
                     )}
                     <div
                         className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}</div>
