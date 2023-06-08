@@ -76,24 +76,22 @@ const Vcard = () => {
     const imgQr = `http://192.168.3.150:90/V-card/${id}`;
 
     useEffect(() => {
-        if (storedAccessToken) {
-            const fetchData = async () => {
-                try {
-                    const apiUrl = `http://192.168.3.150:8055/users/${id}`;
+        const fetchData = async () => {
+            try {
+                const apiUrl = `http://192.168.3.150:8055/users/${id}`;
 
-                    const response = await fetch(apiUrl, {
-                        method: 'GET'
-                    });
-                    const data = await response.json();
-                    setData(data.data)
-                } catch (error) {
-                    console.error(error);
-                }
-            };
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                });
+                const data = await response.json();
+                setData(data.data)
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-            fetchData();
-        }
-    }, [storedAccessToken]);
+        fetchData();
+    }, []);
 
     const handleLanguageSelect = (language) => {
         setSelectedLanguage(language);
