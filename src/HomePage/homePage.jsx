@@ -100,7 +100,7 @@ const HomePage = (props) => {
     }
 
     const handleVcard = () => {
-        navigate(`/vCard/${userId}`);
+        navigate(`/bicard/${userId}`);
     }
 
     const handleBlur = () => {
@@ -170,7 +170,7 @@ const HomePage = (props) => {
                             <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
                                  onClick={handleVcard}>
                                 <PersonIcon/>
-                                <span className="pl-2">V-card</span>
+                                <span className="pl-2">BiCard</span>
                             </div>
                             <div
                                 className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left"
