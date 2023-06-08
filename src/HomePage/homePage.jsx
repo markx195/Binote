@@ -100,7 +100,7 @@ const HomePage = (props) => {
     }
 
     const handleVcard = () => {
-        navigate(`/V-card/${userId}`);
+        navigate(`/vCard/${userId}`);
     }
 
     const handleBlur = () => {

@@ -69,7 +69,7 @@ const Vcard = () => {
     const storedAccessToken = localStorage.getItem('accessToken');
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedLanguage, setSelectedLanguage] = useState("Tiếng việt");
+    const [selectedLanguage, setSelectedLanguage] = useState("Tiếng Việt");
     const [data, setData] = useState([])
     const params = useParams();
     const id = params.id;
@@ -124,7 +124,7 @@ const Vcard = () => {
                          backgroundSize: '100% auto'
                      }}>
                     <div className="flex justify-between w-full mb-2">
-                        <div className="flex pt-3">
+                        <div className="flex pt-4">
                             {isDarkMode ? (<WbSunnyIcon className="bg-[#E3B100] rounded-full"
                                                         onClick={toggleDarkMode}
                                                         style={{color: 'white'}}
@@ -135,7 +135,7 @@ const Vcard = () => {
                         </div>
                         <div>
                             <button
-                                className="text-white px-4 py-2 rounded border-none flex items-center pt-3 px-0"
+                                className="text-white py-2 rounded border-none flex items-center pt-4 px-0"
                                 onClick={handleMenuOpen}
                             >
                                 <div className="mr-1">
@@ -171,7 +171,11 @@ const Vcard = () => {
                         className="w-40 h-40 rounded-full mb-2"
                     />)}
                     {showQRCode && (
-                        <QRCode className="rounded-lg w-40 h-40" value={imgQr}/>
+                        <QRCode
+                            className="rounded-lg"
+                            value={imgQr}
+                            size={168}
+                        />
                     )}
                     <div
                         className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}</div>
@@ -226,45 +230,46 @@ const Vcard = () => {
                 </div>
                 <div className="pt-8">
                     <div className="flex items-center pb-4">
-                        <PhoneIcon/>
+                        <PhoneIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">Email</div>
-                            {data.email}
+                            <div className="text-left font-semibold text-[#2B3F6C]">Email</div>
+                            <span className="text-[#2B3F6C]">{data.email}</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <EmailIcon/>
+                        <EmailIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">{t("tell")}</div>
-                            {data.phone_number}
+                            <div className="text-left font-semibold text-[#2B3F6C]">{t("tell")}</div>
+                            <span className="text-[#2B3F6C]">{data.phone_number}</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessIcon/>
+                        <BusinessIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">{t("company")}</div>
-                            Biplus Vietnam Software Solution JSC
+                            <div className="text-left font-semibold text-[#2B3F6C]">{t("company")}</div>
+                            <span className="text-[#2B3F6C]">Biplus Vietnam Software Solution JSC</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessCenterIcon/>
+                        <BusinessCenterIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">{t("department")}</div>
-                            {data.department}
+                            <div className="text-left font-semibold text-[#2B3F6C]">{t("department")}</div>
+                            <span className="text-[#2B3F6C]">{data.department}</span>
+
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <LocationOnIcon/>
+                        <LocationOnIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">{t("location")}</div>
-                            {data.location}
+                            <div className="text-left font-semibold text-[#2B3F6C]">{t("location")}</div>
+                            <span className="text-[#2B3F6C]">{data.location}</span>
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <LanguageIcon/>
+                        <LanguageIcon style={{ color: '#2B3F6C' }}/>
                         <div className="ml-2">
-                            <div className="text-left">Website</div>
-                            https://biplus.com.vn/
+                            <div className="text-left font-semibold text-[#2B3F6C]">Website</div>
+                            <span className="text-[#2B3F6C]">https://biplus.com.vn/</span>
                         </div>
                     </div>
                 </div>

@@ -34,7 +34,7 @@ function App() {
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
                 <Route path='/Profile' element={<Profile/>}/>
-                <Route path='/V-card/:id' element={<VCard/>}/>
+                <Route path='/vCard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>
         </div>
