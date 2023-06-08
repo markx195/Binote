@@ -452,14 +452,14 @@ const Vcard = () => {
                         <BusinessCenterIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("department")}</div>
-                            <span className="text-left">{data.department}</span>
+                            <div className="text-left">{data.department}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <LocationOnIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("location")}</div>
-                            <span className="break-all text-left">{data.location}</span>
+                            <div className="text-left line-clamp-2">{t("Tầng 3, Bảo Anh Building, số 85 P.Trần Thái Tông, Dịch Vọng, Cầu Giấy, Hà Nội")}</div>
                         </div>
                     </div>
                     <div className="flex items-center">
