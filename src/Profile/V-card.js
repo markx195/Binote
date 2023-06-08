@@ -16,6 +16,7 @@ import "./profile.css"
 import {useParams} from 'react-router-dom';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
+import Slider from 'infinite-react-carousel';
 
 const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_63_734)">
@@ -139,8 +140,6 @@ const Vcard = () => {
         </defs>
     </svg>
 
-    const [showProfileImage, setShowProfileImage] = useState(true);
-    const [showQRCode, setShowQRCode] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     useEffect(() => {
         const handleResize = () => {
@@ -156,172 +155,18 @@ const Vcard = () => {
         };
     }, []);
 
-    return (
-        <>
-            {!isMobile && (
-                <div className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito">
-                    <div
-                        className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                        <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
-                             style={{
-                                 backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
-                                 backgroundSize: '100% auto'
-                             }}>
-                            <div className="flex justify-between w-full mb-2">
-                                <div className="flex pt-4">
-                                    {isDarkMode ? (sunLogo) : (moonLogo)}
-                                </div>
-                                <div>
-                                    <button
-                                        className="text-white py-2 rounded border-none flex items-center py-4 px-0"
-                                        onClick={handleMenuOpen}
-                                    >
-                                        <div className="mr-1">
-                                            {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
-                                        </div>
-                                        <div className="flex items-center">
-                                            {selectedLanguage === "en" ? enLogo : vnLogo}
-                                        </div>
-                                    </button>
-                                    <Menu
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleMenuClose}
-                                    >
-                                        <MenuItem onClick={() => handleLanguageSelect("vn")}>
-                                            <div className="mr-1">Tiếng Việt</div>
-                                            {vnLogo}
-                                        </MenuItem>
-                                        <MenuItem
-                                            onClick={() => handleLanguageSelect("en")}
-                                            className="text-[#2B3F6C]"
-                                        >
-                                            <div className="mr-1">English</div>
-                                            {enLogo}
-                                        </MenuItem>
-                                    </Menu>
-                                </div>
-                            </div>
-                            {showProfileImage && (<img
-                                    src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
-                                    alt="Profile"
-                                    className="w-40 h-40 rounded-full mb-2 border-4 border-grey"
-                                />
-                            )}
-                            {showQRCode && (
-                                <div className="border-8 border-white rounded-lg">
-                                    <QRCode
-                                        value={imgQr}
-                                        size={152}
-                                    />
-                                </div>
-                            )}
-                            <div
-                                className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}</div>
-                            <div className="text-base text-white">{data.position}</div>
-                            {/* Add your slide component here */}
-                            <div className="flex justify-center py-[11px]">
-                                <div
-                                    className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
-                                    onClick={() => {
-                                        setShowProfileImage(true);
-                                        setShowQRCode(false);
-                                    }}
-                                ></div>
-                                <div
-                                    className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
-                                    onClick={() => {
-                                        setShowProfileImage(false);
-                                        setShowQRCode(true);
-                                    }}
-                                ></div>
-                            </div>
-                            {/* End your slide component here */}
-                            <div className="flex pb-6 w-full">
-                                <button
-                                    className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${
-                                        isDarkMode ? 'dark-mode' : 'light-mode'
-                                    }`}
-                                    onClick={() => {
-                                        window.location.href = `tel:${data.phone_number}`;
-                                    }}
-                                >
-                                    <PhoneIcon className="mr-2"/>
-                                    <span>{t("call")}</span>
-                                </button>
-                                <button
-                                    className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${
-                                        isDarkMode ? 'dark-mode' : 'light-mode'
-                                    }`}
-                                >
-                                    <EmailIcon className="mr-2"/>
-                                    <a href="mailto:${data.email}">Email</a>
-                                </button>
-                                <button
-                                    className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${
-                                        isDarkMode ? 'dark-mode' : 'light-mode'
-                                    }`}
-                                >
-                                    <PersonAddAltIcon className="mr-2"/>
-                                    <span>{t("add")}</span>
-                                </button>
-                            </div>
-                        </div>
-                        {/*Info*/}
-                        <div className="pt-8 px-6">
-                            <div className="flex items-center pb-4">
-                                <PhoneIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">Email</div>
-                                    <span className="break-all">{data.email}</span>
-                                </div>
-                            </div>
-                            <div className="flex items-center pb-4">
-                                <EmailIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">{t("tell")}</div>
-                                    <span>{data.phone_number}</span>
-                                </div>
-                            </div>
-                            <div className="flex items-center pb-4">
-                                <BusinessIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">{t("company")}</div>
-                                    <span>Biplus Vietnam Software Solution JSC</span>
-                                </div>
-                            </div>
-                            <div className="flex items-center pb-4">
-                                <BusinessCenterIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">{t("department")}</div>
-                                    <div className="text-left">{data.department}</div>
-                                </div>
-                            </div>
-                            <div className="flex items-center pb-4">
-                                <LocationOnIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">{t("location")}</div>
-                                    <div className="text-left line-clamp-2">{data.location}</div>
-                                </div>
-                            </div>
-                            <div className="flex items-center">
-                                <LanguageIcon/>
-                                <div className="ml-2">
-                                    <div className="text-left font-semibold">Website</div>
-                                    <span>https://biplus.com.vn/</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>)}
-            {/*mobile display*/}
-            {isMobile && (
-            <div className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+    const settings = {
+        arrows: false, arrowsBlock: false, wheel: true, dots: true, duration: 300
+    };
+    return (<>
+        {!isMobile && (<div
+            className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito">
+            <div
+                className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
-                         backgroundSize: '100% auto'
+                         backgroundSize: 'cover'
                      }}>
                     <div className="flex justify-between w-full mb-2">
                         <div className="flex pt-4">
@@ -359,46 +204,43 @@ const Vcard = () => {
                             </Menu>
                         </div>
                     </div>
-                    {showProfileImage && (<img
-                            src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
-                            alt="Profile"
-                            className="w-40 h-40 rounded-full mb-2 border-4 border-grey"
-                        />
-                    )}
-                    {showQRCode && (
-                        <div className="border-8 border-white rounded-lg">
-                            <QRCode
-                                value={imgQr}
-                                size={152}
-                            />
-                        </div>
-                    )}
-                    <div
-                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}</div>
-                    <div className="text-base text-white">{data.position}</div>
-                    {/* Add your slide component here */}
-                    <div className="flex justify-center py-[11px]">
-                        <div
-                            className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
-                            onClick={() => {
-                                setShowProfileImage(true);
-                                setShowQRCode(false);
-                            }}
-                        ></div>
-                        <div
-                            className="w-2 h-2 rounded-full bg-[#FA9A85] mx-1 cursor-pointer"
-                            onClick={() => {
-                                setShowProfileImage(false);
-                                setShowQRCode(true);
-                            }}
-                        ></div>
+                    <div className="w-[170px]">
+                        <Slider {...settings}>
+                            <div className="slider-item">
+                                <div className="image-container">
+                                    <img
+                                        src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
+                                        alt="Profile"
+                                        className="w-full h-auto rounded-full mb-2 border-4 border-grey"
+                                    />
+                                </div>
+                                <div className="text-container">
+                                    <div
+                                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                    </div>
+                                    <div className="text-base text-white">{data.position}</div>
+                                </div>
+                            </div>
+                            <div className="slider-item">
+                                <div className="image-container border-8 border-white rounded-lg">
+                                    <QRCode
+                                        value={imgQr}
+                                        size={152}
+                                    />
+                                </div>
+                                <div className="text-container">
+                                    <div
+                                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                    </div>
+                                    <div className="text-base text-white">{data.position}</div>
+                                </div>
+                            </div>
+                        </Slider>
                     </div>
                     {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${
-                                isDarkMode ? 'dark-mode' : 'light-mode'
-                            }`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             onClick={() => {
                                 window.location.href = `tel:${data.phone_number}`;
                             }}
@@ -407,17 +249,13 @@ const Vcard = () => {
                             <span>{t("call")}</span>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${
-                                isDarkMode ? 'dark-mode' : 'light-mode'
-                            }`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         >
                             <EmailIcon className="mr-2"/>
                             <a href="mailto:${data.email}">Email</a>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${
-                                isDarkMode ? 'dark-mode' : 'light-mode'
-                            }`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         >
                             <PersonAddAltIcon className="mr-2"/>
                             <span>{t("add")}</span>
@@ -469,9 +307,157 @@ const Vcard = () => {
                         </div>
                     </div>
                 </div>
-            </div>)}
-        </>
-    );
+            </div>
+        </div>)}
+        {/*mobile display*/}
+        {isMobile && (<div
+            className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+            <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
+                 style={{
+                     backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`, backgroundSize: 'cover'
+                 }}>
+                <div className="flex justify-between w-full mb-2">
+                    <div className="flex pt-4">
+                        {isDarkMode ? (sunLogo) : (moonLogo)}
+                    </div>
+                    <div>
+                        <button
+                            className="text-white py-2 rounded border-none flex items-center py-4 px-0"
+                            onClick={handleMenuOpen}
+                        >
+                            <div className="mr-1">
+                                {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
+                            </div>
+                            <div className="flex items-center">
+                                {selectedLanguage === "en" ? enLogo : vnLogo}
+                            </div>
+                        </button>
+                        <Menu
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                        >
+                            <MenuItem onClick={() => handleLanguageSelect("vn")}>
+                                <div className="mr-1">Tiếng Việt</div>
+                                {vnLogo}
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => handleLanguageSelect("en")}
+                                className="text-[#2B3F6C]"
+                            >
+                                <div className="mr-1">English</div>
+                                {enLogo}
+                            </MenuItem>
+                        </Menu>
+                    </div>
+                </div>
+                {/* Start your slide component here */}
+                <div className="w-[170px]">
+                    <Slider {...settings}>
+                        <div className="slider-item">
+                            <div className="image-container">
+                                <img
+                                    src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
+                                    alt="Profile"
+                                    className="w-full h-auto rounded-full mb-2 border-4 border-grey"
+                                />
+                            </div>
+                            <div className="text-container">
+                                <div
+                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                </div>
+                                <div className="text-base text-white">{data.position}</div>
+                            </div>
+                        </div>
+                        <div className="slider-item">
+                            <div className="image-container border-8 border-white rounded-lg">
+                                <QRCode
+                                    value={imgQr}
+                                    size={152}
+                                />
+                            </div>
+                            <div className="text-container">
+                                <div
+                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                </div>
+                                <div className="text-base text-white">{data.position}</div>
+                            </div>
+                        </div>
+                    </Slider>
+                </div>
+                {/* End your slide component here */}
+                <div className="flex pb-6 w-full">
+                    <button
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        onClick={() => {
+                            window.location.href = `tel:${data.phone_number}`;
+                        }}
+                    >
+                        <PhoneIcon className="mr-2"/>
+                        <span>{t("call")}</span>
+                    </button>
+                    <button
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                    >
+                        <EmailIcon className="mr-2"/>
+                        <a href="mailto:${data.email}">Email</a>
+                    </button>
+                    <button
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                    >
+                        <PersonAddAltIcon className="mr-2"/>
+                        <span>{t("add")}</span>
+                    </button>
+                </div>
+            </div>
+            {/*Info*/}
+            <div className="pt-8 px-6">
+                <div className="flex items-center pb-4">
+                    <PhoneIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">Email</div>
+                        <span className="break-all">{data.email}</span>
+                    </div>
+                </div>
+                <div className="flex items-center pb-4">
+                    <EmailIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">{t("tell")}</div>
+                        <span>{data.phone_number}</span>
+                    </div>
+                </div>
+                <div className="flex items-center pb-4">
+                    <BusinessIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">{t("company")}</div>
+                        <span>Biplus Vietnam Software Solution JSC</span>
+                    </div>
+                </div>
+                <div className="flex items-center pb-4">
+                    <BusinessCenterIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">{t("department")}</div>
+                        <div className="text-left">{data.department}</div>
+                    </div>
+                </div>
+                <div className="flex items-center pb-4">
+                    <LocationOnIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">{t("location")}</div>
+                        <div className="text-left line-clamp-2">{data.location}</div>
+                    </div>
+                </div>
+                <div className="flex items-center">
+                    <LanguageIcon/>
+                    <div className="ml-2">
+                        <div className="text-left font-semibold">Website</div>
+                        <span>https://biplus.com.vn/</span>
+                    </div>
+                </div>
+            </div>
+        </div>)}
+    </>);
 };
 
 export default Vcard;

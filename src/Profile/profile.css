@@ -14,3 +14,27 @@ button:active {
 .font-nunito {
     font-family: 'Nunito', sans-serif;
 }
+
+.slider-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 170px; /* Adjust the height as needed */
+}
+
+.slider-item .image-container,
+.slider-item .image-container img,
+.slider-item .image-container div {
+    height: 100%;
+    width: auto;
+}
+
+.carousel-dots{
+    margin-bottom: 7px !important;
+    margin-top: unset !important;
+}
+
+.slick-dots li button:before {
+    color: #FA9A85;
+}

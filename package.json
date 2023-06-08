@@ -27,6 +27,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.2.1",
     "i18next-xhr-backend": "^3.2.2",
+    "infinite-react-carousel": "^1.2.11",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "qrcode.react": "^3.1.0",
