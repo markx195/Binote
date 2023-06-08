@@ -12,6 +12,11 @@ import LanguageIcon from '@mui/icons-material/Language';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import "../App.css"
+import "./profile.css"
+import {useParams} from 'react-router-dom';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import QRCode from 'qrcode.react';
+
 
 const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_63_734)">
@@ -66,12 +71,15 @@ const Vcard = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState("Tiếng việt");
     const [data, setData] = useState([])
+    const params = useParams();
+    const id = params.id;
+    console.log(1212, id)
 
     useEffect(() => {
         if (storedAccessToken) {
             const fetchData = async () => {
                 try {
-                    const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+                    const apiUrl = `http://192.168.3.150:8055/users/${id}`;
 
                     const response = await fetch(apiUrl, {
                         method: 'GET', headers: {
@@ -171,13 +179,12 @@ const Vcard = () => {
                         alt="Profile"
                         className="w-40 h-40 rounded-full mb-2"
                     />)}
-                    {showQRCode && (<img
-                        src="path/to/your/QR/code.png"
-                        alt="Profile"
-                        className="w-40 h-40 rounded-full mb-2"
-                    />)}
-                    <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">John Doe</div>
-                    <div className="text-base text-white">Software Engineer</div>
+                    {showQRCode && (
+                        <QRCode className="rounded-lg" value="http://192.168.3.150:90/V-card/{id}"/>
+                    )}
+                    <div
+                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}</div>
+                    <div className="text-base text-white">{data.position}</div>
                     {/* Add your slide component here */}
                     <div className="flex justify-center py-[11px]">
                         <div
@@ -198,16 +205,31 @@ const Vcard = () => {
                     {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                            {t("call")}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${
+                                isDarkMode ? 'dark-mode' : 'light-mode'
+                            }`}
+                            onClick={() => {
+                                window.location.href = `tel:${data.phone_number}`;
+                            }}
+                        >
+                            <PhoneIcon className="mr-2"/>
+                            <span>{t("call")}</span>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                            Email
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${
+                                isDarkMode ? 'dark-mode' : 'light-mode'
+                            }`}
+                        >
+                            <EmailIcon className="mr-2"/>
+                            <span>Email</span>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                            {t("add")}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${
+                                isDarkMode ? 'dark-mode' : 'light-mode'
+                            }`}
+                        >
+                            <PersonAddAltIcon className="mr-2"/>
+                            <span>{t("add")}</span>
                         </button>
                     </div>
                 </div>

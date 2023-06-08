@@ -46,6 +46,7 @@ const HomePage = (props) => {
     const navigate = useNavigate();
     const storedAccessToken = localStorage.getItem('accessToken');
     const dropdownRef = useRef(null);
+    const [userId, setUserId] = useState("")
 
     useEffect(() => {
         if (localStorage.getItem("i18nextLng")?.length > 2) {
@@ -66,6 +67,8 @@ const HomePage = (props) => {
                 });
 
                 const data = await response.json();
+                const userID = data.data.id
+                setUserId(userID)
                 setPermission(data.data.role)
                 setUserInfo(data.data);
             } catch (error) {
@@ -97,7 +100,7 @@ const HomePage = (props) => {
     }
 
     const handleVcard = () => {
-        navigate("/V-card");
+        navigate(`/V-card/${userId}`);
     }
 
     const handleBlur = () => {

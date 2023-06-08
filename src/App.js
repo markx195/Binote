@@ -1,7 +1,7 @@
 import './App.css';
 import {Route, Routes, Navigate, useNavigate} from "react-router-dom";
 import Login from "./Login/login";
-import React from "react";
+import React, {useState} from "react";
 import HomePage from "./HomePage/homePage"
 import CourseCard from "./HomePage/courseCard"
 import NoteDetails from "./NoteDetails/noteDetails"
@@ -34,7 +34,7 @@ function App() {
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
                 <Route path='/Profile' element={<Profile/>}/>
-                <Route path='/V-card' element={<VCard/>}/>
+                <Route path='/V-card/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>
         </div>
