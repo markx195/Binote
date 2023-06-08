@@ -17,7 +17,6 @@ import {useParams} from 'react-router-dom';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
 
-
 const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_63_734)">
         <path
@@ -113,11 +112,10 @@ const Vcard = () => {
 
     const [showProfileImage, setShowProfileImage] = useState(true);
     const [showQRCode, setShowQRCode] = useState(false);
-
     return (
-        <div className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-full">
+        <div className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen">
             <div
-                className={`flex flex-col items-center rounded-lg p-4 shadow-md w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -230,46 +228,46 @@ const Vcard = () => {
                 </div>
                 <div className="pt-8">
                     <div className="flex items-center pb-4">
-                        <PhoneIcon style={{ color: '#2B3F6C' }}/>
+                        <PhoneIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">Email</div>
-                            <span className="text-[#2B3F6C]">{data.email}</span>
+                            <div className="text-left font-semibold">Email</div>
+                            <span>{data.email}</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <EmailIcon style={{ color: '#2B3F6C' }}/>
+                        <EmailIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">{t("tell")}</div>
-                            <span className="text-[#2B3F6C]">{data.phone_number}</span>
+                            <div className="text-left font-semibold">{t("tell")}</div>
+                            <span>{data.phone_number}</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessIcon style={{ color: '#2B3F6C' }}/>
+                        <BusinessIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">{t("company")}</div>
-                            <span className="text-[#2B3F6C]">Biplus Vietnam Software Solution JSC</span>
+                            <div className="text-left font-semibold">{t("company")}</div>
+                            <span>Biplus Vietnam Software Solution JSC</span>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessCenterIcon style={{ color: '#2B3F6C' }}/>
+                        <BusinessCenterIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">{t("department")}</div>
-                            <span className="text-[#2B3F6C]">{data.department}</span>
+                            <div className="text-left font-semibold">{t("department")}</div>
+                            <span>{data.department}</span>
 
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <LocationOnIcon style={{ color: '#2B3F6C' }}/>
+                        <LocationOnIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">{t("location")}</div>
-                            <span className="text-[#2B3F6C]">{data.location}</span>
+                            <div className="text-left font-semibold">{t("location")}</div>
+                            <span>{data.location}</span>
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <LanguageIcon style={{ color: '#2B3F6C' }}/>
+                        <LanguageIcon/>
                         <div className="ml-2">
-                            <div className="text-left font-semibold text-[#2B3F6C]">Website</div>
-                            <span className="text-[#2B3F6C]">https://biplus.com.vn/</span>
+                            <div className="text-left font-semibold">Website</div>
+                            <span>https://biplus.com.vn/</span>
                         </div>
                     </div>
                 </div>
