@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -72,7 +70,7 @@ const Vcard = () => {
     const [data, setData] = useState([])
     const params = useParams();
     const id = params.id;
-    const imgQr = `http://192.168.3.150:90/V-card/${id}`;
+    const imgQr = `http://192.168.3.150:90/bicard/${id}`;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -174,7 +172,7 @@ const Vcard = () => {
                         </div>
                         <div>
                             <button
-                                className="text-white py-2 rounded border-none flex items-center py-4 px-0"
+                                className="text-white py-2 rounded border-none flex items-center py-4 px-0 exclude-button"
                                 onClick={handleMenuOpen}
                             >
                                 <div className="mr-1">
@@ -204,7 +202,7 @@ const Vcard = () => {
                             </Menu>
                         </div>
                     </div>
-                    <div className="w-[170px]">
+                    <div className="w-full h-full">
                         <Slider {...settings}>
                             <div className="slider-item">
                                 <div className="image-container">
@@ -215,24 +213,20 @@ const Vcard = () => {
                                     />
                                 </div>
                                 <div className="text-container">
-                                    <div
-                                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                    <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
+                                        {data.last_name} {data.first_name}
                                     </div>
                                     <div className="text-base text-white">{data.position}</div>
                                 </div>
                             </div>
                             <div className="slider-item">
-                                <div className="image-container border-8 border-white rounded-lg">
-                                    <QRCode
-                                        value={imgQr}
-                                        size={152}
-                                    />
+                                <div className="image-container">
+                                    <div className="border-8 border-white rounded-lg">
+                                        <QRCode value={imgQr} size={152} className="qr-code"/>
+                                    </div>
                                 </div>
                                 <div className="text-container">
-                                    <div
-                                        className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
-                                    </div>
-                                    <div className="text-base text-white">{data.position}</div>
+                                    <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
                                 </div>
                             </div>
                         </Slider>
@@ -240,7 +234,7 @@ const Vcard = () => {
                     {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             onClick={() => {
                                 window.location.href = `tel:${data.phone_number}`;
                             }}
@@ -249,13 +243,13 @@ const Vcard = () => {
                             <span>{t("call")}</span>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         >
                             <EmailIcon className="mr-2"/>
                             <a href="mailto:${data.email}">Email</a>
                         </button>
                         <button
-                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                            className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         >
                             <PersonAddAltIcon className="mr-2"/>
                             <span>{t("add")}</span>
@@ -303,7 +297,7 @@ const Vcard = () => {
                         <LanguageIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">Website</div>
-                            <span>https://biplus.com.vn/</span>
+                            <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
                         </div>
                     </div>
                 </div>
@@ -371,17 +365,18 @@ const Vcard = () => {
                             </div>
                         </div>
                         <div className="slider-item">
-                            <div className="image-container border-8 border-white rounded-lg">
-                                <QRCode
-                                    value={imgQr}
-                                    size={152}
-                                />
+                            <div className="image-container">
+                                <div className="border-8 border-white rounded-lg">
+                                    <QRCode
+                                        value={imgQr}
+                                        size={152}
+                                    />
+                                </div>
                             </div>
                             <div className="text-container">
                                 <div
-                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code
                                 </div>
-                                <div className="text-base text-white">{data.position}</div>
                             </div>
                         </div>
                     </Slider>
@@ -389,7 +384,7 @@ const Vcard = () => {
                 {/* End your slide component here */}
                 <div className="flex pb-6 w-full">
                     <button
-                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-r-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 custom-button rounded-r-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         onClick={() => {
                             window.location.href = `tel:${data.phone_number}`;
                         }}
@@ -398,13 +393,13 @@ const Vcard = () => {
                         <span>{t("call")}</span>
                     </button>
                     <button
-                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                     >
                         <EmailIcon className="mr-2"/>
                         <a href="mailto:${data.email}">Email</a>
                     </button>
                     <button
-                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 rounded-l-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        className={`w-full text-[#2B3F6C] bg-white px-4 py-2 custom-button rounded-l-none border-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                     >
                         <PersonAddAltIcon className="mr-2"/>
                         <span>{t("add")}</span>
@@ -452,7 +447,7 @@ const Vcard = () => {
                     <LanguageIcon/>
                     <div className="ml-2">
                         <div className="text-left font-semibold">Website</div>
-                        <span>https://biplus.com.vn/</span>
+                        <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
                     </div>
                 </div>
             </div>

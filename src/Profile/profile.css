@@ -2,11 +2,11 @@ button {
     transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-button:hover {
+.custom-button:hover {
     background-color: #9e9696;
 }
 
-button:active {
+.custom-button:active {
     background-color: #9e9696;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
@@ -20,17 +20,26 @@ button:active {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 170px; /* Adjust the height as needed */
+    height: 100%;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-container {
+    text-align: center;
 }
 
 .slider-item .image-container,
-.slider-item .image-container img,
 .slider-item .image-container div {
     height: 100%;
     width: auto;
 }
 
-.carousel-dots{
+.carousel-dots {
     margin-bottom: 7px !important;
     margin-top: unset !important;
 }
@@ -38,3 +47,9 @@ button:active {
 .slick-dots li button:before {
     color: #FA9A85;
 }
+
+.slider-item .image-container img {
+    height: 152px; /* Adjust the height to match the QR code size */
+    width: 152px; /* Adjust the width to match the QR code size */
+}
+
