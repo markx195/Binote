@@ -300,37 +300,40 @@ const Vcard = () => {
                         </div>
                     </div>
                     <div className="w-full h-full">
-                        {data?first_name && <Slider {...settings}>
-                            <div className="slider-item">
-                                <div className="image-container">
-                                    <div className="table relative">
-                                        <img
-                                            src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
-                                            alt="Profile"
-                                            className="w-full h-auto rounded-full border-4 border-grey"
-                                        />
-                                        <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
-                                             className="absolute bottom-0 right-0"/>
+                        {data?.first_name &&
+                            <Slider {...settings}>
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="table relative">
+                                            <img
+                                                src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
+                                                alt="Profile"
+                                                className="w-full h-auto rounded-full border-4 border-grey"
+                                            />
+                                            <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
+                                                 className="absolute bottom-0 right-0"/>
+                                        </div>
+                                    </div>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
+                                            {data.last_name} {data.first_name}
+                                        </div>
+                                        <div className="text-base text-white">{data.position}</div>
                                     </div>
                                 </div>
-                                <div className="text-container">
-                                    <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                        {data.last_name} {data.first_name}
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="border-8 border-white rounded-lg">
+                                            <QRCode value={imgQr} size={152} className="qr-code"/>
+                                        </div>
                                     </div>
-                                    <div className="text-base text-white">{data.position}</div>
-                                </div>
-                            </div>
-                            <div className="slider-item">
-                                <div className="image-container">
-                                    <div className="border-8 border-white rounded-lg">
-                                        <QRCode value={imgQr} size={152} className="qr-code"/>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="text-container">
-                                    <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
-                                </div>
-                            </div>
-                        </Slider>}
+                            </Slider>
+                        }
                     </div>
                     {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
