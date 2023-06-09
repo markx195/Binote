@@ -49,7 +49,7 @@ button {
 }
 
 .slider-item .image-container img {
-    height: 152px; /* Adjust the height to match the QR code size */
-    width: 152px; /* Adjust the width to match the QR code size */
+    height: 152px;
+    width: 152px;
 }
 
