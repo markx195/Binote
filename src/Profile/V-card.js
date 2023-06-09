@@ -16,6 +16,9 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
 import Slider from 'infinite-react-carousel';
 
+const settings = {
+    arrows: false, arrowsBlock: false, wheel: true, dots: true, duration: 300
+};
 const enLogo = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0_63_734)">
         <path
@@ -67,7 +70,7 @@ const Vcard = () => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState("Tiếng Việt");
-    const [data, setData] = useState([])
+    const [data, setData] = useState({})
     const params = useParams();
     const id = params.id;
     const imgQr = `http://192.168.3.150:90/bicard/${id}`;
@@ -152,10 +155,6 @@ const Vcard = () => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-
-    const settings = {
-        arrows: false, arrowsBlock: false, wheel: true, dots: true, duration: 300
-    };
     return (<>
         {!isMobile && (<div
             className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito">
@@ -203,14 +202,18 @@ const Vcard = () => {
                         </div>
                     </div>
                     <div className="w-full h-full">
-                        <Slider {...settings}>
+                        {data.first_name && <Slider {...settings}>
                             <div className="slider-item">
                                 <div className="image-container">
-                                    <img
-                                        src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
-                                        alt="Profile"
-                                        className="w-full h-auto rounded-full mb-2 border-4 border-grey"
-                                    />
+                                    <div className="table relative">
+                                        <img
+                                            src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
+                                            alt="Profile"
+                                            className="w-full h-auto rounded-full border-4 border-grey"
+                                        />
+                                        <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
+                                             className="absolute bottom-0 right-0"/>
+                                    </div>
                                 </div>
                                 <div className="text-container">
                                     <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
@@ -229,7 +232,7 @@ const Vcard = () => {
                                     <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
                                 </div>
                             </div>
-                        </Slider>
+                        </Slider>}
                     </div>
                     {/* End your slide component here */}
                     <div className="flex pb-6 w-full">
@@ -262,14 +265,14 @@ const Vcard = () => {
                         <PhoneIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">Email</div>
-                            <span className="break-all">{data.email}</span>
+                            <div className="break-all">{data.email}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <EmailIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("tell")}</div>
-                            <span>{data.phone_number}</span>
+                            <div>{data.phone_number}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
@@ -348,14 +351,18 @@ const Vcard = () => {
                 </div>
                 {/* Start your slide component here */}
                 <div className="w-full h-full">
-                    <Slider {...settings}>
+                    {data.first_name && <Slider {...settings}>
                         <div className="slider-item">
                             <div className="image-container">
-                                <img
-                                    src="https://binote-api.biplus.com.vn/assets/d8b473c6-d772-427f-90e4-c6c15ef1436e"
-                                    alt="Profile"
-                                    className="w-full h-auto rounded-full mb-2 border-4 border-grey"
-                                />
+                                <div className="table relative">
+                                    <img
+                                        src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
+                                        alt="Profile"
+                                        className="w-full h-auto rounded-full border-4 border-grey"
+                                    />
+                                    <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
+                                         className="absolute bottom-0 right-0"/>
+                                </div>
                             </div>
                             <div className="text-container">
                                 <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
@@ -374,7 +381,7 @@ const Vcard = () => {
                                 <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
                             </div>
                         </div>
-                    </Slider>
+                    </Slider>}
                 </div>
                 {/* End your slide component here */}
                 <div className="flex pb-6 w-full">
@@ -407,14 +414,14 @@ const Vcard = () => {
                     <PhoneIcon/>
                     <div className="ml-2">
                         <div className="text-left font-semibold">Email</div>
-                        <span className="break-all">{data.email}</span>
+                        <div className="break-all">{data.email}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
                     <EmailIcon/>
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("tell")}</div>
-                        <span>{data.phone_number}</span>
+                        <div>{data.phone_number}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
