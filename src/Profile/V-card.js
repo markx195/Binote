@@ -69,7 +69,7 @@ const Vcard = () => {
     const [data, setData] = useState({})
     const params = useParams();
     const id = params.id;
-    const imgQr = `https://binote-api.biplus.com.vn/bicard/${id}`;
+    const imgQr = `https://binote.biplus.com.vn/bicard/${id}`;
     const changeColor = isDarkMode ? '#D9DBDF' : '#2B3F6C';
     const phoneIcon = <svg width="24" height="24" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
