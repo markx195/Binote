@@ -175,7 +175,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `http://192.168.3.150:8055/users/${id}`;
+                const apiUrl = `https://binote-api.biplus.com.vn/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
