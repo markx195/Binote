@@ -300,7 +300,7 @@ const Vcard = () => {
                         </div>
                     </div>
                     <div className="w-full h-full">
-                        {data.first_name && <Slider {...settings}>
+                        {data?first_name && <Slider {...settings}>
                             <div className="slider-item">
                                 <div className="image-container">
                                     <div className="table relative">
