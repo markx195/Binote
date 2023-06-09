@@ -306,7 +306,7 @@ const Vcard = () => {
                                     <div className="image-container">
                                         <div className="table relative">
                                             <img
-                                                src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
+                                                src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                                 alt="Profile"
                                                 className="w-full h-auto rounded-full border-4 border-grey"
                                             />
@@ -316,9 +316,9 @@ const Vcard = () => {
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                            {data.last_name} {data.first_name}
+                                            {data?.last_name} {data?.first_name}
                                         </div>
-                                        <div className="text-base text-white">{data.position}</div>
+                                        <div className="text-base text-white">{data?.position}</div>
                                     </div>
                                 </div>
                                 <div className="slider-item">
@@ -341,7 +341,7 @@ const Vcard = () => {
                             className={`w-full text-[#2B3F6C] bg-white justify-center p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
                             onClick={() => {
-                                window.location.href = `tel:${data.phone_number}`;
+                                window.location.href = `tel:${data?.phone_number}`;
                             }}
                         >
                             <div className="mr-2">{btnPhone}</div>
@@ -350,7 +350,7 @@ const Vcard = () => {
                         <button
                             className={`w-full text-[#2B3F6C] bg-white justify-center custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             onClick={() => {
-                                window.open(`mailto:${data.email}?to=${data.email}`);
+                                window.open(`mailto:${data?.email}?to=${data?.email}`);
                             }}
                         >
                             <div className="mr-2">{btnEmail}</div>
@@ -371,14 +371,14 @@ const Vcard = () => {
                         {phoneIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">Email</div>
-                            <div className="break-all">{data.email}</div>
+                            <div className="break-all">{data?.email}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         {email}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("tell")}</div>
-                            <div className="text-left">{data.phone_number}</div>
+                            <div className="text-left">{data?.phone_number}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
@@ -392,14 +392,14 @@ const Vcard = () => {
                         {briftIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("department")}</div>
-                            <div className="text-left">{data.department}</div>
+                            <div className="text-left">{data?.department}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
                         <div> {locationIcon}</div>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("location")}</div>
-                            <div className="text-left line-clamp-2">{data.location}</div>
+                            <div className="text-left line-clamp-2">{data?.location}</div>
                         </div>
                     </div>
                     <div className="flex items-center">
@@ -457,12 +457,12 @@ const Vcard = () => {
                 </div>
                 {/* Start your slide component here */}
                 <div className="w-full h-full">
-                    {data.first_name && <Slider {...settings}>
+                    {data?.first_name && <Slider {...settings}>
                         <div className="slider-item">
                             <div className="image-container">
                                 <div className="table relative">
                                     <img
-                                        src={`https://binote-api.biplus.com.vn/assets/${data.avatar}`}
+                                        src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                         alt="Profile"
                                         className="w-full h-auto rounded-full border-4 border-grey"
                                     />
@@ -472,9 +472,9 @@ const Vcard = () => {
                             </div>
                             <div className="text-container">
                                 <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                    {data.last_name} {data.first_name}
+                                    {data?.last_name} {data?.first_name}
                                 </div>
-                                <div className="text-base text-white">{data.position}</div>
+                                <div className="text-base text-white">{data?.position}</div>
                             </div>
                         </div>
                         <div className="slider-item">
@@ -495,7 +495,7 @@ const Vcard = () => {
                         className={`w-full text-[#2B3F6C] justify-center bg-white p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
                         onClick={() => {
-                            window.location.href = `tel:${data.phone_number}`;
+                            window.location.href = `tel:${data?.phone_number}`;
                         }}
                     >
                         <PhoneIcon className="mr-2"/>
@@ -504,7 +504,7 @@ const Vcard = () => {
                     <button
                         className={`w-full text-[#2B3F6C] justify-center bg-white custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         onClick={() => {
-                            window.open(`mailto:${data.email}?to=${data.email}`);
+                            window.open(`mailto:${data?.email}?to=${data?.email}`);
                         }}
                     >
                         <EmailIcon className="mr-2"/>
@@ -525,14 +525,14 @@ const Vcard = () => {
                     {phoneIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">Email</div>
-                        <div className="break-all">{data.email}</div>
+                        <div className="break-all">{data?.email}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
                     {email}
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("tell")}</div>
-                        <div className="text-left">{data.phone_number}</div>
+                        <div className="text-left">{data?.phone_number}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
@@ -546,14 +546,14 @@ const Vcard = () => {
                     {briftIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("department")}</div>
-                        <div className="text-left">{data.department}</div>
+                        <div className="text-left">{data?.department}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
                     <div>{locationIcon}</div>
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("location")}</div>
-                        <div className="text-left line-clamp-2">{data.location}</div>
+                        <div className="text-left line-clamp-2">{data?.location}</div>
                     </div>
                 </div>
                 <div className="flex items-center">
