@@ -175,7 +175,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `https://binote-api.biplus.com.vn/${id}`;
+                const apiUrl = `https://binote-api.biplus.com.vn/users/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
