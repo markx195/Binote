@@ -255,7 +255,7 @@ const Vcard = () => {
 
     return (<>
         {!isMobile && (<div
-            className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito">
+            className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto">
             <div
                 className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
@@ -414,7 +414,7 @@ const Vcard = () => {
         </div>)}
         {/*mobile display*/}
         {isMobile && (<div
-            className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+            className={`flex flex-col items-center rounded-lg px-4 pb-[45px] overflow-y-auto shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
             <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                  style={{
                      backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`, backgroundSize: 'cover'
