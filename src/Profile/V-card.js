@@ -347,7 +347,7 @@ const Vcard = () => {
                     </div>
                 </div>
                 {/* Start your slide component here */}
-                <div className="w-[170px]">
+                <div className="w-full h-full">
                     <Slider {...settings}>
                         <div className="slider-item">
                             <div className="image-container">
@@ -358,8 +358,8 @@ const Vcard = () => {
                                 />
                             </div>
                             <div className="text-container">
-                                <div
-                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">{data.last_name} {data.first_name}
+                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
+                                    {data.last_name} {data.first_name}
                                 </div>
                                 <div className="text-base text-white">{data.position}</div>
                             </div>
@@ -367,16 +367,11 @@ const Vcard = () => {
                         <div className="slider-item">
                             <div className="image-container">
                                 <div className="border-8 border-white rounded-lg">
-                                    <QRCode
-                                        value={imgQr}
-                                        size={152}
-                                    />
+                                    <QRCode value={imgQr} size={152} className="qr-code"/>
                                 </div>
                             </div>
                             <div className="text-container">
-                                <div
-                                    className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code
-                                </div>
+                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
                             </div>
                         </div>
                     </Slider>
