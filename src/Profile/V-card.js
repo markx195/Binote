@@ -15,6 +15,7 @@ import {useParams} from 'react-router-dom';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
 import Slider from 'infinite-react-carousel';
+import {email, buildingIcon, briftIcon, locationIcon, languageIcon, phoneIcon} from "./vCardSvg";
 
 const settings = {
     arrows: false, arrowsBlock: false, wheel: true, dots: true, duration: 300
@@ -262,42 +263,42 @@ const Vcard = () => {
                 {/*Info*/}
                 <div className="pt-8 px-6">
                     <div className="flex items-center pb-4">
-                        <PhoneIcon/>
+                        {phoneIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">Email</div>
                             <div className="break-all">{data.email}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <EmailIcon/>
+                        {email}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("tell")}</div>
-                            <div>{data.phone_number}</div>
+                            <div className="text-left">{data.phone_number}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessIcon/>
+                        {buildingIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("company")}</div>
-                            <div>Biplus Vietnam Software Solution JSC</div>
+                            <div className="text-left">Biplus Vietnam Software Solution JSC</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <BusinessCenterIcon/>
+                        {briftIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("department")}</div>
                             <div className="text-left">{data.department}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
-                        <LocationOnIcon/>
+                        <div> {locationIcon}</div>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("location")}</div>
                             <div className="text-left line-clamp-2">{data.location}</div>
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <LanguageIcon/>
+                        {languageIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">Website</div>
                             <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
@@ -411,42 +412,42 @@ const Vcard = () => {
             {/*Info*/}
             <div className="pt-8 px-6">
                 <div className="flex items-center pb-4">
-                    <PhoneIcon/>
+                    {phoneIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">Email</div>
                         <div className="break-all">{data.email}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
-                    <EmailIcon/>
+                    {email}
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("tell")}</div>
-                        <div>{data.phone_number}</div>
+                        <div className="text-left">{data.phone_number}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
-                    <BusinessIcon/>
+                    {buildingIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("company")}</div>
-                        <div>Biplus Vietnam Software Solution JSC</div>
+                        <div className="text-left">Biplus Vietnam Software Solution JSC</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
-                    <BusinessCenterIcon/>
+                    {briftIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("department")}</div>
                         <div className="text-left">{data.department}</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
-                    <LocationOnIcon/>
+                    <div>{locationIcon}</div>
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("location")}</div>
                         <div className="text-left line-clamp-2">{data.location}</div>
                     </div>
                 </div>
                 <div className="flex items-center">
-                    <LanguageIcon/>
+                    {languageIcon}
                     <div className="ml-2">
                         <div className="text-left font-semibold">Website</div>
                         <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
