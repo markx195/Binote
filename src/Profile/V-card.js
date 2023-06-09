@@ -276,7 +276,7 @@ const Vcard = () => {
                         <BusinessIcon/>
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("company")}</div>
-                            <span>Biplus Vietnam Software Solution JSC</span>
+                            <div>Biplus Vietnam Software Solution JSC</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
@@ -421,7 +421,7 @@ const Vcard = () => {
                     <BusinessIcon/>
                     <div className="ml-2">
                         <div className="text-left font-semibold">{t("company")}</div>
-                        <span>Biplus Vietnam Software Solution JSC</span>
+                        <div>Biplus Vietnam Software Solution JSC</div>
                     </div>
                 </div>
                 <div className="flex items-center pb-4">
