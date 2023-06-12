@@ -128,13 +128,13 @@ const HomePage = (props) => {
                 </div>
                 {/*Middle*/}
                 <div className="bg-[#2F2E2E] hidden lg:flex items-center rounded-2xl p-4 text-[14px]">
-                    {/*<div className="flex items-center cursor-pointer" onClick={goToStatistical}>*/}
-                    {/*    <DashboardIcon sx={{color: '#979696'}}/>*/}
-                    {/*    <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">*/}
-                    {/*        Dashboard*/}
-                    {/*    </p>*/}
-                    {/*</div>*/}
-                    {/*<p className="w-[22px] border border-solid rotate-90"></p>*/}
+                    <div className="flex items-center cursor-pointer" onClick={goToStatistical}>
+                        <DashboardIcon sx={{color: '#979696'}}/>
+                        <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">
+                            Dashboard
+                        </p>
+                    </div>
+                    <p className="w-[22px] border border-solid rotate-90"></p>
                     <div className="flex items-center">
                         <SchoolIcon sx={{color: '#979696'}}/>
                         <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">{t("course")}</p>
@@ -162,11 +162,11 @@ const HomePage = (props) => {
                     </div>
                     {showDropdown && (
                         <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2 w-[200px]">
-                            {/*<div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"*/}
-                            {/*     onClick={handleProfile}>*/}
-                            {/*    <PersonIcon/>*/}
-                            {/*    <span className="pl-2">{t("profile")}</span>*/}
-                            {/*</div>*/}
+                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
+                                 onClick={handleProfile}>
+                                <PersonIcon/>
+                                <span className="pl-2">{t("profile")}</span>
+                            </div>
                             <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
                                  onClick={handleVcard}>
                                 <PersonIcon/>

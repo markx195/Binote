@@ -15,6 +15,7 @@ import {Table, Typography} from 'antd';
 import "../App.css"
 import BarChart from "../common/BarChart";
 import dayjs from 'dayjs';
+import RenderColumn from "./Render_column"
 
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
@@ -30,12 +31,11 @@ const Statistical = () => {
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
-    const [columnName, setColumnName] = useState("")
+    const [getDate, setDate] = useState(['2023/07', '2023/08']);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-
     const monthFormat = 'YYYY/MM';
     const currentYear = dayjs().format('YYYY');
     const firstMonth = `${currentYear}/01`;
@@ -66,6 +66,9 @@ const Statistical = () => {
     };
 
     const handleDateChange = (date, dateString) => {
+        if (dateString) {
+            setDate(dateString)
+        }
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
             const endDate = new Date(date[1]);
@@ -137,7 +140,8 @@ const Statistical = () => {
 ////////////////////////////////////////// table/////////////////////////////////////////
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => ({
-        title: `T${index + 1}`,
+        // title: `T${index + 1}`,
+        title: <RenderColumn dateString={getDate}/>,
         dataIndex: `timePeriods[${index}].learningHour`,
         key: `T${index + 1}`,
         render: (text, record) => {
@@ -275,6 +279,7 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
+                            <RenderColumn dateString={getDate}/>
                             <Table
                                 columns={columns}
                                 dataSource={dataSource}
@@ -301,7 +306,7 @@ const Statistical = () => {
                         </div>
                     </div>
                 </div>
-                {type !== 'month' && (
+                {(type !== 'month') && (selectedValue !== "individual") && (
                     <BarChart labels={tableName} data={dataTable}/>
                 )}
             </div>
