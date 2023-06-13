@@ -31,7 +31,7 @@ const Statistical = () => {
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
-    const [getDate, setDate] = useState(['2023/07', '2023/08']);
+    const [getDate, setDate] = useState(['2023/07', '2023/10']);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -67,7 +67,7 @@ const Statistical = () => {
 
     const handleDateChange = (date, dateString) => {
         if (dateString) {
-            setDate(dateString)
+            setDate(dateString);
         }
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
@@ -141,7 +141,7 @@ const Statistical = () => {
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => ({
         // title: `T${index + 1}`,
-        title: <RenderColumn dateString={getDate}/>,
+        title: <RenderColumn dates={getDate}/>,
         dataIndex: `timePeriods[${index}].learningHour`,
         key: `T${index + 1}`,
         render: (text, record) => {
@@ -167,7 +167,24 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
+    const formatDate = (dateString) => {
+        const [year, month] = dateString.split('/');
+        return {year, month};
+    };
 
+    const startMonth = formatDate(getDate[0]);
+    const endMonth = formatDate(getDate[1]);
+    const table_columns = [];
+
+    for (
+        let month = parseInt(startMonth.month, 10);
+        month <= parseInt(endMonth.month, 10);
+        month++
+    ) {
+        const formattedMonth = month.toString().padStart(2, '0');
+        const table_column = {year: endMonth.year, month: formattedMonth};
+        table_columns.push(table_column);
+    }
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
@@ -279,7 +296,7 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            <RenderColumn dateString={getDate}/>
+                            <RenderColumn dates={getDate}/>
                             <Table
                                 columns={columns}
                                 dataSource={dataSource}
@@ -289,8 +306,8 @@ const Statistical = () => {
                                 summary={(pageData) => {
                                     return (
                                         <>
-                                            <Table.Summary.Row>
-                                                <Table.Summary.Cell style={{fontWeight: 'bold'}}>Tổng
+                                            <Table.Summary.Row style={{fontWeight: 'bold'}}>
+                                                <Table.Summary.Cell>Tổng
                                                     (giờ)</Table.Summary.Cell>
                                                 {totalLearningHours.map((record, index) => (
                                                     <Table.Summary.Cell key={index}>
@@ -306,7 +323,7 @@ const Statistical = () => {
                         </div>
                     </div>
                 </div>
-                {(type !== 'month') && (selectedValue !== "individual") && (
+                {selectedValue !== "individual" && (
                     <BarChart labels={tableName} data={dataTable}/>
                 )}
             </div>
