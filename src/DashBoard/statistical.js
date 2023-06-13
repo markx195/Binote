@@ -63,7 +63,7 @@ const Statistical = () => {
                 );
             case 'quarter':
                 return <RangePicker className="mr-6" picker="quarter" style={{width: '100%'}}
-                                    onChange={handleDateChange}/>;
+                                    onChange={renderQuater}/>;
             case 'year':
                 return <RangePicker className="mr-6" picker="year" style={{width: '100%'}}
                                     onChange={handleDateChange}/>;
@@ -72,9 +72,19 @@ const Statistical = () => {
         }
     };
 
+    const renderQuater = (date, dateString) => {
+        const startQuarter = parseInt(dateString[0].split('-')[1].substring(1));
+        const endQuarter = parseInt(dateString[1].split('-')[1].substring(1));
+        const startMonth = (startQuarter - 1) * 3 + 1; // Calculate start month
+        const endMonth = endQuarter * 3; // Calculate end month
+        const startDate = dayjs().month(startMonth - 1).startOf('month').toISOString();
+        const endDate = dayjs().month(endMonth - 1).endOf('month').toISOString();
+        setStartDate(startDate);
+        setEndDate(endDate);
+        console.log(`Q${startQuarter}: ${startDate} to ${endDate}`);
+    };
+
     const handleDateChange = (date, dateString) => {
-        console.log(date)
-        console.log(dateString)
         if (dateString) {
             setDate(dateString);
         }
@@ -85,6 +95,7 @@ const Statistical = () => {
             if (!isNaN(startDate) && !isNaN(endDate)) {
                 setStartDate(startDate.toISOString());
                 setEndDate(endDate.toISOString());
+
             } else {
                 console.log('Invalid date format');
             }

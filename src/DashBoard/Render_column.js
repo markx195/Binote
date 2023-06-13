@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-const RenderColumn = ({ dates, index }) => {
+const RenderColumn = ({dates, index}) => {
     const [tableColumns, setTableColumns] = useState([]);
 
     useEffect(() => {
