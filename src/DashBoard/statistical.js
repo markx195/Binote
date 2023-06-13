@@ -167,24 +167,7 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
-    const formatDate = (dateString) => {
-        const [year, month] = dateString.split('/');
-        return {year, month};
-    };
 
-    const startMonth = formatDate(getDate[0]);
-    const endMonth = formatDate(getDate[1]);
-    const table_columns = [];
-
-    for (
-        let month = parseInt(startMonth.month, 10);
-        month <= parseInt(endMonth.month, 10);
-        month++
-    ) {
-        const formattedMonth = month.toString().padStart(2, '0');
-        const table_column = {year: endMonth.year, month: formattedMonth};
-        table_columns.push(table_column);
-    }
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
