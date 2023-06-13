@@ -41,6 +41,7 @@ const Statistical = () => {
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
     const [getDate, setDate] = useState([firstMonth, lastMonth]);
+    const [getQuarter, setQuarter] = useState([]);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -63,16 +64,17 @@ const Statistical = () => {
                 );
             case 'quarter':
                 return <RangePicker className="mr-6" picker="quarter" style={{width: '100%'}}
-                                    onChange={renderQuater}/>;
+                                    disabledDate={disabledMonth}
+                                    onChange={renderQuarter}/>;
             case 'year':
-                return <RangePicker className="mr-6" picker="year" style={{width: '100%'}}
+                return <RangePicker className="mr-6" picker="year" style={{width: '100%'}} disabledDate={disabledMonth}
                                     onChange={handleDateChange}/>;
             default:
                 return null;
         }
     };
 
-    const renderQuater = (date, dateString) => {
+    const renderQuarter = (date, dateString) => {
         const startQuarter = parseInt(dateString[0].split('-')[1].substring(1));
         const endQuarter = parseInt(dateString[1].split('-')[1].substring(1));
         const startMonth = (startQuarter - 1) * 3 + 1; // Calculate start month
@@ -81,7 +83,10 @@ const Statistical = () => {
         const endDate = dayjs().month(endMonth - 1).endOf('month').toISOString();
         setStartDate(startDate);
         setEndDate(endDate);
-        console.log(`Q${startQuarter}: ${startDate} to ${endDate}`);
+
+        const quarters = Array.from({length: endQuarter - startQuarter + 1}, (_, index) => startQuarter + index);
+        const quarterLabels = quarters.map(quarter => `Quý ${quarter}`);
+        setQuarter(quarterLabels);
     };
 
     const handleDateChange = (date, dateString) => {
@@ -91,11 +96,9 @@ const Statistical = () => {
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
             const endDate = new Date(date[1]);
-
             if (!isNaN(startDate) && !isNaN(endDate)) {
                 setStartDate(startDate.toISOString());
                 setEndDate(endDate.toISOString());
-
             } else {
                 console.log('Invalid date format');
             }
@@ -159,20 +162,28 @@ const Statistical = () => {
     }
 ////////////////////////////////////////// table/////////////////////////////////////////
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
-    const dynamicColumns = timePeriods.map((timePeriod, index) => ({
-        title: <RenderColumn dates={getDate} index={index}/>,
-        dataIndex: `timePeriods[${index}].learningHour`,
-        key: `T${index + 1}`,
-        render: (text, record) => {
-            const learningHour = record.timePeriods[index].learningHour;
-            return (
-                <>
-                    <span>{learningHour}</span>
-                    {index < timePeriods.length - 1 && <br/>}
-                </>
-            );
-        },
-    }));
+    const dynamicColumns = timePeriods.map((timePeriod, index) => {
+        let title;
+        if (type === 'month') {
+            title = <RenderColumn dates={getDate} index={index}/>;
+        } else if (type === 'quarter') {
+            title = getQuarter[index];
+        }
+        return {
+            title,
+            dataIndex: `timePeriods[${index}].learningHour`,
+            key: `T${index + 1}`,
+            render: (text, record) => {
+                const learningHour = record.timePeriods[index].learningHour;
+                return (
+                    <>
+                        <span>{learningHour}</span>
+                        {index < timePeriods.length - 1 && <br/>}
+                    </>
+                );
+            }
+        }
+    });
 
     const columns = [
         {
@@ -186,6 +197,7 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
+
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
