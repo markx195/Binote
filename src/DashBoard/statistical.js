@@ -21,25 +21,31 @@ const {Text} = Typography;
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
 const Statistical = () => {
+    const monthFormat = 'YYYY/MM';
+    const currentYear = dayjs().format('YYYY');
+    const currentMonth = dayjs().format('MM');
+    const firstMonth = `${currentYear}/01`;
+    const lastMonth = `${currentYear}/${currentMonth}`;
+    const disabledMonth = (current) => {
+        const currentDate = new Date();
+        return current.isAfter(currentDate, 'month');
+    };
     const {t} = useTranslation()
     const [courses, setCourses] = useState([]);
     const [selectedValue, setSelectedValue] = useState('individual');
     const [type, setType] = useState('month');
-    const [startDate, setStartDate] = useState(new Date("2023-01-01").toISOString());
-    const [endDate, setEndDate] = useState(new Date("2023-12-31").toISOString());
+    const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
+    const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     const [dataSource, setDataSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
-    const [getDate, setDate] = useState(['2023/07', '2023/10']);
+    const [getDate, setDate] = useState([firstMonth, lastMonth]);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-    const monthFormat = 'YYYY/MM';
-    const currentYear = dayjs().format('YYYY');
-    const firstMonth = `${currentYear}/01`;
-    const lastMonth = `${currentYear}/12`;
+
 
     const renderDatePicker = () => {
         switch (type) {
@@ -52,6 +58,7 @@ const Statistical = () => {
                         onChange={handleDateChange}
                         picker="month"
                         style={{width: '100%'}}
+                        disabledDate={disabledMonth}
                     />
                 );
             case 'quarter':
@@ -66,6 +73,8 @@ const Statistical = () => {
     };
 
     const handleDateChange = (date, dateString) => {
+        console.log(date)
+        console.log(dateString)
         if (dateString) {
             setDate(dateString);
         }
@@ -140,8 +149,7 @@ const Statistical = () => {
 ////////////////////////////////////////// table/////////////////////////////////////////
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => ({
-        // title: `T${index + 1}`,
-        title: <RenderColumn dates={getDate}/>,
+        title: <RenderColumn dates={getDate} index={index}/>,
         dataIndex: `timePeriods[${index}].learningHour`,
         key: `T${index + 1}`,
         render: (text, record) => {
@@ -149,7 +157,7 @@ const Statistical = () => {
             return (
                 <>
                     <span>{learningHour}</span>
-                    {index < timePeriods.length - 1 && <br/>} {/* Add a line break if it's not the last column */}
+                    {index < timePeriods.length - 1 && <br/>}
                 </>
             );
         },
@@ -167,7 +175,6 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
-
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto">
@@ -279,7 +286,6 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            <RenderColumn dates={getDate}/>
                             <Table
                                 columns={columns}
                                 dataSource={dataSource}
