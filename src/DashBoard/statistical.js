@@ -37,11 +37,13 @@ const Statistical = () => {
     const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
     const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     const [dataSource, setDataSource] = useState([]);
+    const [yearSource, setYearSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
     const [getDate, setDate] = useState([firstMonth, lastMonth]);
     const [getQuarter, setQuarter] = useState([]);
+    const [getYear, setYear] = useState([]);
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -68,7 +70,7 @@ const Statistical = () => {
                                     onChange={renderQuarter}/>;
             case 'year':
                 return <RangePicker className="mr-6" picker="year" style={{width: '100%'}} disabledDate={disabledMonth}
-                                    onChange={handleDateChange}/>;
+                                    onChange={renderYear}/>;
             default:
                 return null;
         }
@@ -104,6 +106,19 @@ const Statistical = () => {
             }
         }
     };
+
+    const renderYear = (date, dateString) => {
+        const startYear = parseInt(dateString[0]);
+        const endYear = parseInt(dateString[1]);
+        const startDate = dayjs().year(startYear).startOf('year').toISOString();
+        const endDate = dayjs().year(endYear).endOf('year').toISOString();
+        setStartDate(startDate);
+        setEndDate(endDate);
+
+        const years = Array.from({length: endYear - startYear + 1}, (_, index) => startYear + index);
+        const yearLabels = years.map((year) => year.toString());
+        setYear(yearLabels);
+    }
 
     const handleRadioChange = (event) => {
         setType(event.target.value);
@@ -152,6 +167,7 @@ const Statistical = () => {
             .then(data => {
                 // Update the tableData state with the fetched data
                 setDataSource(data.data);
+                setYearSource(data.totalLearningHours);
                 setTableName(data.data.map(item => item.name));
                 setDataTable(data.data.map(item => item.totalLearningHours));
                 setTotalLearningHours(data.totalLearningHours)
@@ -168,12 +184,14 @@ const Statistical = () => {
             title = <RenderColumn dates={getDate} index={index}/>;
         } else if (type === 'quarter') {
             title = getQuarter[index];
+        } else if (type === 'year') {
+            title = getYear[index];
         }
         return {
             title,
             dataIndex: `timePeriods[${index}].learningHour`,
             key: `T${index + 1}`,
-            render: (text, record) => {
+            render: selectedValue === 'company' ? undefined : (text, record) => {
                 const learningHour = record.timePeriods[index].learningHour;
                 return (
                     <>
@@ -187,16 +205,17 @@ const Statistical = () => {
 
     const columns = [
         {
-            title: 'Họ tên',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text) => {
+            title: selectedValue === 'company' ? '' : 'Họ tên',
+            dataIndex: selectedValue === 'company' ? '' : 'name',
+            key: selectedValue === 'company' ? '' : 'name',
+            render: selectedValue === 'company' ? undefined : (text) => {
                 const username = text.split('@')[0];
                 return <span>{username}</span>;
             },
         },
         ...dynamicColumns,
     ];
+
 
     return (<>
             <HomePage/>
@@ -311,7 +330,7 @@ const Statistical = () => {
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <Table
                                 columns={columns}
-                                dataSource={dataSource}
+                                dataSource={(selectedValue === 'company') ? yearSource : dataSource}
                                 pagination={false}
                                 bordered
                                 scroll={{y: 360}}
