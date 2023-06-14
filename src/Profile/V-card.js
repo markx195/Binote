@@ -69,7 +69,7 @@ const Vcard = () => {
     const [data, setData] = useState({})
     const params = useParams();
     const id = params.id;
-    const imgQr = `http://192.168.3.150:8050/bicard/${id}`;
+    const imgQr = `http://192.168.3.150:90/bicard/${id}`;
     const changeColor = isDarkMode ? '#D9DBDF' : '#2B3F6C';
     const phoneIcon = <svg width="24" height="24" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -538,10 +538,11 @@ const Vcard = () => {
                         <div>Email</div>
                     </button>
                     <button
-                        className={`w-full text-[#2B3F6C] justify-center bg-white rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                         style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
+                        onClick={handleDownloadVcf}
                     >
-                        <PersonAddAltIcon className="mr-2"/>
+                        <div className="mr-2">{btnAdd}</div>
                         <span>{t("add")}</span>
                     </button>
                 </div>
