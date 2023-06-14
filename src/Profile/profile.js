@@ -4,6 +4,8 @@ import "../App.css"
 import axios from 'axios';
 import {useTranslation} from "react-i18next";
 import {Progress, Space} from 'antd';
+import EditableText from "../common/EditableText"
+import {debounce} from 'lodash';
 
 const Profile = () => {
     const {t} = useTranslation()
@@ -24,8 +26,6 @@ const Profile = () => {
                     });
                     const data = await response.json();
                     setProfileDetails(data.data);
-                    // setPosition(data.data.position)
-                    // setTeam(data.data.team)
                     console.log(data.data);
                 } catch (error) {
                     console.error(error);
@@ -69,6 +69,28 @@ const Profile = () => {
         }
     };
 
+    const handleEditProfile = (newValue) => {
+        const apiUrl = 'http://192.168.3.150:8055/users/me';
+
+        fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${storedAccessToken}`
+            },
+            body: JSON.stringify({first_name: newValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update success:', data);
+            })
+            .catch(error => {
+                console.error('Update failed:', error);
+            });
+    };
+
+    const handleSaveProfile = debounce(handleEditProfile, 1000);
+
     return (
         <div className="bg-[#F6F6F6ư]">
             <HomePage/>
@@ -97,7 +119,12 @@ const Profile = () => {
                         {/*///////// Profile Details*/}
                         <div className="tex-[#979696] text-xs"> {profileDetails?.email}</div>
                         <div
-                            className="text-xl font-bold py-2 bg-white">{profileDetails?.first_name} {profileDetails?.last_name}</div>
+                            className="text-xl font-bold py-2 bg-white">
+                            {profileDetails && (
+                                <EditableText value={profileDetails.first_name} editClassName="form-control"
+                                              onChange={handleSaveProfile}/>
+                            )}
+                        </div>
                         <span className="text-xs"> {profileDetails?.position}</span>
                         |
                         <span className="text-xs">{profileDetails?.team}</span>

@@ -154,7 +154,7 @@ const HomePage = (props) => {
                                 <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
                                      className="w-[32px] h-[32px] rounded"/>
                                 <h3 className="pl-2 inline-flex items-center">
-                                    {userInfo.email.split("@")[0]}
+                                    {userInfo.first_name}
                                 </h3>
                                 <KeyboardArrowDownIcon className="justify-end flex-grow"/>
                             </>
