@@ -11,9 +11,10 @@
   "error": "Có lỗi xảy ra. Ghi chú của bạn chưa được lưu",
   "profile": "Hồ sơ",
   "language": "Ngôn ngữ",
-  "onlineUser": "Số người online",
-  "averageOnlineTime": "Thời gian online trung bình",
-  "averageTimeTime": "Thời gian học trung bình",
+  "averageStudyTimes": "Thời gian học trung bình (giờ/lần học)",
+  "averageStudyTime": "Thời gian học trung bình",
+  "numberOfUsers": "Số người sử dụng",
+  "averageUsingTime": "Thời gian sử dụng trung bình (giờ/phiên)",
   "featuredCourse": "Khóa học nổi bật",
   "learningHoursStatistics": "Thống kê giờ học",
   "learner": "Người học",
@@ -30,5 +31,8 @@
   "add": "Thêm",
   "tell": "Điện thoại",
   "department": "Bộ phận",
-  "location": "Văn phòng"
+  "location": "Văn phòng",
+  "numberOfNote": "Số lượng ghi chú",
+  "totalStudyTimes": "Tổng thời gian học",
+  "currentCourse": "Khóa học hiện tại"
 }

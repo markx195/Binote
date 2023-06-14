@@ -73,7 +73,7 @@ body::-webkit-scrollbar {
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 :root {
-    --square-size: 230px;
+    --square-size: 150px;
     --shadow: 0 0 10px 0 rgba(255, 255, 255, .35);
     --font-color: rgb(250, 250, 250);
 }

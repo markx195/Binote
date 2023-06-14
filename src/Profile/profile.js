@@ -2,15 +2,13 @@ import React, {useState, useEffect} from "react";
 import HomePage from "../HomePage/homePage";
 import "../App.css"
 import axios from 'axios';
+import {useTranslation} from "react-i18next";
+import {Progress, Space} from 'antd';
 
 const Profile = () => {
+    const {t} = useTranslation()
     const [profileDetails, setProfileDetails] = useState(null);
     const storedAccessToken = localStorage.getItem('accessToken');
-    const [name, setName] = useState('');
-    const [position, setPosition] = useState('');
-    const [level, setLevel] = useState('');
-    const [team, setTeam] = useState('');
-    const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
         if (storedAccessToken) {
@@ -26,8 +24,6 @@ const Profile = () => {
                     });
                     const data = await response.json();
                     setProfileDetails(data.data);
-                    setLevel(data.data.level)
-                    setName(data.data.name)
                     // setPosition(data.data.position)
                     // setTeam(data.data.team)
                     console.log(data.data);
@@ -73,99 +69,96 @@ const Profile = () => {
         }
     };
 
-    return (<>
-        <HomePage/>
-        <div className="pt-10 px-[5%] mx-auto flex justify-between items-center">
-            <div className="bg-white rounded-2xl p-4"
-                 style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                <div className="flex items-center justify-center">
-                    <div className="profile-pic">
-                        <label className="-label" htmlFor="file">
-                            <span className="glyphicon glyphicon-camera"></span>
-                            <span>Change Image</span>
-                        </label>
-                        <input id="file" type="file" onChange={handleFileUpload}/>
-                        {profileDetails && (
-                            <img
-                                src={`https://binote-api.biplus.com.vn/assets/${profileDetails?.avatar}`}
-                                id="output"
-                                width="500"
-                                alt="Profile"
-                            />
-                        )}
+    return (
+        <div className="bg-[#F6F6F6ư]">
+            <HomePage/>
+            <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between">
+                <div className="rounded-2xl p-4 bg-white"
+                     style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)'}}>
+                    <div className="bg-[#F6F6F6] p-4 rounded-2xl"
+                         style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
+                        <div className="flex items-center justify-center pb-4">
+                            <div className="profile-pic px-[50px] pt-[38px]">
+                                <label className="-label" htmlFor="file">
+                                    <span className="glyphicon glyphicon-camera"></span>
+                                    <span>Change Image</span>
+                                </label>
+                                <input id="file" type="file" onChange={handleFileUpload}/>
+                                {profileDetails && (
+                                    <img
+                                        src={`https://binote-api.biplus.com.vn/assets/${profileDetails?.avatar}`}
+                                        id="output"
+                                        width="500"
+                                        alt="Profile"
+                                    />
+                                )}
+                            </div>
+                        </div>
+                        {/*///////// Profile Details*/}
+                        <div className="tex-[#979696] text-xs"> {profileDetails?.email}</div>
+                        <div
+                            className="text-xl font-bold py-2 bg-white">{profileDetails?.first_name} {profileDetails?.last_name}</div>
+                        <span className="text-xs"> {profileDetails?.position}</span>
+                        |
+                        <span className="text-xs">{profileDetails?.team}</span>
+                    </div>
+                    <div className="pt-11">
+                        <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
+                                  strokeColor={{from: '#F0C528', to: '#87d068'}}/>
                     </div>
                 </div>
-                {/*///////// Profile Details*/}
-                <div>
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                        onClick={() => setEditMode(!editMode)}
-                    >
-                        {editMode ? 'Save' : 'Edit'}
-                    </button>
-                    <div className="mt-4">
-                        {editMode ? (
-                            <input
-                                placeholder="Enter your name"
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="block w-full px-2 py-1 rounded border border-gray-400"
-                            />
-                        ) : (
-                            <label className="block text-gray-700 text-sm font-bold mb-2 pl-2 text-left">
-                                Name: {name}
-                            </label>
-                        )}
+                <div className="w-full pl-[62px]">
+                    <div className="grid gap-[24px] md:grid-cols-3">
+                        <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                             style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                            <div className="py-6 pl-6 flex-1">
+                                <div className="font-normal text-sm mb-2 text-left">{t("averageStudyTime")}</div>
+                                <div className="flex items-center">
+                                    <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                        40
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center pr-6">
+                                <img src="/Images/Time.svg" alt=""/>
+                            </div>
+                        </div>
+
+                        <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                             style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                            <div className="py-6 pl-6 flex-1">
+                                <div className="font-normal text-sm mb-2 text-left">{t("numberOfNote")}</div>
+                                <div className="flex items-center">
+                                    <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                        4:03
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center pr-6">
+                                <img src="/Images/Notes.svg" alt=""/>
+                            </div>
+                        </div>
+
+                        <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex"
+                             style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                            <div className="py-6 pl-6 flex-1">
+                                <div className="font-normal text-sm mb-2 text-left">{t("numberOfNote")}</div>
+                                <div className="flex items-center">
+                                    <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                        4:03
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center pr-6">
+                                <img src="/Images/FullClock.svg" alt=""/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mt-4">
-                        {editMode ? (
-                            <input
-                                placeholder="Enter your level"
-                                type="text"
-                                value={level}
-                                onChange={(e) => setLevel(e.target.value)}
-                                className="block w-full px-2 py-1 rounded border border-gray-400"
-                            />
-                        ) : (
-                            <label className="block text-gray-700 text-sm font-bold mb-2 pl-2 text-left">
-                                Level: {level}
-                            </label>
-                        )}
-                    </div>
-                    <div className="mt-4">
-                        {editMode ? (
-                            <input
-                                type="text"
-                                placeholder="Enter your team"
-                                value={team}
-                                onChange={(e) => setLevel(e.target.value)}
-                                className="block w-full px-2 py-1 rounded border border-gray-400"
-                            />
-                        ) : (
-                            <label className="block text-gray-700 text-sm font-bold mb-2 pl-2 text-left">
-                                Team: {team}
-                            </label>
-                        )}
-                    </div>
-                    <div className="mt-4">
-                        {editMode ? (
-                            <input
-                                placeholder="Enter your position"
-                                type="text"
-                                value={position}
-                                onChange={(e) => setPosition(e.target.value)}
-                                className="block w-full px-2 py-1 rounded border border-gray-400"
-                            />
-                        ) : (
-                            <label className="block text-gray-700 text-sm font-bold mb-2 pl-2 text-left">
-                                Position: {position}
-                            </label>
-                        )}
+                    <div className="font-bold text-left pt-[37px] pb-4">
+                        {t("currentCourse")}
                     </div>
                 </div>
             </div>
-        </div>
-    </>)
+        </div>)
 }
 export default Profile;

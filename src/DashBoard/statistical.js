@@ -16,6 +16,8 @@ import "../App.css"
 import BarChart from "../common/BarChart";
 import dayjs from 'dayjs';
 import RenderColumn from "./Render_column"
+import AddIcon from '@mui/icons-material/Add';
+import {Card, Col, Row, Statistic} from 'antd';
 
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
@@ -37,7 +39,6 @@ const Statistical = () => {
     const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
     const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     const [dataSource, setDataSource] = useState([]);
-    const [yearSource, setYearSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [dataTable, setDataTable] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
@@ -167,7 +168,6 @@ const Statistical = () => {
             .then(data => {
                 // Update the tableData state with the fetched data
                 setDataSource(data.data);
-                setYearSource(data.totalLearningHours);
                 setTableName(data.data.map(item => item.name));
                 setDataTable(data.data.map(item => item.totalLearningHours));
                 setTotalLearningHours(data.totalLearningHours)
@@ -191,7 +191,7 @@ const Statistical = () => {
             title,
             dataIndex: `timePeriods[${index}].learningHour`,
             key: `T${index + 1}`,
-            render: selectedValue === 'company' ? undefined : (text, record) => {
+            render: (text, record) => {
                 const learningHour = record.timePeriods[index].learningHour;
                 return (
                     <>
@@ -205,10 +205,10 @@ const Statistical = () => {
 
     const columns = [
         {
-            title: selectedValue === 'company' ? '' : 'Họ tên',
-            dataIndex: selectedValue === 'company' ? '' : 'name',
-            key: selectedValue === 'company' ? '' : 'name',
-            render: selectedValue === 'company' ? undefined : (text) => {
+            title: 'Họ tên',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => {
                 const username = text.split('@')[0];
                 return <span>{username}</span>;
             },
@@ -219,39 +219,86 @@ const Statistical = () => {
 
     return (<>
             <HomePage/>
-            <div className="px-[5%] mx-auto">
+            <div className="px-[5%] mx-auto py-[54px]">
                 {/*Header//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                 <div className="grid gap-[24px] md:grid-cols-3">
-                    <div
-                        className="max-w-full rounded-lg overflow-hidden border border-solid border-blue-500 shadow-lg">
-                        <div className="px-6 py-4">
-                            <div className="font-bold text-xl mb-2">{t("onlineUser")}</div>
-                            <p className="text-gray-700 text-base">
-                                Cut the card into 1/2. This is the text under it. It's number 20/80.
-                            </p>
+                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                         style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                        <div className="py-6 pl-6 flex-1">
+                            <div className="font-normal text-sm mb-2 text-left">{t("numberOfUsers")}</div>
+                            <div className="flex items-center">
+                                <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                    40
+                                </p>
+                                <Statistic
+                                    value={11.28}
+                                    precision={2}
+                                    valueStyle={{
+                                        fontSize: '14px',
+                                        color: '#3f8600',
+                                    }}
+                                    prefix={<AddIcon style={{fontSize: '14px'}}/>}
+                                    suffix="%"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex items-center pr-6">
+                            <img src="/Images/user.svg" alt=""/>
                         </div>
                     </div>
 
-                    <div className="max-w-full rounded border border-solid border-yellow-400 overflow-hidden shadow-lg">
-                        <div className="px-6 py-4">
-                            <div className="font-bold text-xl mb-2">{t("averageOnlineTime")}</div>
-                            <p className="text-gray-700 text-base">
-                                Cut the card into 1/2. This is the text under it. It's number 20/80.
-                            </p>
+                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                         style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                        <div className="py-6 pl-6 flex-1">
+                            <div className="font-normal text-sm mb-2 text-left">{t("averageStudyTimes")}</div>
+                            <div className="flex items-center">
+                                <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                    4:03
+                                </p>
+                                <Statistic
+                                    value={11.28}
+                                    precision={2}
+                                    valueStyle={{
+                                        fontSize: '14px',
+                                        color: '#3f8600',
+                                    }}
+                                    prefix={<AddIcon style={{fontSize: '14px'}}/>}
+                                    suffix="%"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex items-center pr-6">
+                            <img src="/Images/Book.svg" alt=""/>
                         </div>
                     </div>
 
-                    <div className="max-w-full rounded-md overflow-hidden border border-solid border-[#11BF8E]">
-                        <div className="px-6 py-4">
-                            <div className="font-bold text-xl mb-2">{t("averageTimeTime")}</div>
-                            <p className="text-gray-700 text-base">
-                                Cut the card into 1/2. This is the text under it. It's number 20/80.
-                            </p>
+                    <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex"
+                         style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
+                        <div className="py-6 pl-6 flex-1">
+                            <div className="font-normal text-sm mb-2 text-left">{t("averageUsingTime")}</div>
+                            <div className="flex items-center">
+                                <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
+                                    4:03
+                                </p>
+                                <Statistic
+                                    value={11.28}
+                                    precision={2}
+                                    valueStyle={{
+                                        fontSize: '14px',
+                                        color: '#3f8600',
+                                    }}
+                                    prefix={<AddIcon style={{fontSize: '14px'}}/>}
+                                    suffix="%"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex items-center pr-6">
+                            <img src="/Images/Time.svg" alt=""/>
                         </div>
                     </div>
                 </div>
                 {/*Body//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
-                <div className="flex pt-[34px]">
+                <div className="flex pt-10">
                     {/*featuredCourse//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                     <div className="w-4/12">
                         <p className="text-left font-bold pb-4">{t("featuredCourse")}</p>
@@ -330,7 +377,7 @@ const Statistical = () => {
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <Table
                                 columns={columns}
-                                dataSource={(selectedValue === 'company') ? yearSource : dataSource}
+                                dataSource={dataSource}
                                 pagination={false}
                                 bordered
                                 scroll={{y: 360}}

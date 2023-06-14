@@ -11,9 +11,10 @@
   "error": "Something went wrong. Your note hasn't been saved yet",
   "profile": "Profile",
   "language": "Language",
-  "onlineUser": "Online user",
-  "averageOnlineTime": "Average online time",
-  "averageTimeTime": "average study time",
+  "averageStudyTimes": "Average study time",
+  "averageStudyTime": "Thời gian học trung bình",
+  "numberOfUsers": "Number of users",
+  "averageUsingTime": "Average using time",
   "featuredCourse": "Featured course",
   "learningHoursStatistics": "Learning hours statistics",
   "learner": "Leaner",
@@ -30,5 +31,8 @@
   "add": "Add",
   "tell": "Phone number",
   "department": "Department",
-  "location": "Location"
+  "location": "Location",
+  "numberOfNote": "Number of notes",
+  "totalStudyTimes": "Total study times,",
+  "currentCourse": "Current course"
 }
