@@ -69,7 +69,7 @@ const Vcard = () => {
     const [data, setData] = useState({})
     const params = useParams();
     const id = params.id;
-    const imgQr = `https://binote.biplus.com.vn/bicard/${id}`;
+    const imgQr = `http://192.168.3.150:8050/bicard/${id}`;
     const changeColor = isDarkMode ? '#D9DBDF' : '#2B3F6C';
     const phoneIcon = <svg width="24" height="24" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -342,7 +342,7 @@ const Vcard = () => {
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                            {data?.last_name} {data?.first_name}
+                                            {data?.first_name}
                                         </div>
                                         <div className="text-base text-white">{data?.position}</div>
                                     </div>
