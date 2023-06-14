@@ -163,7 +163,10 @@ const Profile = () => {
                         <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
                              style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                             <div className="py-6 pl-6 flex-1">
-                                <div className="font-normal text-sm mb-2 text-left">{t("numberOfNote")}</div>
+                                <div className="flex" data-tooltip="I’m the tooltip text.">
+                                    <div className="font-normal text-sm mb-2 text-left pr-1">{t("numberOfNote")}</div>
+                                    {noiticeIcon}
+                                </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
                                         4:03
@@ -178,7 +181,11 @@ const Profile = () => {
                         <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex"
                              style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                             <div className="py-6 pl-6 flex-1">
-                                <div className="font-normal text-sm mb-2 text-left">{t("totalStudyTimes")}</div>
+                                <div className="flex">
+                                    <div
+                                        className="font-normal text-sm mb-2 text-left pr-1">{t("totalStudyTimes")}</div>
+                                    {noiticeIcon}
+                                </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
                                         4:03
