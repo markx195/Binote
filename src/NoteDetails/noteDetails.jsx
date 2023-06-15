@@ -4,6 +4,8 @@ import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useTranslation} from "react-i18next";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import axios from 'axios';
 
 const NoteDetails = ({handleSignOut}) => {
     const {t} = useTranslation()
@@ -109,6 +111,20 @@ const NoteDetails = ({handleSignOut}) => {
         fetchCourseData();
     }, [id.id, storedAccessToken]);
 
+    const handleFinishedCourse = async () => {
+        const requestData = {
+            course_id: id.id,
+            directus_users_id: "your_directus_users_id"
+        };
+
+        try {
+            const response = await axios.post('http://192.168.3.150:8055/items/course_directus_users', requestData);
+            console.log(response.data); // Handle the response data as needed
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (<>
         <HomePage handleSignOut={handleSignOut}/>
         <div className="flex px-[5%] pt-10 pb-20">
@@ -135,16 +151,28 @@ const NoteDetails = ({handleSignOut}) => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
                                 {courseData.title}
                             </div>
-                            <div className="py-4">
-                                <a
-                                    className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={courseData.link}
-                                >
-                                    {t("goToCourse")}
-                                </a>
+                            <div className="flex">
+                                <div className="py-4 pr-2">
+                                    <a
+                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={courseData.link}
+                                        style={{width: '100%', '@media (min-width: 768px)': {width: '200px'}}}
+                                    >
+                                        {t("goToCourse")}
+                                    </a>
+                                </div>
+                                <div className="py-4">
+                                    <div
+                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
+                                        onClick={handleFinishedCourse}
+                                    >
+                                        {t("completedCourse")}
+                                    </div>
+                                </div>
                             </div>
+
                             <div className="text-left"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>
                         </>)}

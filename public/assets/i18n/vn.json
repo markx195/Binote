@@ -34,5 +34,6 @@
   "location": "Văn phòng",
   "numberOfNote": "Số lượng ghi chú",
   "totalStudyTimes": "Tổng thời gian học",
-  "myCourse": "Khóa học của tôi"
+  "myCourse": "Khóa học của tôi",
+  "completedCourse": "Hoàn thành khóa học"
 }

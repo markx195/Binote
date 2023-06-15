@@ -34,5 +34,6 @@
   "location": "Location",
   "numberOfNote": "Number of notes",
   "totalStudyTimes": "Total study times,",
-  "myCourse": "My course"
+  "myCourse": "My course",
+  "completedCourse": "Completed the course"
 }

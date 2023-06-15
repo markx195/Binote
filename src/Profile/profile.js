@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {Progress, Space} from 'antd';
 import EditableText from "../common/EditableText"
 import {debounce} from 'lodash';
+import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
 
 const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -147,7 +148,11 @@ const Profile = () => {
                                 <div className="flex">
                                     <div
                                         className="font-normal text-sm mb-2 text-left pr-1">{t("averageStudyTime")}</div>
-                                    {noiticeIcon}
+
+                                    <Tooltip title="Thời gian trung bình bạn học hằng ngày, trong 30 ngày gần nhất"
+                                             placement="top">
+                                        {noiticeIcon}
+                                    </Tooltip>
                                 </div>
                                 <div className="flex items-center" title="Text to show on hover">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
@@ -165,7 +170,9 @@ const Profile = () => {
                             <div className="py-6 pl-6 flex-1">
                                 <div className="flex" data-tooltip="I’m the tooltip text.">
                                     <div className="font-normal text-sm mb-2 text-left pr-1">{t("numberOfNote")}</div>
-                                    {noiticeIcon}
+                                    <Tooltip title="Tổng số ghi chú bạn đã tạo" placement="top">
+                                        {noiticeIcon}
+                                    </Tooltip>
                                 </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
@@ -184,7 +191,9 @@ const Profile = () => {
                                 <div className="flex">
                                     <div
                                         className="font-normal text-sm mb-2 text-left pr-1">{t("totalStudyTimes")}</div>
-                                    {noiticeIcon}
+                                    <Tooltip title="Tổng số thời gian bạn đã học" placement="top">
+                                        {noiticeIcon}
+                                    </Tooltip>
                                 </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
