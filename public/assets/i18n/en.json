@@ -35,5 +35,6 @@
   "numberOfNote": "Number of notes",
   "totalStudyTimes": "Total study times,",
   "myCourse": "My course",
-  "completedCourse": "Completed the course"
+  "completedCourse": "Completed the course",
+  "completeCourseBtn": "Congratulations on completing the course"
 }

@@ -35,5 +35,6 @@
   "numberOfNote": "Số lượng ghi chú",
   "totalStudyTimes": "Tổng thời gian học",
   "myCourse": "Khóa học của tôi",
-  "completedCourse": "Hoàn thành khóa học"
+  "completedCourse": "Hoàn thành khóa học",
+  "completeCourseBtn": "Chúc mừng bạn đã hoàn thành khóa học"
 }

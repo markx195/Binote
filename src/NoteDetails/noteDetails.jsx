@@ -6,8 +6,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {useTranslation} from "react-i18next";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from 'axios';
+import {showToast} from '../common/Toast'
 
-const NoteDetails = ({handleSignOut}) => {
+const NoteDetails = ({handleSignOut, userId}) => {
     const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
@@ -114,11 +115,17 @@ const NoteDetails = ({handleSignOut}) => {
     const handleFinishedCourse = async () => {
         const requestData = {
             course_id: id.id,
-            directus_users_id: "your_directus_users_id"
+            directus_users_id: userId,
+            is_completed: true
         };
-
         try {
-            const response = await axios.post('http://192.168.3.150:8055/items/course_directus_users', requestData);
+            const response = await axios.post('http://192.168.3.150:8050/flows/trigger/6fd8b029-a5a1-4794-a366-6b902522e2cb', requestData, {
+                    headers: {
+                        Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
+                    }
+                }
+            );
+            showToast(t("completeCourseBtn"), "success")
             console.log(response.data); // Handle the response data as needed
         } catch (error) {
             console.error(error);
