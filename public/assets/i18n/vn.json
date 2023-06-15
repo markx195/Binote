@@ -36,5 +36,9 @@
   "totalStudyTimes": "Tổng thời gian học",
   "myCourse": "Khóa học của tôi",
   "completedCourse": "Hoàn thành khóa học",
-  "completeCourseBtn": "Chúc mừng bạn đã hoàn thành khóa học"
+  "completeCourseBtn": "Chúc mừng bạn đã hoàn thành khóa học",
+  "finish": "Hoàn thành",
+  "numberOfHours": "Số giờ học",
+  "numberCoursesCompleted": "Số giờ học hoàn thành",
+  "hour": "Giờ"
 }

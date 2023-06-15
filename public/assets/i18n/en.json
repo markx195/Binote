@@ -36,5 +36,9 @@
   "totalStudyTimes": "Total study times,",
   "myCourse": "My course",
   "completedCourse": "Completed the course",
-  "completeCourseBtn": "Congratulations on completing the course"
+  "completeCourseBtn": "Congratulations on completing the course",
+  "finish": "Finish",
+  "numberOfHours": "Number of hours",
+  "numberCoursesCompleted": "Number of courses completed",
+  "hour": "Hour"
 }

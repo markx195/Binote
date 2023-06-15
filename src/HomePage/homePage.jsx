@@ -7,8 +7,21 @@ import SchoolIcon from '@mui/icons-material/School';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./LangSwitch.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import {AppstoreOutlined} from '@ant-design/icons';
+import {Menu} from 'antd';
 
 const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
+
+function getItem(label, key, icon, children, type, isActive) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type,
+        isActive
+    };
+}
 
 const logoutBtn = (
     <svg width="24" height="24" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,10 +60,18 @@ const HomePage = (props) => {
     const storedAccessToken = localStorage.getItem('accessToken');
     const dropdownRef = useRef(null);
     const [userId, setUserId] = useState("")
+    const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('i18nextLng') || 'vn');
+    const items = [
+        getItem(useTranslation().t("language"), 'sub2', null, [
+            getItem("Tiếng việt", 'vn', <img src="/Images/vnLogo.svg" alt="vn"/>),
+            getItem('English', 'en', <img src="/Images/engLogo.svg" alt="en"/>),
+        ]),];
 
     useEffect(() => {
-        if (localStorage.getItem("i18nextLng")?.length > 2) {
-            i18next.changeLanguage("en");
+        if (!localStorage.getItem("i18nextLng")) {
+            localStorage.setItem('i18nextLng', 'en');
+        } else {
+            setSelectedLanguage(localStorage.getItem('i18nextLng'));
         }
         if (!storedAccessToken) {
             navigate("/")
@@ -109,15 +130,11 @@ const HomePage = (props) => {
         }, 100);
     };
 
-    const [checked, setChecked] = useState(localStorage.getItem('i18nextLng') === 'en');
-
-    const handleChangeLang = () => {
-        const newChecked = !checked;
-        setChecked(newChecked);
-        const language = newChecked ? 'en' : 'vn';
-        localStorage.setItem('i18nextLng', language);
-        i18n.changeLanguage(language);
-    };
+    const handleLanguage = (e) => {
+        setSelectedLanguage(e.key);
+        localStorage.setItem('i18nextLng', e.key);
+        i18next.changeLanguage(e.key);
+    }
     return (
         <>
             <div className="px-[5%] mx-auto flex justify-between items-center p-4 pt-8">
@@ -178,18 +195,14 @@ const HomePage = (props) => {
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <div
-                                className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left">
-                                <span style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    marginRight: '10px'
-                                }}>{t("language")}</span>
-                                <div className="flag-switch">
-                                    <input type="checkbox" id="check2" checked={checked} onChange={handleChangeLang}/>
-                                    <label htmlFor="check2"></label>
-                                </div>
-                            </div>
+                            <Menu
+                                onClick={handleLanguage}
+                                style={{
+                                    width: 201
+                                }}
+                                mode="vertical"
+                                items={items}
+                            />
                         </div>
                     )}
                 </div>

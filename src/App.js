@@ -23,6 +23,7 @@ function App() {
         navigate("/");
     };
     const [userId, setUserId] = useState("")
+    const [infoData, setInfoData] = useState([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,6 +38,7 @@ function App() {
                 });
 
                 const data = await response.json();
+                setInfoData(data)
                 const userID = data.data.id
                 setUserId(userID)
             } catch (error) {
@@ -59,7 +61,7 @@ function App() {
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut} userId={userId}/>}/>
-                <Route path='/Profile' element={<Profile/>}/>
+                <Route path='/Profile' element={<Profile infoData={infoData}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>

@@ -7,6 +7,7 @@ import {Progress, Space} from 'antd';
 import EditableText from "../common/EditableText"
 import {debounce} from 'lodash';
 import Tooltip, {tooltipClasses} from '@mui/material/Tooltip';
+import {useNavigate} from "react-router-dom"
 
 const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -14,34 +15,69 @@ const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" 
         fill="#979696"/>
 </svg>
 
-const Profile = () => {
+const Profile = (props) => {
+    const navigate = useNavigate()
     const {t} = useTranslation()
     const [profileDetails, setProfileDetails] = useState(null);
     const storedAccessToken = localStorage.getItem('accessToken');
+    const [dataSource, setDataSource] = useState([])
+    const [totalNotes, setTotalNotes] = useState(null)
+    const [totalLearningHour, setTotalLearningHour] = useState(null)
+    const fetchData = async () => {
+        try {
+            // Make API call with token in request headers
+            const response = await axios.get("https://binote-api.biplus.com.vn/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${storedAccessToken}`
+                }
+            });
+            setDataSource(response.data.data);
+        } catch
+            (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    const fetchDataStatic = async () => {
+        const url = 'http://192.168.3.150:8050/flows/trigger/22833381-b10f-45c5-a4ee-f90aa8b34f73';
+        const fromDate = '2023-04-21T09:51:04.034Z';
+        const toDate = '2023-06-01T09:51:04.034Z';
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${storedAccessToken}`,
+                },
+                body: JSON.stringify({from_date: fromDate, to_date: toDate}),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setTotalNotes(data.level.totalNotes)
+                setTotalLearningHour(data.level.totalLearningHour)
+                console.log(data.level)
+            } else {
+                console.log('Error:', response.status);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
 
     useEffect(() => {
-        if (storedAccessToken) {
-            const fetchData = async () => {
-                try {
-                    const apiUrl = 'http://192.168.3.150:8055/users/me';
+        setProfileDetails(props.infoData.data);
+        fetchDataStatic();
+        fetchData()
+    }, [props.infoData.data]);
 
-                    const response = await fetch(apiUrl, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${storedAccessToken}`
-                        }
-                    });
-                    const data = await response.json();
-                    setProfileDetails(data.data);
-                    console.log(data.data);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
+    function formatTime(decimalHours) {
+        const hours = Math.floor(decimalHours);
+        const minutes = Math.round((decimalHours - hours) * 60);
+        const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
 
-            fetchData();
-        }
-    }, [storedAccessToken]);
+        return formattedTime;
+    }
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
@@ -98,6 +134,10 @@ const Profile = () => {
 
     const handleSaveProfile = debounce(handleEditProfile, 1000);
 
+    const handleNoteDetails = (id) => {
+        navigate(`/NoteDetails/${id}`);
+    };
+
     return (
         <div className="bg-[#F6F6F6ư]">
             <HomePage/>
@@ -136,8 +176,14 @@ const Profile = () => {
                         <span className="text-xs">{profileDetails?.team}</span>
                     </div>
                     <div className="pt-11">
+                        <div className="text-left text-sm">{t("numberOfHours")}</div>
                         <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
-                                  strokeColor={{from: '#F0C528', to: '#87d068'}}/>
+                                  strokeColor={{from: '#F0C528', to: '#E86F2B'}}/>
+                    </div>
+                    <div className="pt-4">
+                        <div className="text-left text-sm">{t("numberCoursesCompleted")}</div>
+                        <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
+                                  strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
                     </div>
                 </div>
                 <div className="w-full pl-[62px]">
@@ -176,7 +222,7 @@ const Profile = () => {
                                 </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        4:03
+                                        {totalNotes}
                                     </p>
                                 </div>
                             </div>
@@ -197,7 +243,7 @@ const Profile = () => {
                                 </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        4:03
+                                        {formatTime(totalLearningHour)}
                                     </p>
                                 </div>
                             </div>
@@ -206,8 +252,49 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
+                    {/*//Right side*/}
                     <div className="font-bold text-left pt-[37px] pb-4">
                         {t("myCourse")}
+                    </div>
+                    <div>
+                        <div
+                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6 pt-4 pb-14 mx-auto'>
+                            {dataSource?.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className='border shadow-md rounded-lg hover:scale-105 duration-300'
+                                    onClick={() => handleNoteDetails(item.id)}
+                                >
+                                    <div className="p-4">
+                                        <img
+                                            key={item.image}
+                                            src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
+                                            alt={item?.name}
+                                            className='w-full rounded h-[150px] object-cover rounded-t-lg'
+                                        />
+                                    </div>
+                                    <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left'>
+                                        {item?.title}
+                                    </p>
+                                    <div className='flex justify-between px-4 pb-1'>
+                                        <p className="inline-flex items-center">
+                                            <img src="/Images/clockIcon.svg" alt=""/>
+                                            <span className='p-1 text-sm text-[#979696]'>
+                        {item?.totalLearningHour} {t("hour")}
+                        </span>
+                                        </p>
+                                    </div>
+                                    <div className='flex justify-between px-4 pb-4'>
+                                        <p className="inline-flex items-center">
+                                            <img src="/Images/noteIcon.svg" alt=""/>
+                                            <span className='p-1 text-sm text-[#979696]'>
+                        {item?.notes_count} {t("notes")}
+                        </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
