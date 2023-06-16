@@ -13,6 +13,7 @@
   "language": "Ngôn ngữ",
   "averageStudyTimes": "Thời gian học trung bình (giờ/lần học)",
   "dailyLearningTime": "Thời gian học hàng ngày",
+  "dailyLearningTimeHint": "Thời gian trung bình bạn học hằng ngày, trong 30 ngày gần nhất",
   "numberOfUsers": "Số người sử dụng",
   "averageUsingTime": "Thời gian sử dụng trung bình (giờ/phiên)",
   "featuredCourse": "Khóa học nổi bật",
@@ -33,12 +34,15 @@
   "department": "Bộ phận",
   "location": "Văn phòng",
   "numberOfNote": "Số lượng ghi chú",
+  "numberOfNoteHind": "Tổng số ghi chú bạn đã tạo",
   "totalStudyTimes": "Tổng thời gian học",
+  "totalStudyTimesHint": "Tổng số thời gian bạn đã học",
   "myCourse": "Khóa học của tôi",
   "completedCourse": "Hoàn thành khóa học",
   "completeCourseBtn": "Chúc mừng bạn đã hoàn thành khóa học",
-  "finish": "Hoàn thành",
+  "complete": "Hoàn thành",
   "numberOfHours": "Số giờ học",
   "numberCoursesCompleted": "Số giờ học hoàn thành",
-  "hour": "Giờ"
+  "hour": "Giờ",
+  "showMore": "Xem thêm"
 }

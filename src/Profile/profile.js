@@ -16,7 +16,6 @@ const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" 
 </svg>
 
 const Profile = (props) => {
-    console.log(props)
     const navigate = useNavigate()
     const {t} = useTranslation()
     const [profileDetails, setProfileDetails] = useState(null);
@@ -27,10 +26,17 @@ const Profile = (props) => {
     const [totalLearningHour, setTotalLearningHour] = useState(null)
     const [rankDetails, setRankDetails] = useState("")
     const [courseProcess, setCourseProcess] = useState([])
+    const [courseStatistics, setCourseStatistics] = useState([])
+    const [showMore, setShowMore] = useState(false);
+    const visibleItems = showMore ? dataSource : dataSource.slice(0, 10);
+
+    const handleShowMore = () => {
+        setShowMore(true);
+    };
+
     const fetchData = async () => {
         try {
-            // Make API call with token in request headers
-            const response = await axios.get("https://binote-api.biplus.com.vn/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
+            const response = await axios.get("https://binote-api.biplus.com.vn/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&page=0", {
                 headers: {
                     Accept: "*/*",
                     "Content-Type": "application/json",
@@ -59,6 +65,7 @@ const Profile = (props) => {
             });
             if (response.ok) {
                 const data = await response.json();
+                setCourseStatistics(data.courseStatistics)
                 setCourseData(data.level)
                 setRankDetails(data.level.current_level_object)
                 setTotalNotes(data.level.totalNotes)
@@ -76,14 +83,6 @@ const Profile = (props) => {
         fetchDataStatic();
         fetchData()
     }, [props.infoData.data]);
-
-    function formatTime(decimalHours) {
-        const hours = Math.floor(decimalHours);
-        const minutes = Math.round((decimalHours - hours) * 60);
-        const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-
-        return formattedTime;
-    }
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
@@ -144,12 +143,25 @@ const Profile = (props) => {
         navigate(`/NoteDetails/${id}`);
     };
 
+    function convertDecimalToTime(decimalTime) {
+        const hours = Math.floor(decimalTime);
+        const minutes = Math.round((decimalTime % 1) * 60);
+
+        const paddedHours = hours.toString().padStart(2, '0');
+        const paddedMinutes = minutes.toString().padStart(2, '0');
+
+        return `${paddedHours}:${paddedMinutes}`;
+    }
+
+    const percentLearnHour = (courseData.totalLearningHour / rankDetails.max_hour) * 100;
+    const percentLearnComplete = (courseData.course_completion / rankDetails.max_course) * 100;
+
     return (
         <div className="bg-[#F6F6F6ư]">
             <HomePage handleSignOut={props.handleSignOut}/>
             <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between">
                 <div className="rounded-2xl p-4 bg-white"
-                     style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)'}}>
+                     style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)', height: '80vh'}}>
                     <div className="bg-[#F6F6F6] p-4 rounded-2xl"
                          style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                         <div className="flex items-center justify-center pb-4">
@@ -200,7 +212,7 @@ const Profile = (props) => {
                             <div
                                 className="text-sm text-right text-[#979696]">{totalLearningHour}/{rankDetails.max_hour}</div>
                         </div>
-                        <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
+                        <Progress percent={percentLearnHour} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#F0C528', to: '#E86F2B'}}/>
                     </div>
                     <div className="pt-4">
@@ -209,7 +221,7 @@ const Profile = (props) => {
                             <div
                                 className="text-sm text-right text-[#979696]">{courseData.course_completion}/{rankDetails.max_course}</div>
                         </div>
-                        <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
+                        <Progress percent={percentLearnComplete} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
                     </div>
                 </div>
@@ -222,15 +234,14 @@ const Profile = (props) => {
                                 <div className="flex">
                                     <div
                                         className="font-normal text-sm mb-2 text-left pr-1">{t("dailyLearningTime")}</div>
-
-                                    <Tooltip title="Thời gian trung bình bạn học hằng ngày, trong 30 ngày gần nhất"
+                                    <Tooltip title={t("dailyLearningTimeHint")}
                                              placement="top">
                                         {noiticeIcon}
                                     </Tooltip>
                                 </div>
                                 <div className="flex items-center" title="Text to show on hover">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        3:45
+                                        {convertDecimalToTime(courseStatistics.daily_learning)}
                                     </p>
                                 </div>
                             </div>
@@ -244,7 +255,7 @@ const Profile = (props) => {
                             <div className="py-6 pl-6 flex-1">
                                 <div className="flex" data-tooltip="I’m the tooltip text.">
                                     <div className="font-normal text-sm mb-2 text-left pr-1">{t("numberOfNote")}</div>
-                                    <Tooltip title="Tổng số ghi chú bạn đã tạo" placement="top">
+                                    <Tooltip title={t("numberOfNoteHind")} placement="top">
                                         {noiticeIcon}
                                     </Tooltip>
                                 </div>
@@ -265,13 +276,13 @@ const Profile = (props) => {
                                 <div className="flex">
                                     <div
                                         className="font-normal text-sm mb-2 text-left pr-1">{t("totalStudyTimes")}</div>
-                                    <Tooltip title="Tổng số thời gian bạn đã học" placement="top">
+                                    <Tooltip title={t("totalStudyTimesHint")} placement="top">
                                         {noiticeIcon}
                                     </Tooltip>
                                 </div>
                                 <div className="flex items-center">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        {formatTime(totalLearningHour)}
+                                        {convertDecimalToTime(totalLearningHour)}
                                     </p>
                                 </div>
                             </div>
@@ -286,14 +297,14 @@ const Profile = (props) => {
                             {t("myCourse")}
                         </div>
                         <div className="text-right">
-                            {t("finish")} {courseProcess.totalCompletedCourses}/{courseProcess.totalCourses}
+                            {t("complete")} {courseProcess.totalCompletedCourses}/{courseProcess.totalCourses}
                         </div>
                     </div>
 
                     <div>
                         <div
-                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 pt-4 pb-14 mx-auto'>
-                            {dataSource?.map((item, index) => (
+                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 pt-4 pb-4 mx-auto'>
+                            {visibleItems?.map((item, index) => (
                                 <div
                                     key={index}
                                     className='border shadow-md rounded-lg hover:scale-105 duration-300'
@@ -305,14 +316,14 @@ const Profile = (props) => {
                                                 key={item.image}
                                                 src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
                                                 alt={item?.name}
-                                                className='w-full rounded h-[150px] object-cover rounded-t-lg'
+                                                className='w-full rounded h-[117.33px] object-cover rounded-t-lg'
                                             />
-                                            {item.isCompletion &&
+                                            {item.isCompletion && (
                                                 <div className='absolute top-0 right-0 p-2'>
                                                     <img src="/Images/checkIcon.svg" alt="Check Icon"
                                                          className='w-6 h-6'/>
                                                 </div>
-                                            }
+                                            )}
                                         </div>
                                     </div>
                                     <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left'>
@@ -322,22 +333,29 @@ const Profile = (props) => {
                                         <p className="inline-flex items-center">
                                             <img src="/Images/clockIcon.svg" alt=""/>
                                             <span className='p-1 text-sm text-[#979696]'>
-            {item?.totalLearningHour} {t("hour")}
-          </span>
+                {item?.totalLearningHour} hour
+              </span>
                                         </p>
                                     </div>
                                     <div className='flex justify-between px-4 pb-4'>
                                         <p className="inline-flex items-center">
                                             <img src="/Images/noteIcon.svg" alt=""/>
                                             <span className='p-1 text-sm text-[#979696]'>
-            {item?.notes_count} {t("notes")}
-          </span>
+                {item?.notes_count} notes
+              </span>
                                         </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
-
+                        {!showMore && dataSource.length > 8 && (
+                            <div className='flex justify-center items-center cursor-pointer pb-11'
+                                 onClick={handleShowMore}
+                            >
+                                {t("showMore")}
+                                <img src="/Images/showMore.svg" alt=""/>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

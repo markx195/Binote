@@ -7,6 +7,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./LangSwitch.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import {AppstoreOutlined} from '@ant-design/icons';
 import {Menu} from 'antd';
 
@@ -22,6 +23,12 @@ function getItem(label, key, icon, children, type, isActive) {
         isActive
     };
 }
+
+const biCardIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M6.66671 3.1665H9.33337C11.8475 3.1665 13.1046 3.1665 13.8857 3.94755C14.6667 4.7286 14.6667 5.98568 14.6667 8.49984C14.6667 11.014 14.6667 12.2711 13.8857 13.0521C13.1046 13.8332 11.8475 13.8332 9.33337 13.8332H6.66671C4.15255 13.8332 2.89547 13.8332 2.11442 13.0521C1.33337 12.2711 1.33337 11.014 1.33337 8.49984C1.33337 5.98568 1.33337 4.7286 2.11442 3.94755C2.89547 3.1665 4.15255 3.1665 6.66671 3.1665ZM8.83337 6.49984C8.83337 6.2237 9.05723 5.99984 9.33337 5.99984H12.6667C12.9428 5.99984 13.1667 6.2237 13.1667 6.49984C13.1667 6.77598 12.9428 6.99984 12.6667 6.99984H9.33337C9.05723 6.99984 8.83337 6.77598 8.83337 6.49984ZM9.50004 8.49984C9.50004 8.22369 9.7239 7.99984 10 7.99984H12.6667C12.9428 7.99984 13.1667 8.22369 13.1667 8.49984C13.1667 8.77598 12.9428 8.99984 12.6667 8.99984H10C9.7239 8.99984 9.50004 8.77598 9.50004 8.49984ZM10.1667 10.4998C10.1667 10.2237 10.3906 9.99984 10.6667 9.99984H12.6667C12.9428 9.99984 13.1667 10.2237 13.1667 10.4998C13.1667 10.776 12.9428 10.9998 12.6667 10.9998H10.6667C10.3906 10.9998 10.1667 10.776 10.1667 10.4998ZM7.33337 6.49984C7.33337 7.23622 6.73642 7.83317 6.00004 7.83317C5.26366 7.83317 4.66671 7.23622 4.66671 6.49984C4.66671 5.76346 5.26366 5.1665 6.00004 5.1665C6.73642 5.1665 7.33337 5.76346 7.33337 6.49984ZM6.00004 11.8332C8.66671 11.8332 8.66671 11.2362 8.66671 10.4998C8.66671 9.76346 7.4728 9.1665 6.00004 9.1665C4.52728 9.1665 3.33337 9.76346 3.33337 10.4998C3.33337 11.2362 3.33337 11.8332 6.00004 11.8332Z"
+          fill="#1C274C"/>
+</svg>
 
 const logoutBtn = (
     <svg width="24" height="24" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -186,7 +193,7 @@ const HomePage = (props) => {
                             </div>
                             <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
                                  onClick={handleVcard}>
-                                <PersonIcon/>
+                                <ContactMailIcon/>
                                 <span className="pl-2">BiCard</span>
                             </div>
                             <div

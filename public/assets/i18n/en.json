@@ -13,6 +13,7 @@
   "language": "Language",
   "averageStudyTimes": "Average study time",
   "dailyLearningTime": "Daily learning times",
+  "dailyLearningTimeHint": "Average time you study daily, in the last 30 days",
   "numberOfUsers": "Number of users",
   "averageUsingTime": "Average using time",
   "featuredCourse": "Featured course",
@@ -33,12 +34,15 @@
   "department": "Department",
   "location": "Location",
   "numberOfNote": "Number of notes",
-  "totalStudyTimes": "Total study times,",
-  "myCourse": "My course",
+  "numberOfNoteHind": "Total number of notes you have created",
+  "totalStudyTimes": "Total study times",
+  "totalStudyTimesHint": "Total time you have studied",
+  "myCourse": "My courses",
   "completedCourse": "Completed the course",
   "completeCourseBtn": "Congratulations on completing the course",
-  "finish": "Finish",
+  "complete": "Completed",
   "numberOfHours": "Number of hours",
   "numberCoursesCompleted": "Number of courses completed",
-  "hour": "Hour"
+  "hour": "Hour",
+  "showMore": "Show more"
 }
