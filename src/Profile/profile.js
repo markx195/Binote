@@ -23,6 +23,7 @@ const Profile = (props) => {
     const storedAccessToken = localStorage.getItem('accessToken');
     const [dataSource, setDataSource] = useState([])
     const [totalNotes, setTotalNotes] = useState(null)
+    const [courseData, setCourseData] = useState([])
     const [totalLearningHour, setTotalLearningHour] = useState(null)
     const [rankDetails, setRankDetails] = useState("")
     const fetchData = async () => {
@@ -56,6 +57,7 @@ const Profile = (props) => {
             });
             if (response.ok) {
                 const data = await response.json();
+                setCourseData(data.level)
                 setRankDetails(data.level.current_level_object)
                 setTotalNotes(data.level.totalNotes)
                 setTotalLearningHour(data.level.totalLearningHour)
@@ -191,12 +193,20 @@ const Profile = (props) => {
                         </div>
                     </div>
                     <div className="pt-4">
-                        <div className="text-left text-sm">{t("numberOfHours")}</div>
+                        <div className="flex items-center justify-between">
+                            <div className="text-left text-sm">{t("numberOfHours")}</div>
+                            <div
+                                className="text-sm text-right text-[#979696]">{totalLearningHour}/{rankDetails.max_hour}</div>
+                        </div>
                         <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#F0C528', to: '#E86F2B'}}/>
                     </div>
                     <div className="pt-4">
-                        <div className="text-left text-sm">{t("numberCoursesCompleted")}</div>
+                        <div className="flex items-center justify-between">
+                            <div className="text-left text-sm">{t("numberCoursesCompleted")}</div>
+                            <div
+                                className="text-sm text-right text-[#979696]">{courseData.course_completion}/{rankDetails.max_course}</div>
+                        </div>
                         <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
                     </div>
