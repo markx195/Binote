@@ -56,7 +56,8 @@ const Note = ({
             note: `Tôi đã học được gì:
 
 Tôi có thể áp dụng gì vào công việc:`,
-            course_id: parseInt(idNoted)
+            course_id: parseInt(idNoted),
+            learning_hour: 0.25
         };
         onAddItem(newItem);
     };
@@ -94,7 +95,6 @@ Tôi có thể áp dụng gì vào công việc:`,
     }, [])
     const handleSelectTime = (time) => {
         const changeTypeTime = parseFloat(time.target.value);
-        console.log(changeTypeTime)
         setSelectedTime(changeTypeTime);
         clearTimeout(timeoutId);
         // Set a new timeout for 3 seconds

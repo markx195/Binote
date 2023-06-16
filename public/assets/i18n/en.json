@@ -34,7 +34,7 @@
   "department": "Department",
   "location": "Location",
   "numberOfNote": "Number of notes",
-  "numberOfNoteHind": "Total number of notes you have created",
+  "numberOfNoteHint": "Total number of notes you have created",
   "totalStudyTimes": "Total study times",
   "totalStudyTimesHint": "Total time you have studied",
   "myCourse": "My courses",

@@ -255,7 +255,7 @@ const Profile = (props) => {
                             <div className="py-6 pl-6 flex-1">
                                 <div className="flex" data-tooltip="I’m the tooltip text.">
                                     <div className="font-normal text-sm mb-2 text-left pr-1">{t("numberOfNote")}</div>
-                                    <Tooltip title={t("numberOfNoteHind")} placement="top">
+                                    <Tooltip title={t("numberOfNoteHint")} placement="top">
                                         {noiticeIcon}
                                     </Tooltip>
                                 </div>
@@ -349,7 +349,7 @@ const Profile = (props) => {
                             ))}
                         </div>
                         {!showMore && dataSource.length > 8 && (
-                            <div className='flex justify-center items-center cursor-pointer pb-11'
+                            <div className='flex justify-center items-center cursor-pointer pb-11   '
                                  onClick={handleShowMore}
                             >
                                 {t("showMore")}
