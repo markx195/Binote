@@ -26,6 +26,7 @@ const Profile = (props) => {
     const [courseData, setCourseData] = useState([])
     const [totalLearningHour, setTotalLearningHour] = useState(null)
     const [rankDetails, setRankDetails] = useState("")
+    const [courseProcess, setCourseProcess] = useState([])
     const fetchData = async () => {
         try {
             // Make API call with token in request headers
@@ -37,6 +38,7 @@ const Profile = (props) => {
                 }
             });
             setDataSource(response.data.data);
+            setCourseProcess(response.data)
         } catch
             (error) {
             console.error("Error fetching data:", error);
@@ -284,7 +286,7 @@ const Profile = (props) => {
                             {t("myCourse")}
                         </div>
                         <div className="text-right">
-                            {t("finish")}
+                            {t("finish")} {courseProcess.totalCompletedCourses}/{courseProcess.totalCourses}
                         </div>
                     </div>
 
