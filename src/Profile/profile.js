@@ -16,6 +16,7 @@ const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" 
 </svg>
 
 const Profile = (props) => {
+    console.log(props)
     const navigate = useNavigate()
     const {t} = useTranslation()
     const [profileDetails, setProfileDetails] = useState(null);
@@ -23,6 +24,7 @@ const Profile = (props) => {
     const [dataSource, setDataSource] = useState([])
     const [totalNotes, setTotalNotes] = useState(null)
     const [totalLearningHour, setTotalLearningHour] = useState(null)
+    const [rankDetails, setRankDetails] = useState("")
     const fetchData = async () => {
         try {
             // Make API call with token in request headers
@@ -54,9 +56,9 @@ const Profile = (props) => {
             });
             if (response.ok) {
                 const data = await response.json();
+                setRankDetails(data.level.current_level_object)
                 setTotalNotes(data.level.totalNotes)
                 setTotalLearningHour(data.level.totalLearningHour)
-                console.log(data.level)
             } else {
                 console.log('Error:', response.status);
             }
@@ -140,7 +142,7 @@ const Profile = (props) => {
 
     return (
         <div className="bg-[#F6F6F6ư]">
-            <HomePage/>
+            <HomePage handleSignOut={props.handleSignOut}/>
             <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between">
                 <div className="rounded-2xl p-4 bg-white"
                      style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)'}}>
@@ -176,6 +178,19 @@ const Profile = (props) => {
                         <span className="text-xs">{profileDetails?.team}</span>
                     </div>
                     <div className="pt-11">
+                        <div className="text-left text-sm font-bold pb-4">
+                            {rankDetails.name}
+                        </div>
+                        <div className="flex items-center justify-center">
+                            <img
+                                src={`https://binote-api.biplus.com.vn/assets/${rankDetails?.image}`}
+                                id="output"
+                                width="130"
+                                alt="RankAvatar"
+                            />
+                        </div>
+                    </div>
+                    <div className="pt-4">
                         <div className="text-left text-sm">{t("numberOfHours")}</div>
                         <Progress percent={99.9} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#F0C528', to: '#E86F2B'}}/>
@@ -186,6 +201,7 @@ const Profile = (props) => {
                                   strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
                     </div>
                 </div>
+                {/*card*/}
                 <div className="w-full pl-[62px]">
                     <div className="grid gap-[24px] md:grid-cols-3">
                         <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
@@ -193,7 +209,7 @@ const Profile = (props) => {
                             <div className="py-6 pl-6 flex-1">
                                 <div className="flex">
                                     <div
-                                        className="font-normal text-sm mb-2 text-left pr-1">{t("averageStudyTime")}</div>
+                                        className="font-normal text-sm mb-2 text-left pr-1">{t("dailyLearningTime")}</div>
 
                                     <Tooltip title="Thời gian trung bình bạn học hằng ngày, trong 30 ngày gần nhất"
                                              placement="top">
@@ -202,7 +218,7 @@ const Profile = (props) => {
                                 </div>
                                 <div className="flex items-center" title="Text to show on hover">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        40
+                                        3:45
                                     </p>
                                 </div>
                             </div>
@@ -253,12 +269,18 @@ const Profile = (props) => {
                         </div>
                     </div>
                     {/*//Right side*/}
-                    <div className="font-bold text-left pt-[37px] pb-4">
-                        {t("myCourse")}
+                    <div className="flex pt-[37px] pb-4 flex items-center justify-between">
+                        <div className="font-bold text-left">
+                            {t("myCourse")}
+                        </div>
+                        <div className="text-right">
+                            {t("finish")}
+                        </div>
                     </div>
+
                     <div>
                         <div
-                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-6 pt-4 pb-14 mx-auto'>
+                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 pt-4 pb-14 mx-auto'>
                             {dataSource?.map((item, index) => (
                                 <div
                                     key={index}
@@ -266,12 +288,20 @@ const Profile = (props) => {
                                     onClick={() => handleNoteDetails(item.id)}
                                 >
                                     <div className="p-4">
-                                        <img
-                                            key={item.image}
-                                            src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
-                                            alt={item?.name}
-                                            className='w-full rounded h-[150px] object-cover rounded-t-lg'
-                                        />
+                                        <div className='relative'>
+                                            <img
+                                                key={item.image}
+                                                src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
+                                                alt={item?.name}
+                                                className='w-full rounded h-[150px] object-cover rounded-t-lg'
+                                            />
+                                            {item.isCompletion &&
+                                                <div className='absolute top-0 right-0 p-2'>
+                                                    <img src="/Images/checkIcon.svg" alt="Check Icon"
+                                                         className='w-6 h-6'/>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                     <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left'>
                                         {item?.title}
@@ -280,21 +310,22 @@ const Profile = (props) => {
                                         <p className="inline-flex items-center">
                                             <img src="/Images/clockIcon.svg" alt=""/>
                                             <span className='p-1 text-sm text-[#979696]'>
-                        {item?.totalLearningHour} {t("hour")}
-                        </span>
+            {item?.totalLearningHour} {t("hour")}
+          </span>
                                         </p>
                                     </div>
                                     <div className='flex justify-between px-4 pb-4'>
                                         <p className="inline-flex items-center">
                                             <img src="/Images/noteIcon.svg" alt=""/>
                                             <span className='p-1 text-sm text-[#979696]'>
-                        {item?.notes_count} {t("notes")}
-                        </span>
+            {item?.notes_count} {t("notes")}
+          </span>
                                         </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -61,7 +61,7 @@ function App() {
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut} userId={userId}/>}/>
-                <Route path='/Profile' element={<Profile infoData={infoData}/>}/>
+                <Route path='/Profile' element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>
