@@ -59,16 +59,7 @@ const LoginForm = () => {
 
                 <div className="login-page">
                     <div className="form rounded-2xl">
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="email"
-                                placeholder="Nhập Gmail"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <button type="submit">Login</button>
-                        </form>
-                        {errorMessage && <p>{errorMessage}</p>}
+                        <button onClick={handleLogin}>haha</button>
                     </div>
                 </div>
             </div>
