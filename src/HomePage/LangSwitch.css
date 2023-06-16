@@ -1,0 +1,135 @@
+:root {
+    --color1: #00247D;
+    --color2: #F42F4C;
+    --color3: white;
+    --switch-height: 30px;
+    --switch-width: var(--switch-height);
+    --knob-height: 24px;
+    --translate-distance: var(--switch-width);
+    --first-flag: #eb3 url(../../public/Images/united-kingdom.png) -26px center;
+    --second-flag: #000233 url(../../public/Images/vietnam.png) -2px center;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.flag-switch {
+    position: relative;
+    outline: 0;
+    appearance: none;
+    perspective: 1000px;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    tap-highlight-color: rgba(0, 0, 0, 0);
+    width: 60px;
+    height: var(--switch-height);
+    margin: 5px auto;
+}
+
+.flag-switch:before,
+.flag-switch:after {
+    position: absolute;
+    color: var(--color3);
+    font-family: 'Raleway', sans-serif;
+    top: 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.flag-switch:before {
+    left: -19px;
+    content: attr(data-first-lang);
+}
+
+.flag-switch:after {
+    right: -17px;
+    content: attr(data-second-lang);
+}
+
+.flag-switch input {
+    display: none;
+}
+
+.flag-switch input + label {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    user-select: none;
+    width: 60px;
+}
+
+.flag-switch input + label:before,
+.flag-switch input + label:after {
+    content: "";
+    position: absolute;
+    border-radius: 30px;
+    transition: all 0.25s ease-in-out;
+}
+
+.flag-switch input + label:before {
+    height: var(--switch-height);
+    width: calc(var(--switch-width) * 2);
+    background-color: var(--color2);
+}
+
+.flag-switch input + label:after {
+    top: 3px;
+    left: 3px;
+    border: 2px solid #DFDFDF;
+    width: var(--knob-height);
+    height: var(--knob-height);
+    background: var(--second-flag);
+    transform: translateX(var(--translate-distance));
+}
+
+.flag-switch input:checked + label:after {
+    background: var(--first-flag);
+    transition: all 0.25s ease-in-out;
+    transform: translateX(0);
+}
+
+.flag-switch input:checked + label:before {
+    background-color: var(--color1);
+}
+
+.changeDashColorOnl {
+    color: #F0C528;
+
+}
+
+.changeDashColorOff {
+    color: #979696;
+}
+
+.buttonTrue {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #000;
+    background-color: yellow;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+.buttonFalse {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: red;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}

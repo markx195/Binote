@@ -3,13 +3,19 @@ import {useParams} from "react-router-dom";
 import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
+import {useTranslation} from "react-i18next";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import axios from 'axios';
+import {showToast} from '../common/Toast'
 
-const NoteDetails = () => {
+const NoteDetails = ({handleSignOut, userId}) => {
+    const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
     const [courseData, setCourseData] = useState({notes: []});
     const [isVisible, setIsVisible] = useState(true);
     const [isCancelled, setIsCancelled] = useState(false);
+    const [isInfoVisible, setIsInfoVisible] = useState(false);
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -51,20 +57,28 @@ const NoteDetails = () => {
     };
 
     const handleDeleteItem = id => {
+        // Update the UI first
+        setCourseData(prevData => ({
+            ...prevData,
+            notes: prevData.notes.filter(item => item.id !== id),
+        }));
+
+        // Send the DELETE request to the server
         fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
         })
             .then(response => {
-                if (response.ok) {
-                    setCourseData((prevData) => ({
-                        ...prevData, notes: prevData.notes.filter((item) => item.id !== id),
-                    }));
-                } else {
+                if (!response.ok) {
                     throw new Error('Failed to delete item');
                 }
             })
             .catch(error => {
                 console.error('Failed to delete item:', error);
+                // If the request fails, revert the UI back to the original state
+                setCourseData(prevData => ({
+                    ...prevData,
+                    notes: [...prevData.notes, {id}], // Add the deleted item back
+                }));
             });
     };
 
@@ -76,6 +90,7 @@ const NoteDetails = () => {
     }
 
     const handleCancelClick = () => {
+        setIsInfoVisible(!isInfoVisible)
         setIsCancelled(true);
         setIsVisible(false);
     };
@@ -97,8 +112,28 @@ const NoteDetails = () => {
         fetchCourseData();
     }, [id.id, storedAccessToken]);
 
+    const handleFinishedCourse = async () => {
+        const requestData = {
+            course_id: id.id,
+            directus_users_id: userId,
+            is_completed: true
+        };
+        try {
+            const response = await axios.post('http://192.168.3.150:8050/flows/trigger/6fd8b029-a5a1-4794-a366-6b902522e2cb', requestData, {
+                    headers: {
+                        Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
+                    }
+                }
+            );
+            showToast(t("completeCourseBtn"), "success")
+            console.log(response.data); // Handle the response data as needed
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (<>
-        <HomePage/>
+        <HomePage handleSignOut={handleSignOut}/>
         <div className="flex px-[5%] pt-10 pb-20">
             <div
                 className={`w-full border-solid border h-[76.7vh] border-[#979696] rounded-2xl flex ${isCancelled ? "w-full" : "w-8/12"}`}>
@@ -106,6 +141,8 @@ const NoteDetails = () => {
                       idNoted={id.id}
                       setIsCancelled={setIsCancelled}
                       setIsVisible={setIsVisible}
+                      setIsInfoVisible={setIsInfoVisible}
+                      isInfoVisible={isInfoVisible}
                       onAddItem={handleAddItem}
                       onDeleteItem={handleDeleteItem}/>
             </div>
@@ -121,16 +158,28 @@ const NoteDetails = () => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
                                 {courseData.title}
                             </div>
-                            <div className="py-4">
-                                <a
-                                    className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={courseData.link}
-                                >
-                                    Đi tới khóa học
-                                </a>
+                            <div className="flex">
+                                <div className="py-4 pr-2">
+                                    <a
+                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={courseData.link}
+                                        style={{width: '100%', '@media (min-width: 768px)': {width: '200px'}}}
+                                    >
+                                        {t("goToCourse")}
+                                    </a>
+                                </div>
+                                <div className="py-4">
+                                    <div
+                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
+                                        onClick={handleFinishedCourse}
+                                    >
+                                        {t("completedCourse")}
+                                    </div>
+                                </div>
                             </div>
+
                             <div className="text-left"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>
                         </>)}

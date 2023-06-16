@@ -4,10 +4,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import RecentlyCourses from "./recentlyCourses";
 import {useNavigate} from "react-router-dom"
-
-const storedAccessToken = localStorage.getItem('accessToken');
+import {useTranslation} from "react-i18next";
 
 const CourseCard = () => {
+    const {t} = useTranslation()
+    const [storedAccessToken, setStoredAccessToken] = useState(null);
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        setStoredAccessToken(accessToken);
+    }, []);
     const LIMIT_DATA = 999;
     const navigate = useNavigate()
     const [dataSource, setDataSource] = useState([])
@@ -52,7 +57,7 @@ const CourseCard = () => {
                 console.error(error);
             }
         },
-        [searchQuery, page]
+        [searchQuery, page, storedAccessToken]
     );
 
     useEffect(() => {
@@ -101,7 +106,7 @@ const CourseCard = () => {
                     onClick={() => handleButtonClick()}
                     className={`h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528] ${
                         selectedCategoryId === null ? "bg-[#2F2E2E] text-[#F0C528]" : ""}`}
-                >Tất Cả
+                >{t("all")}
                 </button>
                 {courses.map((item) => (
                     <button
@@ -122,7 +127,7 @@ const CourseCard = () => {
                     </div>
                     <input
                         type="text"
-                        placeholder="Tìm kiếm khóa học"
+                        placeholder={t("Search")}
                         className="bg-white border-solid border-[#D5D5D5] border rounded-lg w-full h-[52px] pl-10 pr-3 text-left"
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -149,15 +154,6 @@ const CourseCard = () => {
                             <p className='font-bold flex justify-between px-4 pb-4 text-sm truncate hover:text-clip hover:whitespace-normal hover:break-all'>
                                 {item?.title}
                             </p>
-                            <div className="px-4 pb-4">
-                                <a
-                                    className="block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] border-solid rounded-md hover:bg-[#F0C528] hover:text-[#2F2E2E] hover:scale-105"
-                                    href={item?.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >Đi tới khóa học
-                                </a>
-                            </div>
                             <div className='flex justify-between px-4 pb-4'>
                                 <p className="inline-flex items-center">
                                     <StickyNote2Icon></StickyNote2Icon>
