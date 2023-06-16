@@ -53,3 +53,7 @@ button {
     width: 152px;
 }
 
+.carousel-dots li button:before {
+    color: #FA9A85 !important;
+
+}
