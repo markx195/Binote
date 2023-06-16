@@ -17,6 +17,14 @@ const LoginForm = () => {
         margin: "0 auto",
     };
 
+    // async function handleLogin() {
+    //     window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
+    //     await fetch('https://directus.myserver.com/auth/refresh', {
+    //         method: 'POST',
+    //         credentials: 'include',
+    //     });
+    // }
+
     function handleLogin() {
         window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
     }
@@ -28,22 +36,17 @@ const LoginForm = () => {
         });
     }
 
-    function handleLoginAndRefreshTokens() {
-        handleLogin(); // Call handleLogin function
-        setTimeout(() => {
-            refreshTokens()
-                .then(response => response.json())
-                .then(data => {
-                    const accessToken = data.data.access_token;
-                    localStorage.setItem('accessToken', accessToken);
-                    localStorage.setItem('loggedIn', true);
-                    navigate("/HomePage");
-                })
-                .catch((error) => {
-                    console.error('Token refresh failed', error);
-                });
-        }, 1000); // Adjust the delay time as needed
-    }
+    refreshTokens()
+        .then(response => response.json())
+        .then(data => {
+            const accessToken = data.data.access_token;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('loggedIn', true);
+            navigate("/HomePage");
+        })
+        .catch((error) => {
+            console.error('Token refresh failed', error);
+        });
 
     return (
         <>
@@ -55,7 +58,7 @@ const LoginForm = () => {
 
                 <div className="login-page">
                     <div className="form rounded-2xl">
-                        <button onClick={handleLoginAndRefreshTokens} className="flex justify-evenly">
+                        <button onClick={handleLogin} className="flex justify-evenly">
                             <img src="/Images/googleIcon.svg" alt="Google icon"/>
                             <div>Đăng nhập với Google</div>
                         </button>
