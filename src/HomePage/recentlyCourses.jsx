@@ -50,8 +50,8 @@ const RecentlyCourses = () => {
     return (
         <>
             {courses?.length > 0 && (
-                <div className="pt-12 px-[5%] mx-auto flex h-[50vh] flex">
-                    <div className="flex-1 w-full h-full" id="A" style={{flexGrow: 1}}>
+                <div className="pt-12 px-[5%] mx-auto flex h-[50vh] flex bg-[#F5F5F5]">
+                    <div className="flex-1 w-full h-full" style={{flexGrow: 1}}>
                         <img
                             onClick={() => handleNoteDetails(courses[0].id)}
                             key={courses[0].image}
@@ -81,7 +81,7 @@ const RecentlyCourses = () => {
                     </div>
                 </div>
             )}
-            <div className="flex justify-center items-center pb-10 pt-[27px]">
+            <div className="flex justify-center items-center pb-10 pt-[27px] bg-[#F5F5F5]">
                 {courses?.map((data, dataIndex) => (
                     <div className="flex top-4 justify-center py-2" key={dataIndex}>
                         <div

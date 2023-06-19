@@ -22,7 +22,6 @@ function App() {
         localStorage.removeItem("loggedIn");
         navigate("/");
     };
-    const [userId, setUserId] = useState("")
     const [infoData, setInfoData] = useState([])
 
     useEffect(() => {
@@ -39,8 +38,6 @@ function App() {
 
                 const data = await response.json();
                 setInfoData(data)
-                const userID = data.data.id
-                setUserId(userID)
             } catch (error) {
                 console.error(error);
             }
@@ -60,7 +57,7 @@ function App() {
                 <Route path="/HomePage" element={<HomePage handleSignOut={handleSignOut}/>}>
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
-                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut} userId={userId}/>}/>
+                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
                 <Route path='/Profile' element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>

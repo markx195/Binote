@@ -219,10 +219,10 @@ const Statistical = () => {
 
     return (<>
             <HomePage/>
-            <div className="px-[5%] mx-auto py-[54px]">
+            <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
                 {/*Header//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                 <div className="grid gap-[24px] md:grid-cols-3">
-                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex bg-white"
                          style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                         <div className="py-6 pl-6 flex-1">
                             <div className="font-normal text-sm mb-2 text-left">{t("numberOfUsers")}</div>
@@ -247,7 +247,7 @@ const Statistical = () => {
                         </div>
                     </div>
 
-                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
+                    <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex bg-white"
                          style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                         <div className="py-6 pl-6 flex-1">
                             <div className="font-normal text-sm mb-2 text-left">{t("averageStudyTimes")}</div>
@@ -272,7 +272,7 @@ const Statistical = () => {
                         </div>
                     </div>
 
-                    <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex"
+                    <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex bg-white"
                          style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                         <div className="py-6 pl-6 flex-1">
                             <div className="font-normal text-sm mb-2 text-left">{t("averageUsingTime")}</div>
@@ -302,16 +302,16 @@ const Statistical = () => {
                     {/*featuredCourse//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/}
                     <div className="w-4/12">
                         <p className="text-left font-bold pb-4">{t("featuredCourse")}</p>
-                        <div className="rounded-lg" style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
+                        <div className="rounded-lg bg-white" style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             {courses.map((course) => (
-                                <div key={course.id} className="p-4 cursor-pointer">
-                                    <div className="flex border-b">
+                                <div key={course.id} className="p-4 cursor-pointer border-b">
+                                    <div className="flex">
                                         <img src={`https://binote-api.biplus.com.vn/assets/${course.image}`} alt=""
-                                             className="w-[38px] h-[38px] rounded"/>
+                                             className="w-[56px] h-[56px] rounded"/>
                                         {courses.image}
-                                        <div className="pl-2 pb-3">
-                                            <p className="text-left h-[38px] text-base">{course.title}</p>
-                                            <p className="lowercase text-left text-[#979696] text-sm">{course.userCount} {t("learner")}</p>
+                                        <div className="pl-2">
+                                            <p className="text-left text-xl font-bold">{course.title}</p>
+                                            <p className="lowercase text-left text-[#979696] text-base">{course.userCount} {t("learner")}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -350,7 +350,7 @@ const Statistical = () => {
                             </FormControl>
                         </div>
                         {/*end header*/}
-                        <div className="flex rounded-lg p-4 justify-between"
+                        <div className="flex rounded-lg p-4 justify-between bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <div className="flex">
                                 {renderDatePicker()}
@@ -373,7 +373,7 @@ const Statistical = () => {
                                 {t("confirm")}
                             </Button>
                         </div>
-                        <div className="rounded-lg p-4 mt-4"
+                        <div className="rounded-lg p-4 mt-4 bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <Table
                                 columns={columns}

@@ -8,7 +8,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from 'axios';
 import {showToast} from '../common/Toast'
 
-const NoteDetails = ({handleSignOut, userId}) => {
+const NoteDetails = ({handleSignOut}) => {
     const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
@@ -115,11 +115,10 @@ const NoteDetails = ({handleSignOut, userId}) => {
     const handleFinishedCourse = async () => {
         const requestData = {
             course_id: id.id,
-            directus_users_id: userId,
             is_completed: true
         };
         try {
-            const response = await axios.post('http://192.168.3.150:8050/flows/trigger/6fd8b029-a5a1-4794-a366-6b902522e2cb', requestData, {
+            const response = await axios.post('http://192.168.3.150:8050/flows/trigger/3e5411f6-cf6d-4f85-926d-5d560ba39c2b', requestData, {
                     headers: {
                         Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
                     }

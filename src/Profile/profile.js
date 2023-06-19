@@ -157,9 +157,9 @@ const Profile = (props) => {
     const percentLearnComplete = (courseData?.course_completion / rankDetails?.max_course) * 100;
 
     return (
-        <div className="bg-[#F6F6F6ư]">
+        <>
             <HomePage handleSignOut={props.handleSignOut}/>
-            <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between">
+            <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between bg-[#F6F6F6] h-auto">
                 <div className="rounded-2xl p-4 bg-white"
                      style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)', height: '80vh'}}>
                     <div className="bg-[#F6F6F6] p-4 rounded-2xl"
@@ -184,7 +184,7 @@ const Profile = (props) => {
                         {/*///////// Profile Details*/}
                         <div className="tex-[#979696] text-xs pb-2"> {profileDetails?.email}</div>
                         <div
-                            className="text-xl font-bold bg-white">
+                            className="text-xl font-bold">
                             {profileDetails && (
                                 <EditableText value={profileDetails?.first_name} editClassName="form-control"
                                               onChange={handleSaveProfile}/>
@@ -326,24 +326,25 @@ const Profile = (props) => {
                                             )}
                                         </div>
                                     </div>
-                                    <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left'>
-                                        {item?.title}
+                                    <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left overflow-ellipsis'>
+                                        <span id="tooltip-text">{item?.title}</span>
+                                        <span id="tooltip">{item?.title}</span>
                                     </p>
-                                    <div className='flex justify-between px-4 pb-1'>
-                                        <p className="inline-flex items-center">
-                                            <img src="/Images/clockIcon.svg" alt=""/>
-                                            <span className='p-1 text-sm text-[#979696]'>
-                {item?.totalLearningHour} hour
-              </span>
-                                        </p>
-                                    </div>
-                                    <div className='flex justify-between px-4 pb-4'>
-                                        <p className="inline-flex items-center">
-                                            <img src="/Images/noteIcon.svg" alt=""/>
-                                            <span className='p-1 text-sm text-[#979696]'>
-                {item?.notes_count} notes
-              </span>
-                                        </p>
+                                    <div className="flex flex-wrap pb-4 justify-between px-4">
+                                        <div className="flex flex-col">
+                                            <p className="inline-flex items-center">
+                                                <img src="/Images/clockIcon.svg" alt=""/>
+                                                <span
+                                                    className="p-1 text-sm text-[#979696]">{item?.totalLearningHour} hour</span>
+                                            </p>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <p className="inline-flex items-center">
+                                                <img src="/Images/noteIcon.svg" alt=""/>
+                                                <span
+                                                    className="p-1 text-sm text-[#979696]">{item?.notes_count} notes</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -359,6 +360,6 @@ const Profile = (props) => {
                     </div>
                 </div>
             </div>
-        </div>)
+        </>)
 }
 export default Profile;
