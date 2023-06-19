@@ -15,6 +15,7 @@ const NoteDetails = ({handleSignOut}) => {
     const [isVisible, setIsVisible] = useState(true);
     const [isCancelled, setIsCancelled] = useState(false);
     const [isInfoVisible, setIsInfoVisible] = useState(false);
+    const [isZoomed, setIsZoomed] = useState(false);
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -95,6 +96,16 @@ const NoteDetails = ({handleSignOut}) => {
     };
 
     useEffect(() => {
+        const handleZoomChange = () => {
+            const zoomLevel = Math.round(window.devicePixelRatio * 100);
+            setIsZoomed(zoomLevel !== 100);
+        };
+
+        window.addEventListener("resize", handleZoomChange);
+        return () => window.removeEventListener("resize", handleZoomChange);
+    }, []);
+
+    useEffect(() => {
         const fetchCourseData = async () => {
             try {
                 const response = await fetch(`https://binote-api.biplus.com.vn/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
@@ -156,7 +167,7 @@ const NoteDetails = ({handleSignOut}) => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
                                 {courseData.title}
                             </div>
-                            <div className="flex">
+                            <div className={isZoomed ? "" : "flex"}>
                                 <div className="flex-1 py-4 pr-2">
                                     <a
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"

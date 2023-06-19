@@ -258,26 +258,35 @@ const Vcard = () => {
     const handleDownloadVcf = async () => {
         try {
             const response = await fetch(`http://192.168.3.150:8050/vcf/${id}`, {
-                method: "GET"
+                method: "GET",
             });
             const data = await response.json();
             const fileId = data.data.id;
-            console.log(data)
-            console.log(fileId)
+            console.log(data);
+            console.log(fileId);
 
             const downloadUrl = `http://192.168.3.150:8050/assets/${fileId}?download`;
             setDownloadLink(downloadUrl);
 
-            // Trigger file download
+            // Create a direct download link
             const link = document.createElement('a');
             link.href = downloadUrl;
             link.target = '_blank';
-            link.download = 'Your File.pdf';
+            link.download = 'Your File.vcf';
+
+            // Append the link to the document body
+            document.body.appendChild(link);
+
+            // Trigger the click event on the link
             link.click();
+
+            // Remove the link from the document body
+            document.body.removeChild(link);
         } catch (error) {
             console.error(error);
         }
-    }
+    };
+
 
     return (<>
         {!isMobile && (<div
