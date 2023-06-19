@@ -4,7 +4,6 @@ import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useTranslation} from "react-i18next";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import axios from 'axios';
 import {showToast} from '../common/Toast'
 
