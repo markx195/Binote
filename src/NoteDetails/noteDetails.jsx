@@ -152,7 +152,7 @@ const NoteDetails = ({handleSignOut, userId}) => {
                     <div className="px-6 h-[76.7vh] overflow-y-auto" id="hideScroll">
                         <div className="relative cursor-pointer">
                             <CancelIcon onClick={handleCancelClick}
-                                        className="absolute right-0 top-0 my-2"/>
+                                        className="absolute right-0 top-0 mt-6"/>
                         </div>
                         {courseData && (<>
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
@@ -169,7 +169,7 @@ const NoteDetails = ({handleSignOut, userId}) => {
                                         {t("goToCourse")}
                                     </a>
                                 </div>
-                                <div className="flex-1 py-4">
+                                <div className="flex-1 py-4 cursor-pointer">
                                     <div
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={handleFinishedCourse}

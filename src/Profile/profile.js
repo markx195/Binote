@@ -28,7 +28,7 @@ const Profile = (props) => {
     const [courseProcess, setCourseProcess] = useState([])
     const [courseStatistics, setCourseStatistics] = useState([])
     const [showMore, setShowMore] = useState(false);
-    const visibleItems = showMore ? dataSource : dataSource.slice(0, 10);
+    const visibleItems = showMore ? dataSource : dataSource?.slice(0, 10);
 
     const handleShowMore = () => {
         setShowMore(true);
@@ -153,8 +153,8 @@ const Profile = (props) => {
         return `${paddedHours}:${paddedMinutes}`;
     }
 
-    const percentLearnHour = (courseData?.totalLearningHour / rankDetails.max_hour) * 100;
-    const percentLearnComplete = (courseData?.course_completion / rankDetails.max_course) * 100;
+    const percentLearnHour = (courseData?.totalLearningHour / rankDetails?.max_hour) * 100;
+    const percentLearnComplete = (courseData?.course_completion / rankDetails?.max_course) * 100;
 
     return (
         <div className="bg-[#F6F6F6ư]">
@@ -195,7 +195,7 @@ const Profile = (props) => {
                     </div>
                     <div className="pt-11">
                         <div className="text-left text-sm font-bold pb-4">
-                            {rankDetails.name}
+                            {rankDetails?.name}
                         </div>
                         <div className="flex items-center justify-center">
                             <img
@@ -210,7 +210,7 @@ const Profile = (props) => {
                         <div className="flex items-center justify-between">
                             <div className="text-left text-sm">{t("numberOfHours")}</div>
                             <div
-                                className="text-sm text-right text-[#979696]">{totalLearningHour}/{rankDetails.max_hour}</div>
+                                className="text-sm text-right text-[#979696]">{totalLearningHour}/{rankDetails?.max_hour}</div>
                         </div>
                         <Progress percent={percentLearnHour} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#F0C528', to: '#E86F2B'}}/>
@@ -219,7 +219,7 @@ const Profile = (props) => {
                         <div className="flex items-center justify-between">
                             <div className="text-left text-sm">{t("numberCoursesCompleted")}</div>
                             <div
-                                className="text-sm text-right text-[#979696]">{courseData?.course_completion}/{rankDetails.max_course}</div>
+                                className="text-sm text-right text-[#979696]">{courseData?.course_completion}/{rankDetails?.max_course}</div>
                         </div>
                         <Progress percent={percentLearnComplete} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
@@ -313,7 +313,7 @@ const Profile = (props) => {
                                     <div className="p-4">
                                         <div className='relative'>
                                             <img
-                                                key={item.image}
+                                                key={item?.image}
                                                 src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
                                                 alt={item?.name}
                                                 className='w-full rounded h-[117.33px] object-cover rounded-t-lg'
@@ -348,7 +348,7 @@ const Profile = (props) => {
                                 </div>
                             ))}
                         </div>
-                        {!showMore && dataSource.length > 8 && (
+                        {!showMore && dataSource?.length > 8 && (
                             <div className='flex justify-center items-center cursor-pointer pb-11   '
                                  onClick={handleShowMore}
                             >
