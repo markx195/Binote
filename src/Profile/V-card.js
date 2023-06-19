@@ -385,14 +385,14 @@ const Vcard = () => {
                             <div className="mr-2">{btnEmail}</div>
                             <div>Email</div>
                         </button>
-                        <button
+                        <a href="#"
                             className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
                             onClick={handleDownloadVcf}
                         >
                             <div className="mr-2">{btnAdd}</div>
                             <span>{t("add")}</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 {/*Info*/}
