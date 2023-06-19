@@ -165,47 +165,34 @@ const HomePage = (props) => {
                 </div>
                 {/*right avatar*/}
                 <div className="item-center py-2 cursor-pointer relative w-[200px] z-50">
-                    <div className="flex float-right" onClick={handleDropdownToggle} onBlur={handleBlur}
-                         ref={dropdownRef}>
+                    <div className="flex float-right" onClick={handleDropdownToggle} onBlur={handleBlur} ref={dropdownRef} id="A">
                         {userInfo && (
                             <div className="flex items-center">
-                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
-                                     className="w-[32px] h-[32px] rounded"/>
+                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt="" className="w-[32px] h-[32px] rounded" />
                                 <h3 className="pl-2 inline-flex items-center">
                                     {userInfo.first_name}
                                 </h3>
                                 <div className="ml-auto">
-                                    <KeyboardArrowDownIcon className=""/>
+                                    <KeyboardArrowDownIcon className="" />
                                 </div>
                             </div>
                         )}
                     </div>
                     {showDropdown && (
-                        <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2 w-[200px]">
-                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
-                                 onClick={handleProfile}>
-                                <PersonIcon/>
+                        <div className="dropdown-menu absolute bg-white rounded shadow-lg mt-2 w-[200px]" id="B">
+                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left" onClick={handleProfile}>
+                                <PersonIcon />
                                 <span className="pl-2">{t("profile")}</span>
                             </div>
-                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
-                                 onClick={handleVcard}>
-                                <ContactMailIcon/>
+                            <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left" onClick={handleVcard}>
+                                <ContactMailIcon />
                                 <span className="pl-2">BiCard</span>
                             </div>
-                            <div
-                                className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left"
-                                onClick={handleLogout}>
+                            <div className="flex dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer border-b text-left" onClick={handleLogout}>
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <Menu
-                                onClick={handleLanguage}
-                                style={{
-                                    width: 201
-                                }}
-                                mode="vertical"
-                                items={items}
-                            />
+                            <Menu onClick={handleLanguage} style={{ width: 201 }} mode="vertical" items={items} />
                         </div>
                     )}
                 </div>
