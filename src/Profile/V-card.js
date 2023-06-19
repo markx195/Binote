@@ -274,9 +274,11 @@ const Vcard = () => {
             // Append the link to the document body
             document.body.appendChild(link);
             // Trigger the click event on the link
-            link.click();
+            setTimeout(function () {
+                link.click();
+                document.body.removeChild(link);
+            }, 500);
             // Remove the link from the document body
-            document.body.removeChild(link);
         } catch (error) {
             console.error(error);
         }
@@ -385,14 +387,14 @@ const Vcard = () => {
                             <div className="mr-2">{btnEmail}</div>
                             <div>Email</div>
                         </button>
-                        <a href="#"
+                        <button
                             className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
                             style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
                             onClick={handleDownloadVcf}
                         >
                             <div className="mr-2">{btnAdd}</div>
                             <span>{t("add")}</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
                 {/*Info*/}
@@ -540,14 +542,14 @@ const Vcard = () => {
                         <EmailIcon className="mr-2"/>
                         <div>Email</div>
                     </button>
-                    <a href="#"
-                       className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                       style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
-                       onClick={handleDownloadVcf}
+                    <button
+                        className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                        style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
+                        onClick={handleDownloadVcf}
                     >
                         <div className="mr-2">{btnAdd}</div>
                         <span>{t("add")}</span>
-                    </a>
+                    </button>
                 </div>
             </div>
             {/*Info*/}
