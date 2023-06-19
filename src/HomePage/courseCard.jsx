@@ -38,7 +38,7 @@ const CourseCard = () => {
                 };
 
                 const response = await axios.post(
-                    `https://binote-api.biplus.com.vn/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=${page}&limit=${LIMIT_DATA}&sort=sort&sort=-id`,
+                    `http://192.168.3.150:8050/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=${page}&limit=${LIMIT_DATA}&sort=sort&sort=-id`,
                     payload,
                     config
                 );
@@ -78,7 +78,7 @@ const CourseCard = () => {
 
     useEffect(() => {
         axios
-            .get("https://binote-api.biplus.com.vn/items/category", {})
+            .get("http://192.168.3.150:8050/items/category", {})
             .then((res) => {
                 setCourses(res.data.data);
             })
@@ -148,7 +148,7 @@ const CourseCard = () => {
                             <div className="p-4">
                                 <img
                                     key={item.image}
-                                    src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
+                                    src={`http://192.168.3.150:8050/assets/${item.image}`}
                                     alt={item?.name}
                                     className='w-full rounded h-[150px] object-cover rounded-t-lg'
                                 />

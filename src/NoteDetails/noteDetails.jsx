@@ -24,7 +24,7 @@ const NoteDetails = ({handleSignOut}) => {
             notes: [newItem, ...prevData.notes],
         }));
         // Send a request to the API to add the new item
-        fetch('https://binote-api.biplus.com.vn/items/note', {
+        fetch('http://192.168.3.150:8050/items/note', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const NoteDetails = ({handleSignOut}) => {
         }));
 
         // Send the DELETE request to the server
-        fetch(`https://binote-api.biplus.com.vn/items/note/${id}`, {
+        fetch(`http://192.168.3.150:8050/items/note/${id}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -108,7 +108,7 @@ const NoteDetails = ({handleSignOut}) => {
     useEffect(() => {
         const fetchCourseData = async () => {
             try {
-                const response = await fetch(`https://binote-api.biplus.com.vn/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
+                const response = await fetch(`http://192.168.3.150:8050/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
                     headers: {
                         Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
                     }

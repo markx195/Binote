@@ -64,7 +64,7 @@ const HomePage = (props) => {
         }
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+                const apiUrl = 'http://192.168.3.150:8050/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
@@ -167,7 +167,7 @@ const HomePage = (props) => {
                          ref={dropdownRef}>
                         {userInfo && (
                             <div className="flex items-center">
-                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
+                                <img src={`http://192.168.3.150:8050/assets/${userInfo.avatar}`} alt=""
                                      className="w-[32px] h-[32px] rounded"/>
                                 <h3 className="pl-2 inline-flex items-center">
                                     {userInfo.first_name}

@@ -27,7 +27,7 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+                const apiUrl = 'http://192.168.3.150:8050/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',

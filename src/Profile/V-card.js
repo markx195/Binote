@@ -175,7 +175,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `https://binote-api.biplus.com.vn/users/${id}`;
+                const apiUrl = `http://192.168.3.150:8050/users/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -341,7 +341,7 @@ const Vcard = () => {
                                     <div className="image-container">
                                         <div className="table relative">
                                             <img
-                                                src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
+                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
                                                 alt="Profile"
                                                 className="w-full h-auto rounded-full border-4 border-grey"
                                             />
@@ -498,7 +498,7 @@ const Vcard = () => {
                             <div className="image-container">
                                 <div className="table relative">
                                     <img
-                                        src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
+                                        src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
                                         alt="Profile"
                                         className="w-full h-auto rounded-full border-4 border-grey"
                                     />
