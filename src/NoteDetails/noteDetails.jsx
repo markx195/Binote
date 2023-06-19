@@ -159,26 +159,26 @@ const NoteDetails = ({handleSignOut, userId}) => {
                                 {courseData.title}
                             </div>
                             <div className="flex">
-                                <div className="py-4 pr-2">
+                                <div className="flex-1 py-4 pr-2">
                                     <a
-                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
+                                        className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         href={courseData.link}
-                                        style={{width: '100%', '@media (min-width: 768px)': {width: '200px'}}}
                                     >
                                         {t("goToCourse")}
                                     </a>
                                 </div>
-                                <div className="py-4">
+                                <div className="flex-1 py-4">
                                     <div
-                                        className="flex justify-center items-center px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
+                                        className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={handleFinishedCourse}
                                     >
                                         {t("completedCourse")}
                                     </div>
                                 </div>
                             </div>
+
 
                             <div className="text-left"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>

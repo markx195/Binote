@@ -69,7 +69,7 @@ const Profile = (props) => {
                 setCourseData(data.level)
                 setRankDetails(data.level.current_level_object)
                 setTotalNotes(data.level.totalNotes)
-                setTotalLearningHour(data.level.totalLearningHour)
+                setTotalLearningHour(data.level?.totalLearningHour)
             } else {
                 console.log('Error:', response.status);
             }
@@ -153,8 +153,8 @@ const Profile = (props) => {
         return `${paddedHours}:${paddedMinutes}`;
     }
 
-    const percentLearnHour = (courseData.totalLearningHour / rankDetails.max_hour) * 100;
-    const percentLearnComplete = (courseData.course_completion / rankDetails.max_course) * 100;
+    const percentLearnHour = (courseData?.totalLearningHour / rankDetails.max_hour) * 100;
+    const percentLearnComplete = (courseData?.course_completion / rankDetails.max_course) * 100;
 
     return (
         <div className="bg-[#F6F6F6ư]">
@@ -186,7 +186,7 @@ const Profile = (props) => {
                         <div
                             className="text-xl font-bold bg-white">
                             {profileDetails && (
-                                <EditableText value={profileDetails.first_name} editClassName="form-control"
+                                <EditableText value={profileDetails?.first_name} editClassName="form-control"
                                               onChange={handleSaveProfile}/>
                             )}
                         </div>
@@ -219,7 +219,7 @@ const Profile = (props) => {
                         <div className="flex items-center justify-between">
                             <div className="text-left text-sm">{t("numberCoursesCompleted")}</div>
                             <div
-                                className="text-sm text-right text-[#979696]">{courseData.course_completion}/{rankDetails.max_course}</div>
+                                className="text-sm text-right text-[#979696]">{courseData?.course_completion}/{rankDetails.max_course}</div>
                         </div>
                         <Progress percent={percentLearnComplete} showInfo={false} status="active" size={[300, 20]}
                                   strokeColor={{from: '#2DFF90', to: '#0FA958'}}/>
@@ -241,7 +241,7 @@ const Profile = (props) => {
                                 </div>
                                 <div className="flex items-center" title="Text to show on hover">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        {convertDecimalToTime(courseStatistics.daily_learning)}
+                                        {convertDecimalToTime(courseStatistics?.daily_learning)}
                                     </p>
                                 </div>
                             </div>
