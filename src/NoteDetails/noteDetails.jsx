@@ -143,7 +143,7 @@ const NoteDetails = ({handleSignOut}) => {
 
     return (<>
         <HomePage handleSignOut={handleSignOut}/>
-        <div className="flex px-[5%] pt-10 pb-20">
+        <div className="flex px-[5%] pt-10 pb-20 bg-[#F5F5F5]">
             <div
                 className={`w-full border-solid border h-[76.7vh] border-[#979696] rounded-2xl flex ${isCancelled ? "w-full" : "w-8/12"}`}>
                 <Note courseData={courseData.notes}
