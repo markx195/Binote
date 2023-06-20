@@ -6,6 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {useTranslation} from "react-i18next";
 import axios from 'axios';
 import {showToast} from '../common/Toast'
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const NoteDetails = ({handleSignOut}) => {
     const {t} = useTranslation()
@@ -16,6 +17,7 @@ const NoteDetails = ({handleSignOut}) => {
     const [isCancelled, setIsCancelled] = useState(false);
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
+    const [isCompletion, setIsCompletion] = useState("")
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -114,6 +116,7 @@ const NoteDetails = ({handleSignOut}) => {
                     }
                 });
                 const data = await response.json();
+                setIsCompletion(data.data.isCompletion)
                 setCourseData(data.data);
             } catch (error) {
                 console.error("Error fetching course data:", error);
@@ -123,9 +126,13 @@ const NoteDetails = ({handleSignOut}) => {
     }, [id.id, storedAccessToken]);
 
     const handleFinishedCourse = async () => {
+        let completeCourse = true
+        if (isCompletion) {
+            completeCourse = false
+        }
         const requestData = {
             course_id: id.id,
-            is_completed: true
+            is_completed: completeCourse
         };
         try {
             const response = await axios.post('http://192.168.3.150:8050/flows/trigger/3e5411f6-cf6d-4f85-926d-5d560ba39c2b', requestData, {
@@ -134,6 +141,7 @@ const NoteDetails = ({handleSignOut}) => {
                     }
                 }
             );
+            setIsCompletion(response.data.is_completed)
             showToast(t("completeCourseBtn"), "success")
             console.log(response.data); // Handle the response data as needed
         } catch (error) {
@@ -176,7 +184,7 @@ const NoteDetails = ({handleSignOut}) => {
                                         rel="noopener noreferrer"
                                         href={courseData.link}
                                     >
-                                        <span className="whitespace-nowrap break-words">Đi tới khóa học</span>
+                                        <span className="whitespace-nowrap break-words">{t("goToCourse")}</span>
                                     </a>
                                 </div>
                                 <div className="flex-1 py-4 cursor-pointer">
@@ -184,7 +192,16 @@ const NoteDetails = ({handleSignOut}) => {
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={handleFinishedCourse}
                                     >
-                                        <span className="whitespace-nowrap break-words">Hoàn thành khóa học</span>
+                                        {isCompletion ? (<>
+                                                <div className="flex">
+                                                    <div
+                                                        className="whitespace-nowrap break-words pr-1">{t("keepStudying")}</div>
+                                                    <RestartAltIcon/>
+                                                </div>
+                                            </>) :
+                                            <span className="whitespace-nowrap break-words">
+                                                    {t("completedCourse")}
+                                            </span>}
                                     </div>
                                 </div>
                             </div>

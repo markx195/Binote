@@ -12,14 +12,13 @@ import {Menu} from 'antd';
 
 const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
 
-function getItem(label, key, icon, children, type, active) {
+function getItem(label, key, icon, children, type) {
     return {
         key,
         icon,
         children,
         label,
-        type,
-        active: active ? "true" : undefined,
+        type
     };
 }
 
@@ -49,22 +48,8 @@ const HomePage = (props) => {
     const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('i18nextLng') || 'vn');
     const items = [
         getItem(t("language"), "sub2", null, [
-            getItem(
-                "Tiếng việt",
-                "vn",
-                <img src="/Images/vnLogo.svg" alt="vn"/>,
-                null,
-                null,
-                selectedLanguage === "vn"
-            ),
-            getItem(
-                "English",
-                "en",
-                <img src="/Images/engLogo.svg" alt="en"/>,
-                null,
-                null,
-                selectedLanguage === "en"
-            ),
+            getItem("Tiếng việt", "vn", <img src="/Images/vnLogo.svg" alt="vn"/>),
+            getItem("English", "en", <img src="/Images/engLogo.svg" alt="en"/>),
         ]),
     ];
 
