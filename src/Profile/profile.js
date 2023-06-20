@@ -83,10 +83,10 @@ const Profile = (props) => {
     };
 
     useEffect(() => {
-        setProfileDetails(props.infoData.data)
+        setProfileDetails(props.infoData)
         fetchDataStatic();
         fetchData()
-    }, [props.infoData.data]);
+    }, [props.infoData]);
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];

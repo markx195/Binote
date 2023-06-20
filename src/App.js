@@ -10,12 +10,10 @@ import "react-toastify/dist/ReactToastify.css"
 import Profile from "./Profile/profile";
 import Statistical from "./DashBoard/statistical"
 import VCard from "./Profile/V-card";
-import i18next from "i18next";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
 function App() {
-    const isLogOut = true
     const isLoggedIn = localStorage.getItem('loggedIn');
     const navigate = useNavigate();
     const handleSignOut = () => {
@@ -23,7 +21,7 @@ function App() {
         localStorage.removeItem("loggedIn");
         navigate("/");
     };
-    const [infoData, setInfoData] = useState([])
+    const [infoData, setInfoData] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +36,7 @@ function App() {
                 });
 
                 const data = await response.json();
-                setInfoData(data)
+                setInfoData(data.data)
             } catch (error) {
                 console.error(error);
             }
@@ -46,6 +44,7 @@ function App() {
 
         fetchData();
     }, []);
+
     return (
         <div className="App">
             <ToastContainerComponent/>
@@ -60,7 +59,7 @@ function App() {
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
                 <Route path='/Profile'
-                       element={<Profile infoData={infoData} handleSignOut={handleSignOut} isLogOut={isLogOut}/>}/>
+                       element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>

@@ -12,14 +12,14 @@ import {Menu} from 'antd';
 
 const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
 
-function getItem(label, key, icon, children, type, isActive) {
+function getItem(label, key, icon, children, type, isactive) {
     return {
         key,
         icon,
         children,
         label,
         type,
-        isActive
+        isactive
     };
 }
 
