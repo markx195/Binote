@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from "react"
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import PersonIcon from '@mui/icons-material/Person';
@@ -7,19 +7,18 @@ import SchoolIcon from '@mui/icons-material/School';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./LangSwitch.css"
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import {AppstoreOutlined} from '@ant-design/icons';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import {Menu} from 'antd';
 
 const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
 
-function getItem(label, key, icon, children, type, isActive) {
+function getItem(label, key, icon, children, type) {
     return {
         key,
         icon,
         children,
         label,
-        type,
-        isActive
+        type
     };
 }
 
@@ -37,23 +36,9 @@ const logoutBtn = (
     </svg>
 )
 
-const noteLogo = (<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clipPath="url(#clip0_57_1627)">
-            <path
-                d="M11.5428 15.4667H11.0095C11.0093 15.5723 11.0405 15.6756 11.0991 15.7635C11.1577 15.8514 11.241 15.9199 11.3386 15.9603C11.4362 16.0007 11.5436 16.0113 11.6471 15.9907C11.7507 15.97 11.8458 15.919 11.9204 15.8443L11.5428 15.4667ZM11.5428 11.2V10.6667C11.4014 10.6667 11.2657 10.7229 11.1657 10.8229C11.0657 10.9229 11.0095 11.0586 11.0095 11.2H11.5428ZM15.8095 11.2L16.1871 11.5776C16.2619 11.503 16.3128 11.4079 16.3335 11.3043C16.3541 11.2007 16.3436 11.0933 16.3031 10.9958C16.2627 10.8982 16.1942 10.8148 16.1063 10.7562C16.0184 10.6977 15.9151 10.6665 15.8095 10.6667V11.2ZM1.94283 1.06667H14.7428V0H1.94283V1.06667ZM1.4095 14.4V1.6H0.342834V14.4H1.4095ZM15.2762 1.6V10.7584H16.3428V1.6H15.2762ZM11.1012 14.9333H1.94283V16H11.1012V14.9333ZM15.1204 11.136L11.4778 14.7776L12.2319 15.5317L15.8746 11.8891L15.1204 11.136ZM11.1012 16C11.5254 15.9996 11.9321 15.8319 12.2319 15.5317L11.4778 14.7776C11.3778 14.8773 11.2424 14.9333 11.1012 14.9333V16ZM15.2762 10.7584C15.2761 10.8996 15.2201 11.036 15.1204 11.136L15.8746 11.8891C16.1743 11.5891 16.3427 11.1825 16.3428 10.7584H15.2762ZM0.342834 14.4C0.342834 14.8243 0.511405 15.2313 0.811464 15.5314C1.11152 15.8314 1.51849 16 1.94283 16V14.9333C1.80139 14.9333 1.66573 14.8771 1.56571 14.7771C1.46569 14.6771 1.4095 14.5414 1.4095 14.4H0.342834ZM14.7428 1.06667C14.8843 1.06667 15.0199 1.12286 15.12 1.22288C15.22 1.3229 15.2762 1.45855 15.2762 1.6H16.3428C16.3428 1.17565 16.1743 0.768687 15.8742 0.468629C15.5741 0.168571 15.1672 0 14.7428 0V1.06667ZM1.94283 0C1.51849 0 1.11152 0.168571 0.811464 0.468629C0.511405 0.768687 0.342834 1.17565 0.342834 1.6H1.4095C1.4095 1.45855 1.46569 1.3229 1.56571 1.22288C1.66573 1.12286 1.80139 1.06667 1.94283 1.06667V0ZM12.0762 15.4667V11.2H11.0095V15.4667H12.0762ZM11.5428 11.7333H15.8095V10.6667H11.5428V11.7333ZM15.4319 10.8224L11.1652 15.0891L11.9204 15.8443L16.1871 11.5776L15.4319 10.8224ZM3.54283 4.26667H13.1428V3.2H3.54283V4.26667Z"
-                fill="#979696"/>
-        </g>
-        <defs>
-            <clipPath id="clip0_57_1627">
-                <rect width="16" height="16" fill="white" transform="translate(0.342834)"/>
-            </clipPath>
-        </defs>
-    </svg>
-)
-
 const HomePage = (props) => {
     const [permission, setPermission] = useState("")
-    const {i18n, t} = useTranslation();
+    const {t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
@@ -62,10 +47,11 @@ const HomePage = (props) => {
     const [userId, setUserId] = useState("")
     const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('i18nextLng') || 'vn');
     const items = [
-        getItem(useTranslation().t("language"), 'sub2', null, [
-            getItem("Tiếng việt", 'vn', <img src="/Images/vnLogo.svg" alt="vn"/>),
-            getItem('English', 'en', <img src="/Images/engLogo.svg" alt="en"/>),
-        ]),];
+        getItem(t("language"), "sub2", null, [
+            getItem("Tiếng việt", "vn", <img src="/Images/vnLogo.svg" alt="vn"/>),
+            getItem("English", "en", <img src="/Images/engLogo.svg" alt="en"/>),
+        ]),
+    ];
 
     useEffect(() => {
         if (!localStorage.getItem("i18nextLng")) {
@@ -78,7 +64,7 @@ const HomePage = (props) => {
         }
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+                const apiUrl = 'http://192.168.3.150:8050/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
@@ -135,9 +121,10 @@ const HomePage = (props) => {
         localStorage.setItem('i18nextLng', e.key);
         i18next.changeLanguage(e.key);
     }
+
     return (
         <>
-            <div className="px-[5%] mx-auto flex justify-between items-center p-4 pt-8">
+            <div className="px-[5%] mx-auto flex justify-between items-center p-4 pt-8 bg-[#F5F5F5]">
                 <div className="flex items-center cursor-pointer">
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl px-2" onClick={handleBackToHomePage}>
                         Bi<span className="font-bold">Note</span>
@@ -145,36 +132,48 @@ const HomePage = (props) => {
                 </div>
                 {/*Middle*/}
                 <div className="bg-[#2F2E2E] hidden lg:flex items-center rounded-2xl p-4 text-[14px]">
-                    <div className="flex items-center cursor-pointer" onClick={goToStatistical}>
-                        <DashboardIcon sx={{color: '#979696'}}/>
-                        <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">
+                    <div
+                        className={`flex items-center cursor-pointer ${window.location.pathname === '/Statistical' ? 'text-[#F0C528]' : ''}`}
+                        onClick={goToStatistical}>
+                        <DashboardIcon
+                            sx={{color: window.location.pathname === '/Statistical' ? '#F0C528' : '#979696'}}/>
+                        <p
+                            className={`text-[#979696] rounded-full p-2 hover:text-[#F0C528] ${
+                                window.location.pathname === '/Statistical' ? 'text-[#F0C528]' : ''
+                            }`}
+                        >
                             Dashboard
                         </p>
                     </div>
                     <p className="w-[22px] border border-solid rotate-90"></p>
-                    <div className="flex items-center">
-                        <SchoolIcon sx={{color: '#979696'}}/>
-                        <p className="text-[#979696] rounded-full p-2 hover:text-[#F0C528]">{t("course")}</p>
-                    </div>
-                    <p className="w-[22px] border border-solid rotate-90"></p>
-                    <div className="flex items-center">
-                        {noteLogo}
-                        <p className="p-2 text-[#979696] hover:text-[#F0C528]">{t("notes")}</p>
+                    <div
+                        className={`flex items-center cursor-pointer ${window.location.pathname === '/HomePage' ? 'text-[#F0C528]' : ''}`}
+                        onClick={handleBackToHomePage}>
+                        <SchoolIcon sx={{color: window.location.pathname === '/HomePage' ? '#F0C528' : '#979696'}}/>
+                        <p
+                            className={`text-[#979696] rounded-full p-2 hover:text-[#F0C528] ${
+                                window.location.pathname === '/HomePage' ? 'text-[#F0C528]' : ''
+                            }`}
+                        >
+                            {t("course")}
+                        </p>
                     </div>
                 </div>
                 {/*right avatar*/}
                 <div className="item-center py-2 cursor-pointer relative w-[200px] z-50">
-                    <div className="flex justify-between" onClick={handleDropdownToggle} onBlur={handleBlur}
+                    <div className="flex float-right" onClick={handleDropdownToggle} onBlur={handleBlur}
                          ref={dropdownRef}>
                         {userInfo && (
-                            <>
-                                <img src={`https://binote-api.biplus.com.vn/assets/${userInfo.avatar}`} alt=""
+                            <div className="flex items-center">
+                                <img src={`http://192.168.3.150:8050/assets/${userInfo.avatar}`} alt=""
                                      className="w-[32px] h-[32px] rounded"/>
                                 <h3 className="pl-2 inline-flex items-center">
                                     {userInfo.first_name}
                                 </h3>
-                                <KeyboardArrowDownIcon className="justify-end flex-grow"/>
-                            </>
+                                <div className="ml-auto">
+                                    <KeyboardArrowDownIcon className=""/>
+                                </div>
+                            </div>
                         )}
                     </div>
                     {showDropdown && (
@@ -186,7 +185,7 @@ const HomePage = (props) => {
                             </div>
                             <div className="dropdown-item py-2 px-4 hover:bg-gray-200 cursor-pointer text-left"
                                  onClick={handleVcard}>
-                                <PersonIcon/>
+                                <ContactMailIcon/>
                                 <span className="pl-2">BiCard</span>
                             </div>
                             <div
@@ -195,14 +194,8 @@ const HomePage = (props) => {
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <Menu
-                                onClick={handleLanguage}
-                                style={{
-                                    width: 201
-                                }}
-                                mode="vertical"
-                                items={items}
-                            />
+                            <Menu onClick={handleLanguage} style={{width: 201}} mode="vertical" items={items}
+                                  defaultSelectedKeys={[selectedLanguage]}/>
                         </div>
                     )}
                 </div>

@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css"
 import Profile from "./Profile/profile";
 import Statistical from "./DashBoard/statistical"
 import VCard from "./Profile/V-card";
-import i18next from "i18next";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -22,13 +21,12 @@ function App() {
         localStorage.removeItem("loggedIn");
         navigate("/");
     };
-    const [userId, setUserId] = useState("")
-    const [infoData, setInfoData] = useState([])
+    const [infoData, setInfoData] = useState({})
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
+                const apiUrl = 'http://192.168.3.150:8050/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
@@ -38,9 +36,7 @@ function App() {
                 });
 
                 const data = await response.json();
-                setInfoData(data)
-                const userID = data.data.id
-                setUserId(userID)
+                setInfoData(data.data)
             } catch (error) {
                 console.error(error);
             }
@@ -48,6 +44,7 @@ function App() {
 
         fetchData();
     }, []);
+
     return (
         <div className="App">
             <ToastContainerComponent/>
@@ -60,8 +57,9 @@ function App() {
                 <Route path="/HomePage" element={<HomePage handleSignOut={handleSignOut}/>}>
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
-                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut} userId={userId}/>}/>
-                <Route path='/Profile' element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
+                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
+                <Route path='/Profile'
+                       element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>

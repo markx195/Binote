@@ -56,7 +56,8 @@ const Note = ({
             note: `Tôi đã học được gì:
 
 Tôi có thể áp dụng gì vào công việc:`,
-            course_id: parseInt(idNoted)
+            course_id: parseInt(idNoted),
+            learning_hour: 0.25
         };
         onAddItem(newItem);
     };
@@ -94,7 +95,6 @@ Tôi có thể áp dụng gì vào công việc:`,
     }, [])
     const handleSelectTime = (time) => {
         const changeTypeTime = parseFloat(time.target.value);
-        console.log(changeTypeTime)
         setSelectedTime(changeTypeTime);
         clearTimeout(timeoutId);
         // Set a new timeout for 3 seconds
@@ -113,7 +113,7 @@ Tôi có thể áp dụng gì vào công việc:`,
         setTimeoutId(newTimeoutId);
     };
     const updateItemData = (itemId, dataToUpdate) => {
-        return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
+        return fetch(`http://192.168.3.150:8050/items/note/${itemId}`, {
             method: "PATCH",
             body: JSON.stringify(dataToUpdate),
             headers: {
@@ -142,7 +142,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                 updatedItems[updatedItemIndex][key] = value;
                 setItems(updatedItems);
 
-                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
+                fetch(`http://192.168.3.150:8050/items/note/${selectedItemId}`, {
                     method: "PATCH",
                     body: JSON.stringify({[key]: value}),
                     headers: {
@@ -291,7 +291,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                         </div>
                         <textarea type="text"
                                   id="textarea"
-                                  className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh]"
+                                  className="placeholder-gray-500 font-normal font-bold:text-bold text-lg w-full px-8 py-2 rounded-r-md h-[50vh] bg-[#F5F5F5]"
                                   style={{
                                       border: "none",
                                       outline: "none",

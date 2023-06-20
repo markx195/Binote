@@ -16,7 +16,7 @@ const RecentlyCourses = () => {
             const fetchData = async () => {
                 try {
                     // Make API call with token in request headers
-                    const response = await axios.get("https://binote-api.biplus.com.vn/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
+                    const response = await axios.get("http://192.168.3.150:8050/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
@@ -49,13 +49,13 @@ const RecentlyCourses = () => {
 
     return (
         <>
-            {courses.length > 0 && (
-                <div className="pt-12 px-[5%] mx-auto flex h-[50vh] flex">
-                    <div className="flex-1 w-full h-full" id="A" style={{flexGrow: 1}}>
+            {courses?.length > 0 && (
+                <div className="pt-12 px-[5%] mx-auto flex h-[50vh] flex bg-[#F5F5F5]">
+                    <div className="flex-1 w-full h-full" style={{flexGrow: 1}}>
                         <img
                             onClick={() => handleNoteDetails(courses[0].id)}
                             key={courses[0].image}
-                            src={`https://binote-api.biplus.com.vn/assets/${courses[0].image}`}
+                            src={`http://192.168.3.150:8050/assets/${courses[0].image}`}
                             alt={courses[0].name}
                             className="w-full h-full object-cover rounded-lg cursor-pointer"
                         />
@@ -64,17 +64,6 @@ const RecentlyCourses = () => {
                         <div className="w-full h-full">
                             <p className="text-left">{t("recentlyCourse")}</p>
                             <p className="text-left font-bold text-4xl  ">{courses[0].title}</p>
-                            {/*<div className="pb-8 pt-2.5">*/}
-                            {/*    <a*/}
-                            {/*        className="flex justify-center items-center w-[177.67px] h-[52.67px] block px-4 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"*/}
-                            {/*        href={courses[0].link}*/}
-                            {/*        target="_blank"*/}
-                            {/*        rel="noopener noreferrer"*/}
-                            {/*    >*/}
-                            {/*        Đi tới khóa học*/}
-                            {/*    </a>*/}
-                            {/*</div>*/}
-                            {/*<div className="w-[554.67px] border border-[#D5D5D5] border-solid"></div>*/}
                             <p className="font-bold text-left pt-6">{t("notes")}</p>
                             <div className="overflow-y-scroll scroll-container h-[22vh]">
                                 {courses[0].notes?.map(course => (
@@ -92,8 +81,8 @@ const RecentlyCourses = () => {
                     </div>
                 </div>
             )}
-            <div className="flex justify-center items-center pb-10 pt-[27px]">
-                {courses.map((data, dataIndex) => (
+            <div className="flex justify-center items-center pb-10 pt-[27px] bg-[#F5F5F5]">
+                {courses?.map((data, dataIndex) => (
                     <div className="flex top-4 justify-center py-2" key={dataIndex}>
                         <div
                             onClick={() => goToSlide(dataIndex)}

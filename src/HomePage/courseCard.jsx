@@ -38,7 +38,7 @@ const CourseCard = () => {
                 };
 
                 const response = await axios.post(
-                    `https://binote-api.biplus.com.vn/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=${page}&limit=${LIMIT_DATA}&sort=sort&sort=-id`,
+                    `http://192.168.3.150:8050/flows/trigger/6871f313-a5e3-4edd-917b-6217451e01b9?page=${page}&limit=${LIMIT_DATA}&sort=sort&sort=-id`,
                     payload,
                     config
                 );
@@ -78,7 +78,7 @@ const CourseCard = () => {
 
     useEffect(() => {
         axios
-            .get("https://binote-api.biplus.com.vn/items/category", {})
+            .get("http://192.168.3.150:8050/items/category", {})
             .then((res) => {
                 setCourses(res.data.data);
             })
@@ -99,9 +99,11 @@ const CourseCard = () => {
 
     return (<>
             <RecentlyCourses></RecentlyCourses>
-            <div className="border border-solid border-[#D5D5D5] mx-[5%]"></div>
+            <div className="bg-[#F5F5F5]">
+                <div className="border border-solid border-[#D5D5D5] mx-[5%]"></div>
+            </div>
             {/*Course catalog*/}
-            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[5%] mx-auto">
+            <div className="flex flex-wrap pt-10 pb-6 gap-4 px-[5%] mx-auto bg-[#F5F5F5]">
                 <button
                     onClick={() => handleButtonClick()}
                     className={`h-[39px] hover:bg-[#2F2E2E] border-[#D5D5D5] rounded-lg hover:text-[#F0C528] ${
@@ -120,7 +122,7 @@ const CourseCard = () => {
                 ))}
             </div>
             {/*Searching*/}
-            <div className="px-[5%] mx-auto w-full">
+            <div className="px-[5%] mx-auto w-full bg-[#F5F5F5]">
                 <div className="relative flex">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <SearchIcon className="text-gray-400"/>
@@ -136,17 +138,17 @@ const CourseCard = () => {
             {/*Courses*/}
             <div>
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto'>
+                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto bg-[#F5F5F5]'>
                     {dataSource?.map((item, index) => (
                         <div
                             key={index}
-                            className='border shadow-md rounded-lg hover:scale-105 duration-300'
+                            className='border shadow-md rounded-lg hover:scale-105 duration-300 bg-white'
                             onClick={() => handleNoteDetails(item.id)}
                         >
                             <div className="p-4">
                                 <img
                                     key={item.image}
-                                    src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
+                                    src={`http://192.168.3.150:8050/assets/${item.image}`}
                                     alt={item?.name}
                                     className='w-full rounded h-[150px] object-cover rounded-t-lg'
                                 />

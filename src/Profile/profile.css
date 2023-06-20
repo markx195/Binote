@@ -55,5 +55,9 @@ button {
 
 .carousel-dots li button:before {
     color: #FA9A85 !important;
-
 }
+
+.custom-slider .carousel-dots li {
+    margin: 0 1px;
+}
+

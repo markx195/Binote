@@ -8,7 +8,6 @@ import i18next from "i18next";
 import "../App.css"
 import "./profile.css"
 import {useParams} from 'react-router-dom';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
 import Slider from 'infinite-react-carousel';
 
@@ -175,7 +174,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `https://binote-api.biplus.com.vn/users/${id}`;
+                const apiUrl = `http://192.168.3.150:8050/users/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -226,7 +225,7 @@ const Vcard = () => {
     const sunLogo = <svg onClick={toggleDarkMode} width="24" height="24" viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
         <circle cx="12" cy="12" r="12" fill="#8303E8"/>
-        <g clip-clipPath="url(#clip0_63_602)">
+        <g clipPath="url(#clip0_63_602)">
             <path
                 d="M13.9999 19.9999C12.8795 19.999 11.7718 19.7633 10.7482 19.3079C9.72463 18.8524 8.8079 18.1875 8.05719 17.3559C7.30081 16.5233 6.73013 15.5394 6.38302 14.4694C6.03591 13.3994 5.9203 12.2679 6.04386 11.1499C6.24306 9.40986 7.00212 7.78168 8.20677 6.51042C9.41141 5.23917 10.9964 4.39366 12.7232 4.10119C13.8395 3.92877 14.9786 3.97519 16.0772 4.23785C16.3648 4.31176 16.6275 4.46119 16.8381 4.67068C17.0486 4.88017 17.1993 5.14212 17.2746 5.4294C17.35 5.71669 17.3471 6.01889 17.2665 6.30473C17.1858 6.59056 17.0302 6.84965 16.8159 7.05519C13.7759 9.83252 14.0399 14.1512 17.3539 16.6619C17.5882 16.8458 17.7689 17.0891 17.8773 17.3666C17.9857 17.644 18.0177 17.9455 17.9701 18.2395C17.9224 18.5335 17.7968 18.8094 17.6064 19.0385C17.4159 19.2675 17.1676 19.4413 16.8872 19.5419C15.9551 19.8464 14.9805 20.001 13.9999 19.9999ZM14.0505 5.33319C13.6762 5.33229 13.3024 5.3606 12.9325 5.41785C11.4949 5.661 10.1751 6.36455 9.17187 7.42261C8.16863 8.48067 7.53623 9.83598 7.36986 11.2845C7.26586 12.2179 7.3617 13.1627 7.65102 14.0562C7.94033 14.9496 8.4165 15.7713 9.04786 16.4665C9.97208 17.453 11.1627 18.15 12.4753 18.4731C13.7879 18.7961 15.166 18.7313 16.4425 18.2865C16.4976 18.2659 16.5461 18.2311 16.5834 18.1857C16.6206 18.1402 16.6452 18.0857 16.6546 18.0277C16.664 17.9697 16.6579 17.9103 16.637 17.8554C16.616 17.8005 16.5809 17.7521 16.5352 17.7152C12.5825 14.7299 12.2685 9.39119 15.9032 6.08252C15.9449 6.0438 15.975 5.99421 15.9901 5.93933C16.0051 5.88445 16.0046 5.82645 15.9885 5.77185C15.9747 5.71391 15.9452 5.66086 15.9034 5.61844C15.8616 5.57602 15.8089 5.54585 15.7512 5.53119C15.1944 5.39687 14.6233 5.33039 14.0505 5.33319Z"
                 fill="white"/>
@@ -258,32 +257,40 @@ const Vcard = () => {
     const handleDownloadVcf = async () => {
         try {
             const response = await fetch(`http://192.168.3.150:8050/vcf/${id}`, {
-                method: "GET"
+                method: "GET",
             });
             const data = await response.json();
             const fileId = data.data.id;
-            console.log(data)
-            console.log(fileId)
-
             const downloadUrl = `http://192.168.3.150:8050/assets/${fileId}?download`;
             setDownloadLink(downloadUrl);
 
-            // Trigger file download
+            // Create a direct download link
             const link = document.createElement('a');
             link.href = downloadUrl;
             link.target = '_blank';
-            link.download = 'Your File.pdf';
-            link.click();
+            link.download = 'Your File.vcf';
+            link.style.display = 'none';
+            // Append the link to the document body
+            document.body.appendChild(link);
+            // Trigger the click event on the link
+            setTimeout(function () {
+                link.click();
+                document.body.removeChild(link);
+            }, 500);
+            // Remove the link from the document body
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     return (<>
         {!isMobile && (<div
             className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto">
             <div
-                className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                className={`flex flex-col items-center rounded-t-lg px-4 shadow-md w-[90%] max-w-[400px] ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                    <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                </div>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -327,12 +334,12 @@ const Vcard = () => {
                     </div>
                     <div className="w-full h-full">
                         {data?.first_name &&
-                            <Slider {...settings}>
+                            <Slider {...settings} className="custom-slider">
                                 <div className="slider-item">
                                     <div className="image-container">
                                         <div className="table relative">
                                             <img
-                                                src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
+                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
                                                 alt="Profile"
                                                 className="w-full h-auto rounded-full border-4 border-grey"
                                             />
@@ -393,7 +400,7 @@ const Vcard = () => {
                     </div>
                 </div>
                 {/*Info*/}
-                <div className="pt-8 px-6">
+                <div className="py-8 px-6">
                     <div className="flex items-center pb-4">
                         {phoneIcon}
                         <div className="ml-2">
@@ -438,161 +445,178 @@ const Vcard = () => {
                     </div>
                 </div>
             </div>
+            <div className={`border-t text-xs text-[#2B3F6C] bg-white w-[90%] max-w-[400px] py-5 rounded-b-lg
+                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
+            </div>
+
         </div>)}
         {/*mobile display*/}
-        {isMobile && (<div
-            className={`flex flex-col items-center px-4 pb-[45px] overflow-y-auto shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-            <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
-                 style={{
-                     backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`, backgroundSize: 'cover'
-                 }}>
-                <div className="flex justify-between w-full mb-2">
-                    <div className="flex pt-4">
-                        {isDarkMode ? (sunLogo) : (moonLogo)}
+        {isMobile && (
+            <>
+                <div
+                    className={`flex flex-col items-center px-4 overflow-y-auto shadow-md ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                    <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                        <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
                     </div>
-                    <div>
-                        <button
-                            className="text-white py-2 rounded border-none flex items-center py-4 px-0"
-                            onClick={handleMenuOpen}
-                        >
-                            <div className="mr-1">
-                                {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
+                    <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
+                         style={{
+                             backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
+                             backgroundSize: 'cover'
+                         }}>
+                        <div className="flex justify-between w-full mb-2">
+                            <div className="flex pt-4">
+                                {isDarkMode ? (sunLogo) : (moonLogo)}
                             </div>
-                            <div className="flex items-center">
-                                {selectedLanguage === "en" ? enLogo : vnLogo}
+                            <div>
+                                <button
+                                    className="text-white py-2 rounded border-none flex items-center py-4 px-0"
+                                    onClick={handleMenuOpen}
+                                >
+                                    <div className="mr-1">
+                                        {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
+                                    </div>
+                                    <div className="flex items-center">
+                                        {selectedLanguage === "en" ? enLogo : vnLogo}
+                                    </div>
+                                </button>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleMenuClose}
+                                >
+                                    <MenuItem onClick={() => handleLanguageSelect("vn")}>
+                                        <div className="mr-1">Tiếng Việt</div>
+                                        {vnLogo}
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => handleLanguageSelect("en")}
+                                        className="text-[#2B3F6C]"
+                                    >
+                                        <div className="mr-1">English</div>
+                                        {enLogo}
+                                    </MenuItem>
+                                </Menu>
                             </div>
-                        </button>
-                        <Menu
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleMenuClose}
-                        >
-                            <MenuItem onClick={() => handleLanguageSelect("vn")}>
-                                <div className="mr-1">Tiếng Việt</div>
-                                {vnLogo}
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => handleLanguageSelect("en")}
-                                className="text-[#2B3F6C]"
+                        </div>
+                        {/* Start your slide component here */}
+                        <div className="w-full h-full">
+                            {data?.first_name && <Slider {...settings} className="custom-slider">
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="table relative">
+                                            <img
+                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                                alt="Profile"
+                                                className="w-full h-auto rounded-full border-4 border-grey"
+                                            />
+                                            <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
+                                                 className="absolute bottom-0 right-0"/>
+                                        </div>
+                                    </div>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
+                                            {data?.last_name} {data?.first_name}
+                                        </div>
+                                        <div className="text-base text-white">{data?.position}</div>
+                                    </div>
+                                </div>
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="border-8 border-white rounded-lg">
+                                            <QRCode value={imgQr} size={152} className="qr-code"/>
+                                        </div>
+                                    </div>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code
+                                        </div>
+                                    </div>
+                                </div>
+                            </Slider>}
+                        </div>
+                        {/* End your slide component here */}
+                        <div className="flex pb-6 w-full">
+                            <button
+                                className={`w-full text-[#2B3F6C] justify-center bg-white p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
+                                onClick={() => {
+                                    window.location.href = `tel:${data?.phone_number}`;
+                                }}
                             >
-                                <div className="mr-1">English</div>
-                                {enLogo}
-                            </MenuItem>
-                        </Menu>
+                                <PhoneIcon className="mr-2"/>
+                                <span>{t("call")}</span>
+                            </button>
+                            <button
+                                className={`w-full text-[#2B3F6C] justify-center bg-white custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                onClick={() => {
+                                    window.open(`mailto:${data?.email}?to=${data?.email}`);
+                                }}
+                            >
+                                <EmailIcon className="mr-2"/>
+                                <div>Email</div>
+                            </button>
+                            <button
+                                className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
+                                onClick={handleDownloadVcf}
+                            >
+                                <div className="mr-2">{btnAdd}</div>
+                                <span>{t("add")}</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                {/* Start your slide component here */}
-                <div className="w-full h-full">
-                    {data?.first_name && <Slider {...settings}>
-                        <div className="slider-item">
-                            <div className="image-container">
-                                <div className="table relative">
-                                    <img
-                                        src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
-                                        alt="Profile"
-                                        className="w-full h-auto rounded-full border-4 border-grey"
-                                    />
-                                    <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
-                                         className="absolute bottom-0 right-0"/>
-                                </div>
-                            </div>
-                            <div className="text-container">
-                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                    {data?.last_name} {data?.first_name}
-                                </div>
-                                <div className="text-base text-white">{data?.position}</div>
+                    {/*Info*/}
+                    <div className="py-8 px-6">
+                        <div className="flex items-center pb-4">
+                            {phoneIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">Email</div>
+                                <div className="break-all">{data?.email}</div>
                             </div>
                         </div>
-                        <div className="slider-item">
-                            <div className="image-container">
-                                <div className="border-8 border-white rounded-lg">
-                                    <QRCode value={imgQr} size={152} className="qr-code"/>
-                                </div>
-                            </div>
-                            <div className="text-container">
-                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
+                        <div className="flex items-center pb-4">
+                            {email}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("tell")}</div>
+                                <div className="text-left">{data?.phone_number}</div>
                             </div>
                         </div>
-                    </Slider>}
-                </div>
-                {/* End your slide component here */}
-                <div className="flex pb-6 w-full">
-                    <button
-                        className={`w-full text-[#2B3F6C] justify-center bg-white p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
-                        onClick={() => {
-                            window.location.href = `tel:${data?.phone_number}`;
-                        }}
-                    >
-                        <PhoneIcon className="mr-2"/>
-                        <span>{t("call")}</span>
-                    </button>
-                    <button
-                        className={`w-full text-[#2B3F6C] justify-center bg-white custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        onClick={() => {
-                            window.open(`mailto:${data?.email}?to=${data?.email}`);
-                        }}
-                    >
-                        <EmailIcon className="mr-2"/>
-                        <div>Email</div>
-                    </button>
-                    <button
-                        className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
-                        onClick={handleDownloadVcf}
-                    >
-                        <div className="mr-2">{btnAdd}</div>
-                        <span>{t("add")}</span>
-                    </button>
-                </div>
-            </div>
-            {/*Info*/}
-            <div className="pt-8 px-6">
-                <div className="flex items-center pb-4">
-                    {phoneIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">Email</div>
-                        <div className="break-all">{data?.email}</div>
+                        <div className="flex items-center pb-4">
+                            {buildingIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("company")}</div>
+                                <div className="text-left">Biplus Vietnam Software Solution JSC</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center pb-4">
+                            {briftIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("department")}</div>
+                                <div className="text-left">{data?.department}</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center pb-4">
+                            <div>{locationIcon}</div>
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("location")}</div>
+                                <div className="text-left line-clamp-2">{data?.location}</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center">
+                            {languageIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">Website</div>
+                                <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="flex items-center pb-4">
-                    {email}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("tell")}</div>
-                        <div className="text-left">{data?.phone_number}</div>
-                    </div>
+                <div className={`border-t text-xs text-[#2B3F6C] bg-white py-5 rounded-b-lg
+                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                    © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
                 </div>
-                <div className="flex items-center pb-4">
-                    {buildingIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("company")}</div>
-                        <div className="text-left">Biplus Vietnam Software Solution JSC</div>
-                    </div>
-                </div>
-                <div className="flex items-center pb-4">
-                    {briftIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("department")}</div>
-                        <div className="text-left">{data?.department}</div>
-                    </div>
-                </div>
-                <div className="flex items-center pb-4">
-                    <div>{locationIcon}</div>
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("location")}</div>
-                        <div className="text-left line-clamp-2">{data?.location}</div>
-                    </div>
-                </div>
-                <div className="flex items-center">
-                    {languageIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">Website</div>
-                        <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
-                    </div>
-                </div>
-            </div>
-        </div>)}
+            </>)}
     </>);
 };
 

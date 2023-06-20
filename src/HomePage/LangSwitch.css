@@ -133,3 +133,8 @@
     border-radius: 15px;
     box-shadow: 0 9px #999;
 }
+
+.dropdown-menu {
+    top: 100%;
+    left: 0;
+}
