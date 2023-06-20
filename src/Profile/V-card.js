@@ -8,7 +8,6 @@ import i18next from "i18next";
 import "../App.css"
 import "./profile.css"
 import {useParams} from 'react-router-dom';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import QRCode from 'qrcode.react';
 import Slider from 'infinite-react-carousel';
 
@@ -288,7 +287,10 @@ const Vcard = () => {
         {!isMobile && (<div
             className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto">
             <div
-                className={`flex flex-col items-center rounded-lg px-4 pb-[45px] shadow-md w-[90%] max-w-[400px] pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                className={`flex flex-col items-center rounded-t-lg px-4 shadow-md w-[90%] max-w-[400px] ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                    <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                </div>
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -332,7 +334,7 @@ const Vcard = () => {
                     </div>
                     <div className="w-full h-full">
                         {data?.first_name &&
-                            <Slider {...settings}>
+                            <Slider {...settings} className="custom-slider">
                                 <div className="slider-item">
                                     <div className="image-container">
                                         <div className="table relative">
@@ -398,7 +400,7 @@ const Vcard = () => {
                     </div>
                 </div>
                 {/*Info*/}
-                <div className="pt-8 px-6">
+                <div className="py-8 px-6">
                     <div className="flex items-center pb-4">
                         {phoneIcon}
                         <div className="ml-2">
@@ -443,161 +445,178 @@ const Vcard = () => {
                     </div>
                 </div>
             </div>
+            <div className={`border-t text-xs text-[#2B3F6C] bg-white w-[90%] max-w-[400px] py-5 rounded-b-lg
+                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
+            </div>
+
         </div>)}
         {/*mobile display*/}
-        {isMobile && (<div
-            className={`flex flex-col items-center px-4 pb-[45px] overflow-y-auto shadow-md pt-10 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-            <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
-                 style={{
-                     backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`, backgroundSize: 'cover'
-                 }}>
-                <div className="flex justify-between w-full mb-2">
-                    <div className="flex pt-4">
-                        {isDarkMode ? (sunLogo) : (moonLogo)}
+        {isMobile && (
+            <>
+                <div
+                    className={`flex flex-col items-center px-4 overflow-y-auto shadow-md ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+                    <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                        <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
                     </div>
-                    <div>
-                        <button
-                            className="text-white py-2 rounded border-none flex items-center py-4 px-0"
-                            onClick={handleMenuOpen}
-                        >
-                            <div className="mr-1">
-                                {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
+                    <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
+                         style={{
+                             backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
+                             backgroundSize: 'cover'
+                         }}>
+                        <div className="flex justify-between w-full mb-2">
+                            <div className="flex pt-4">
+                                {isDarkMode ? (sunLogo) : (moonLogo)}
                             </div>
-                            <div className="flex items-center">
-                                {selectedLanguage === "en" ? enLogo : vnLogo}
+                            <div>
+                                <button
+                                    className="text-white py-2 rounded border-none flex items-center py-4 px-0"
+                                    onClick={handleMenuOpen}
+                                >
+                                    <div className="mr-1">
+                                        {selectedLanguage === "en" ? "English" : "Tiếng Việt"}
+                                    </div>
+                                    <div className="flex items-center">
+                                        {selectedLanguage === "en" ? enLogo : vnLogo}
+                                    </div>
+                                </button>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleMenuClose}
+                                >
+                                    <MenuItem onClick={() => handleLanguageSelect("vn")}>
+                                        <div className="mr-1">Tiếng Việt</div>
+                                        {vnLogo}
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={() => handleLanguageSelect("en")}
+                                        className="text-[#2B3F6C]"
+                                    >
+                                        <div className="mr-1">English</div>
+                                        {enLogo}
+                                    </MenuItem>
+                                </Menu>
                             </div>
-                        </button>
-                        <Menu
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleMenuClose}
-                        >
-                            <MenuItem onClick={() => handleLanguageSelect("vn")}>
-                                <div className="mr-1">Tiếng Việt</div>
-                                {vnLogo}
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => handleLanguageSelect("en")}
-                                className="text-[#2B3F6C]"
+                        </div>
+                        {/* Start your slide component here */}
+                        <div className="w-full h-full">
+                            {data?.first_name && <Slider {...settings} className="custom-slider">
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="table relative">
+                                            <img
+                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                                alt="Profile"
+                                                className="w-full h-auto rounded-full border-4 border-grey"
+                                            />
+                                            <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
+                                                 className="absolute bottom-0 right-0"/>
+                                        </div>
+                                    </div>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
+                                            {data?.last_name} {data?.first_name}
+                                        </div>
+                                        <div className="text-base text-white">{data?.position}</div>
+                                    </div>
+                                </div>
+                                <div className="slider-item">
+                                    <div className="image-container">
+                                        <div className="border-8 border-white rounded-lg">
+                                            <QRCode value={imgQr} size={152} className="qr-code"/>
+                                        </div>
+                                    </div>
+                                    <div className="text-container">
+                                        <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code
+                                        </div>
+                                    </div>
+                                </div>
+                            </Slider>}
+                        </div>
+                        {/* End your slide component here */}
+                        <div className="flex pb-6 w-full">
+                            <button
+                                className={`w-full text-[#2B3F6C] justify-center bg-white p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
+                                onClick={() => {
+                                    window.location.href = `tel:${data?.phone_number}`;
+                                }}
                             >
-                                <div className="mr-1">English</div>
-                                {enLogo}
-                            </MenuItem>
-                        </Menu>
+                                <PhoneIcon className="mr-2"/>
+                                <span>{t("call")}</span>
+                            </button>
+                            <button
+                                className={`w-full text-[#2B3F6C] justify-center bg-white custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                onClick={() => {
+                                    window.open(`mailto:${data?.email}?to=${data?.email}`);
+                                }}
+                            >
+                                <EmailIcon className="mr-2"/>
+                                <div>Email</div>
+                            </button>
+                            <button
+                                className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
+                                style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
+                                onClick={handleDownloadVcf}
+                            >
+                                <div className="mr-2">{btnAdd}</div>
+                                <span>{t("add")}</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                {/* Start your slide component here */}
-                <div className="w-full h-full">
-                    {data?.first_name && <Slider {...settings}>
-                        <div className="slider-item">
-                            <div className="image-container">
-                                <div className="table relative">
-                                    <img
-                                        src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
-                                        alt="Profile"
-                                        className="w-full h-auto rounded-full border-4 border-grey"
-                                    />
-                                    <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
-                                         className="absolute bottom-0 right-0"/>
-                                </div>
-                            </div>
-                            <div className="text-container">
-                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                    {data?.last_name} {data?.first_name}
-                                </div>
-                                <div className="text-base text-white">{data?.position}</div>
+                    {/*Info*/}
+                    <div className="py-8 px-6">
+                        <div className="flex items-center pb-4">
+                            {phoneIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">Email</div>
+                                <div className="break-all">{data?.email}</div>
                             </div>
                         </div>
-                        <div className="slider-item">
-                            <div className="image-container">
-                                <div className="border-8 border-white rounded-lg">
-                                    <QRCode value={imgQr} size={152} className="qr-code"/>
-                                </div>
-                            </div>
-                            <div className="text-container">
-                                <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">BiCard QR Code</div>
+                        <div className="flex items-center pb-4">
+                            {email}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("tell")}</div>
+                                <div className="text-left">{data?.phone_number}</div>
                             </div>
                         </div>
-                    </Slider>}
-                </div>
-                {/* End your slide component here */}
-                <div className="flex pb-6 w-full">
-                    <button
-                        className={`w-full text-[#2B3F6C] justify-center bg-white p-4 rounded-r-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        style={{borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px"}}
-                        onClick={() => {
-                            window.location.href = `tel:${data?.phone_number}`;
-                        }}
-                    >
-                        <PhoneIcon className="mr-2"/>
-                        <span>{t("call")}</span>
-                    </button>
-                    <button
-                        className={`w-full text-[#2B3F6C] justify-center bg-white custom-button border-none rounded-none flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        onClick={() => {
-                            window.open(`mailto:${data?.email}?to=${data?.email}`);
-                        }}
-                    >
-                        <EmailIcon className="mr-2"/>
-                        <div>Email</div>
-                    </button>
-                    <button
-                        className={`w-full text-[#2B3F6C] bg-white justify-center rounded-l-none border-none custom-button flex items-center ${isDarkMode ? 'dark-mode' : 'light-mode'}`}
-                        style={{borderTopRightRadius: "30px", borderBottomRightRadius: "30px"}}
-                        onClick={handleDownloadVcf}
-                    >
-                        <div className="mr-2">{btnAdd}</div>
-                        <span>{t("add")}</span>
-                    </button>
-                </div>
-            </div>
-            {/*Info*/}
-            <div className="pt-8 px-6">
-                <div className="flex items-center pb-4">
-                    {phoneIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">Email</div>
-                        <div className="break-all">{data?.email}</div>
+                        <div className="flex items-center pb-4">
+                            {buildingIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("company")}</div>
+                                <div className="text-left">Biplus Vietnam Software Solution JSC</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center pb-4">
+                            {briftIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("department")}</div>
+                                <div className="text-left">{data?.department}</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center pb-4">
+                            <div>{locationIcon}</div>
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">{t("location")}</div>
+                                <div className="text-left line-clamp-2">{data?.location}</div>
+                            </div>
+                        </div>
+                        <div className="flex items-center">
+                            {languageIcon}
+                            <div className="ml-2">
+                                <div className="text-left font-semibold">Website</div>
+                                <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="flex items-center pb-4">
-                    {email}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("tell")}</div>
-                        <div className="text-left">{data?.phone_number}</div>
-                    </div>
+                <div className={`border-t text-xs text-[#2B3F6C] bg-white py-5 rounded-b-lg
+                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                    © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
                 </div>
-                <div className="flex items-center pb-4">
-                    {buildingIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("company")}</div>
-                        <div className="text-left">Biplus Vietnam Software Solution JSC</div>
-                    </div>
-                </div>
-                <div className="flex items-center pb-4">
-                    {briftIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("department")}</div>
-                        <div className="text-left">{data?.department}</div>
-                    </div>
-                </div>
-                <div className="flex items-center pb-4">
-                    <div>{locationIcon}</div>
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">{t("location")}</div>
-                        <div className="text-left line-clamp-2">{data?.location}</div>
-                    </div>
-                </div>
-                <div className="flex items-center">
-                    {languageIcon}
-                    <div className="ml-2">
-                        <div className="text-left font-semibold">Website</div>
-                        <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
-                    </div>
-                </div>
-            </div>
-        </div>)}
+            </>)}
     </>);
 };
 
