@@ -12,14 +12,14 @@ import {Menu} from 'antd';
 
 const admin = "7e76a230-8167-42d6-866e-e12c4afd0342"
 
-function getItem(label, key, icon, children, type, isactive) {
+function getItem(label, key, icon, children, type, active) {
     return {
         key,
         icon,
         children,
         label,
         type,
-        isactive
+        active: active ? "true" : undefined,
     };
 }
 
@@ -39,7 +39,7 @@ const logoutBtn = (
 
 const HomePage = (props) => {
     const [permission, setPermission] = useState("")
-    const {i18n, t} = useTranslation();
+    const {t} = useTranslation();
     const [userInfo, setUserInfo] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
@@ -48,10 +48,25 @@ const HomePage = (props) => {
     const [userId, setUserId] = useState("")
     const [selectedLanguage, setSelectedLanguage] = useState(localStorage.getItem('i18nextLng') || 'vn');
     const items = [
-        getItem(useTranslation().t("language"), 'sub2', null, [
-            getItem("Tiếng việt", 'vn', <img src="/Images/vnLogo.svg" alt="vn"/>),
-            getItem('English', 'en', <img src="/Images/engLogo.svg" alt="en"/>),
-        ]),];
+        getItem(t("language"), "sub2", null, [
+            getItem(
+                "Tiếng việt",
+                "vn",
+                <img src="/Images/vnLogo.svg" alt="vn"/>,
+                null,
+                null,
+                selectedLanguage === "vn"
+            ),
+            getItem(
+                "English",
+                "en",
+                <img src="/Images/engLogo.svg" alt="en"/>,
+                null,
+                null,
+                selectedLanguage === "en"
+            ),
+        ]),
+    ];
 
     useEffect(() => {
         if (!localStorage.getItem("i18nextLng")) {
@@ -194,7 +209,8 @@ const HomePage = (props) => {
                                 {logoutBtn}
                                 <span className="pl-2">{t("signOut")}</span>
                             </div>
-                            <Menu onClick={handleLanguage} style={{width: 201}} mode="vertical" items={items}/>
+                            <Menu onClick={handleLanguage} style={{width: 201}} mode="vertical" items={items}
+                                  defaultSelectedKeys={[selectedLanguage]}/>
                         </div>
                     )}
                 </div>
