@@ -122,8 +122,6 @@ const HomePage = (props) => {
         i18next.changeLanguage(e.key);
     }
 
-    console.log(window.location.pathname)
-
     return (
         <>
             <div className="px-[5%] mx-auto flex justify-between items-center p-4 pt-8 bg-[#F5F5F5]">

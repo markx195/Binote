@@ -15,6 +15,7 @@ import i18next from "i18next";
 const storedAccessToken = localStorage.getItem('accessToken');
 
 function App() {
+    const isLogOut = true
     const isLoggedIn = localStorage.getItem('loggedIn');
     const navigate = useNavigate();
     const handleSignOut = () => {
@@ -58,7 +59,8 @@ function App() {
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
                 <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
-                <Route path='/Profile' element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
+                <Route path='/Profile'
+                       element={<Profile infoData={infoData} handleSignOut={handleSignOut} isLogOut={isLogOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
                 <Route path='/Statistical' element={<Statistical/>}/>
             </Routes>

@@ -146,7 +146,7 @@ const NoteDetails = ({handleSignOut}) => {
         <div className="flex px-[5%] pt-10 pb-20 bg-[#F5F5F5]">
             <div
                 className={`w-full border-solid border h-[76.7vh] border-[#979696] rounded-2xl flex ${isCancelled ? "w-full" : "w-8/12"}`}>
-                <Note courseData={courseData.notes}
+                <Note courseData={courseData?.notes}
                       idNoted={id.id}
                       setIsCancelled={setIsCancelled}
                       setIsVisible={setIsVisible}
@@ -167,7 +167,8 @@ const NoteDetails = ({handleSignOut}) => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
                                 {courseData.title}
                             </div>
-                            <div className={isZoomed ? "" : "flex"}>
+
+                            <div className="flex flex-col sm:flex-row">
                                 <div className="flex-1 py-4 pr-2">
                                     <a
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
@@ -175,7 +176,7 @@ const NoteDetails = ({handleSignOut}) => {
                                         rel="noopener noreferrer"
                                         href={courseData.link}
                                     >
-                                        {t("goToCourse")}
+                                        <span className="whitespace-nowrap break-words">Đi tới khóa học</span>
                                     </a>
                                 </div>
                                 <div className="flex-1 py-4 cursor-pointer">
@@ -183,11 +184,10 @@ const NoteDetails = ({handleSignOut}) => {
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={handleFinishedCourse}
                                     >
-                                        {t("completedCourse")}
+                                        <span className="whitespace-nowrap break-words">Hoàn thành khóa học</span>
                                     </div>
                                 </div>
                             </div>
-
 
                             <div className="text-left"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>

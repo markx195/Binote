@@ -51,9 +51,13 @@ const Profile = (props) => {
         }
     };
     const fetchDataStatic = async () => {
+        const currentDateValue = new Date();
+        const fromDateValue = new Date(currentDateValue.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const fromDateStr = fromDateValue.toISOString();
+        const toDateStr = currentDateValue.toISOString();
         const url = 'http://192.168.3.150:8050/flows/trigger/22833381-b10f-45c5-a4ee-f90aa8b34f73';
-        const fromDate = '2023-04-21T09:51:04.034Z';
-        const toDate = '2023-06-01T09:51:04.034Z';
+        const fromDate = fromDateStr;
+        const toDate = toDateStr
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -79,7 +83,7 @@ const Profile = (props) => {
     };
 
     useEffect(() => {
-        setProfileDetails(props.infoData.data);
+        setProfileDetails(props.infoData.data)
         fetchDataStatic();
         fetchData()
     }, [props.infoData.data]);
@@ -190,7 +194,7 @@ const Profile = (props) => {
                                               onChange={handleSaveProfile}/>
                             )}
                         </div>
-                        <span className="text-xs pt-2"> {profileDetails?.position} |</span>
+                        <span className="text-xs pt-2"> {profileDetails?.position}</span> |
                         <span className="text-xs">{profileDetails?.team}</span>
                     </div>
                     <div className="pt-11">

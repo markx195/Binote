@@ -36,23 +36,23 @@ const EditableText = (props) => {
     };
 
     return (
-        edit === true ? (
-            <input
-                name={props.name}
-                type={props.type || 'text'}
-                value={value}
-                className={props.editClassName}
-                autoFocus
-                onFocus={focusHandler}
-                onChange={changeHandler}
-                onBlur={blurHandler}
-                onKeyUp={keyUpHandler}
-            />
-        ) : (
-            <span onClick={editHandler}>
-        {value}
-      </span>
-        )
+        <div onClick={editHandler}>
+            {edit === true ? (
+                <input
+                    name={props.name}
+                    type={props.type || 'text'}
+                    value={value}
+                    className={props.editClassName}
+                    autoFocus
+                    onFocus={focusHandler}
+                    onChange={changeHandler}
+                    onBlur={blurHandler}
+                    onKeyUp={keyUpHandler}
+                />
+            ) : (
+                <span>{value || 'Click to edit'}</span>
+            )}
+        </div>
     );
 };
 
