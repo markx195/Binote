@@ -17,14 +17,6 @@ const LoginForm = () => {
         margin: "0 auto",
     };
 
-    // async function handleLogin() {
-    //     window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
-    //     await fetch('https://directus.myserver.com/auth/refresh', {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //     });
-    // }
-
     function handleLogin() {
         window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
     }
@@ -36,13 +28,17 @@ const LoginForm = () => {
         });
     }
 
+    if (localStorage.getItem('loggedIn')) {
+        navigate("/HomePage");
+    }
+
     refreshTokens()
         .then(response => response.json())
         .then(data => {
             const accessToken = data.data.access_token;
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('loggedIn', true);
-            navigate("/HomePage");
+            // navigate("/HomePage");
         })
         .catch((error) => {
             console.error('Token refresh failed', error);
