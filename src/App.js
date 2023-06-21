@@ -14,11 +14,11 @@ import VCard from "./Profile/V-card";
 const storedAccessToken = localStorage.getItem('accessToken');
 
 function App() {
-    const isLoggedIn = localStorage.getItem('loggedIn');
     const navigate = useNavigate();
     const handleSignOut = () => {
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("loggedIn");
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem('QA', "logOut");
         navigate("/");
     };
     const [infoData, setInfoData] = useState({})
@@ -26,7 +26,7 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'http://192.168.3.150:8050/users/me';
+                const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
@@ -49,7 +49,7 @@ function App() {
         <div className="App">
             <ToastContainerComponent/>
             <Routes>
-                {isLoggedIn ? (
+                {localStorage.getItem('QA') === "active" ? (
                     <Route path="/" element={<Navigate to="/HomePage" replace/>}/>
                 ) : (
                     <Route path="/" element={<Login/>}/>
