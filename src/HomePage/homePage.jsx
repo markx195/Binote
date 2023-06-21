@@ -166,7 +166,7 @@ const HomePage = (props) => {
                         {userInfo && (
                             <div className="flex items-center">
                                 <img src={`http://192.168.3.150:8050/assets/${userInfo.avatar}`} alt=""
-                                     className="w-[32px] h-[32px] rounded"/>
+                                     className="w-[32px] h-[32px] rounded object-cover"/>
                                 <h3 className="pl-2 inline-flex items-center">
                                     {userInfo.first_name}
                                 </h3>

@@ -285,7 +285,7 @@ const Vcard = () => {
 
     return (<>
         {!isMobile && (<div
-            className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto">
+            className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto h-max">
             <div
                 className={`flex flex-col items-center rounded-t-lg px-4 shadow-md w-[90%] max-w-[400px] ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
                 <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
@@ -341,7 +341,7 @@ const Vcard = () => {
                                             <img
                                                 src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
                                                 alt="Profile"
-                                                className="w-full h-auto rounded-full border-4 border-grey"
+                                                className="w-full h-auto rounded-full border-4 border-grey object-cover"
                                             />
                                             <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
                                                  className="absolute bottom-0 right-0"/>
@@ -509,7 +509,7 @@ const Vcard = () => {
                                             <img
                                                 src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
                                                 alt="Profile"
-                                                className="w-full h-auto rounded-full border-4 border-grey"
+                                                className="w-full h-auto rounded-full border-4 border-grey object-cover"
                                             />
                                             <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
                                                  className="absolute bottom-0 right-0"/>
