@@ -17,7 +17,7 @@ const NoteDetails = ({handleSignOut}) => {
     const [isCancelled, setIsCancelled] = useState(false);
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
-    const [isCompletion, setIsCompletion] = useState("")
+    const [isCompletion, setIsCompletion] = useState(false)
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -116,20 +116,19 @@ const NoteDetails = ({handleSignOut}) => {
                     }
                 });
                 const data = await response.json();
-                setIsCompletion(data.data.isCompletion)
+                if (data.data.isCompletion !== isCompletion) {
+                    setIsCompletion(data.data.isCompletion);
+                }
                 setCourseData(data.data);
             } catch (error) {
                 console.error("Error fetching course data:", error);
             }
         };
         fetchCourseData();
-    }, [id.id, storedAccessToken]);
+    }, [id.id, storedAccessToken, isCompletion]);
 
     const handleFinishedCourse = async () => {
-        let completeCourse = true
-        if (isCompletion) {
-            completeCourse = false
-        }
+        const completeCourse = !isCompletion;
         const requestData = {
             course_id: id.id,
             is_completed: completeCourse
