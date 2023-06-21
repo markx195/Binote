@@ -18,7 +18,7 @@ const LoginForm = () => {
     };
 
     function handleLogin() {
-        window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
+        window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://binote.biplus.com.vn/';
     }
 
     const loggedIn = localStorage.getItem('loggedIn');
