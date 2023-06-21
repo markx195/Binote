@@ -34,6 +34,23 @@ const Profile = (props) => {
         setShowMore(true);
     };
 
+    const getProfileUser = async () => {
+        try {
+            const apiUrl = 'http://192.168.3.150:8050/users/me';
+
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${storedAccessToken}`
+                }
+            });
+
+            const data = await response.json();
+            setProfileDetails(data.data)
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const fetchData = async () => {
         try {
             const response = await axios.get("http://192.168.3.150:8050/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&page=0", {
@@ -83,10 +100,10 @@ const Profile = (props) => {
     };
 
     useEffect(() => {
-        setProfileDetails(props.infoData)
+        getProfileUser()
         fetchDataStatic();
         fetchData()
-    }, [props.infoData]);
+    }, []);
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
@@ -163,7 +180,7 @@ const Profile = (props) => {
     return (
         <>
             <HomePage handleSignOut={props.handleSignOut}/>
-            <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between bg-[#F6F6F6] h-auto">
+            <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between bg-[#F6F6F6]">
                 <div className="rounded-2xl p-4 bg-white"
                      style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)', height: '80vh'}}>
                     <div className="bg-[#F6F6F6] p-4 rounded-2xl"
