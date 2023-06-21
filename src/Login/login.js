@@ -114,9 +114,7 @@ const LoginForm = () => {
                     const accessToken = data.data.access_token;
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('QA', "active")
-                    setTimeout(() => {
-                        navigate("/HomePage");
-                    }, 2000);
+                    navigate("/HomePage");
                 })
                 .catch((error) => {
                     console.error('Token refresh failed', error);
