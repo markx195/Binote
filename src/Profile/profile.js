@@ -206,7 +206,7 @@ const Profile = (props) => {
                         <div className="tex-[#979696] text-xs pb-2"> {profileDetails?.email}</div>
                         <div
                             className="text-xl font-bold">
-                            {userInfo.last_name} {userInfo.first_name}
+                            {profileDetails.last_name} {profileDetails.first_name}
                             {/*{profileDetails && (*/}
                             {/*    <EditableText value={profileDetails?.first_name} editClassName="form-control"*/}
                             {/*                  onChange={handleSaveProfile}/>*/}
