@@ -16,7 +16,7 @@ const RecentlyCourses = () => {
             const fetchData = async () => {
                 try {
                     // Make API call with token in request headers
-                    const response = await axios.get("http://192.168.3.150:8050/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
+                    const response = await axios.get("http://192.168.3.150:8055/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&limit=4&page=0", {
                         headers: {
                             Accept: "*/*",
                             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const RecentlyCourses = () => {
                         <img
                             onClick={() => handleNoteDetails(courses[0].id)}
                             key={courses[0].image}
-                            src={`http://192.168.3.150:8050/assets/${courses[0].image}`}
+                            src={`http://192.168.3.150:8055/assets/${courses[0].image}`}
                             alt={courses[0].name}
                             className="w-full h-full object-cover rounded-lg cursor-pointer"
                         />
