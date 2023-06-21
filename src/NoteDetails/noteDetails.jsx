@@ -199,7 +199,7 @@ const NoteDetails = ({handleSignOut}) => {
                                                 </div>
                                             </>) :
                                             <span className="whitespace-nowrap break-words">
-                                                    {t("completedCourse")}
+                                                    {t("completCourse")}
                                             </span>}
                                     </div>
                                 </div>

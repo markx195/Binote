@@ -206,10 +206,11 @@ const Profile = (props) => {
                         <div className="tex-[#979696] text-xs pb-2"> {profileDetails?.email}</div>
                         <div
                             className="text-xl font-bold">
-                            {profileDetails && (
-                                <EditableText value={profileDetails?.first_name} editClassName="form-control"
-                                              onChange={handleSaveProfile}/>
-                            )}
+                            {userInfo.last_name} {userInfo.first_name}
+                            {/*{profileDetails && (*/}
+                            {/*    <EditableText value={profileDetails?.first_name} editClassName="form-control"*/}
+                            {/*                  onChange={handleSaveProfile}/>*/}
+                            {/*)}*/}
                         </div>
                         <span className="text-xs pt-2"> {profileDetails?.position}</span> |
                         <span className="text-xs">{profileDetails?.team}</span>
