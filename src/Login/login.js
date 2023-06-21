@@ -21,6 +21,12 @@ const LoginForm = () => {
         window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://localhost:3000/';
     }
 
+    const loggedIn = localStorage.getItem('loggedIn');
+
+
+    // if (localStorage.getItem('loggedIn')) {
+    //     navigate("/HomePage");
+    // }
     function refreshTokens() {
         return fetch('https://binote-api.biplus.com.vn/auth/refresh', {
             method: 'POST',
@@ -28,21 +34,21 @@ const LoginForm = () => {
         });
     }
 
-    if (localStorage.getItem('loggedIn')) {
+    if (loggedIn) {
+        localStorage.setItem('loggedIn', true);
+        refreshTokens()
+            .then(response => response.json())
+            .then(data => {
+                const accessToken = data.data.access_token;
+                localStorage.setItem('accessToken', accessToken);
+                // navigate("/HomePage");
+            })
+            .catch((error) => {
+                console.error('Token refresh failed', error);
+            });
+    } else {
         navigate("/HomePage");
     }
-
-    refreshTokens()
-        .then(response => response.json())
-        .then(data => {
-            const accessToken = data.data.access_token;
-            localStorage.setItem('accessToken', accessToken);
-            localStorage.setItem('loggedIn', true);
-            // navigate("/HomePage");
-        })
-        .catch((error) => {
-            console.error('Token refresh failed', error);
-        });
 
     return (
         <>
