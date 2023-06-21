@@ -137,7 +137,7 @@ const Statistical = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    "http://192.168.3.150:8055/flows/trigger/d03f7d11-8dec-4099-bd94-730a87995d5f?limit=5",
+                    "https://binote-api.biplus.com.vn/flows/trigger/d03f7d11-8dec-4099-bd94-730a87995d5f?limit=5",
                     {
                         headers: {
                             Authorization: `Bearer ${storedAccessToken}`,
@@ -154,7 +154,7 @@ const Statistical = () => {
     }, []);
 
     const sendDataTable = () => {
-        const url = "http://192.168.3.150:8055/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
+        const url = "https://binote-api.biplus.com.vn/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
         const requestData = {
             from_date: startDate,
             to_date: endDate,
@@ -330,7 +330,7 @@ const Statistical = () => {
                             {courses.map((course) => (
                                 <div key={course.id} className="p-4 cursor-pointer border-b">
                                     <div className="flex">
-                                        <img src={`http://192.168.3.150:8055/assets/${course.image}`} alt=""
+                                        <img src={`https://binote-api.biplus.com.vn/assets/${course.image}`} alt=""
                                              className="w-[56px] h-[56px] rounded object-cover"/>
                                         {courses.image}
                                         <div className="pl-2">

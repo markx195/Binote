@@ -113,7 +113,7 @@ Tôi có thể áp dụng gì vào công việc:`,
         setTimeoutId(newTimeoutId);
     };
     const updateItemData = (itemId, dataToUpdate) => {
-        return fetch(`http://192.168.3.150:8055/items/note/${itemId}`, {
+        return fetch(`https://binote-api.biplus.com.vn/items/note/${itemId}`, {
             method: "PATCH",
             body: JSON.stringify(dataToUpdate),
             headers: {
@@ -142,7 +142,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                 updatedItems[updatedItemIndex][key] = value;
                 setItems(updatedItems);
 
-                fetch(`http://192.168.3.150:8055/items/note/${selectedItemId}`, {
+                fetch(`https://binote-api.biplus.com.vn/items/note/${selectedItemId}`, {
                     method: "PATCH",
                     body: JSON.stringify({[key]: value}),
                     headers: {

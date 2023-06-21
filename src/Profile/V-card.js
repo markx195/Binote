@@ -174,7 +174,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `http://192.168.3.150:8055/users/${id}`;
+                const apiUrl = `https://binote-api.biplus.com.vn/users/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -256,12 +256,12 @@ const Vcard = () => {
 
     const handleDownloadVcf = async () => {
         try {
-            const response = await fetch(`http://192.168.3.150:8055/vcf/${id}`, {
+            const response = await fetch(`https://binote-api.biplus.com.vn/vcf/${id}`, {
                 method: "GET",
             });
             const data = await response.json();
             const fileId = data.data.id;
-            const downloadUrl = `http://192.168.3.150:8055/assets/${fileId}?download`;
+            const downloadUrl = `https://binote-api.biplus.com.vn/assets/${fileId}?download`;
             setDownloadLink(downloadUrl);
 
             // Create a direct download link
@@ -339,7 +339,7 @@ const Vcard = () => {
                                     <div className="image-container">
                                         <div className="table relative">
                                             <img
-                                                src={`http://192.168.3.150:8055/assets/${data?.avatar}`}
+                                                src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                                 alt="Profile"
                                                 className="w-full h-auto rounded-full border-4 border-grey"
                                             />
@@ -507,7 +507,7 @@ const Vcard = () => {
                                     <div className="image-container">
                                         <div className="table relative">
                                             <img
-                                                src={`http://192.168.3.150:8055/assets/${data?.avatar}`}
+                                                src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                                 alt="Profile"
                                                 className="w-full h-auto rounded-full border-4 border-grey"
                                             />
