@@ -46,7 +46,8 @@ const Statistical = () => {
     const [getDate, setDate] = useState([firstMonth, lastMonth]);
     const [getQuarter, setQuarter] = useState([]);
     const [getYear, setYear] = useState([]);
-
+    const [chartData, setChartData] = useState([])
+    const [chartValue, setChartValue] = useState([])
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -174,6 +175,7 @@ const Statistical = () => {
             .then(data => {
                 // Update the tableData state with the fetched data
                 setDataSource(data.data);
+                setChartData(timePeriods.map(period => period.period));
                 setTableName(data.data.map(item => item.name));
                 setDataTable(data.data.map(item => item.totalLearningHours));
                 setTotalLearningHours(data.totalLearningHours)
@@ -208,7 +210,6 @@ const Statistical = () => {
             }
         }
     });
-
     const columns = [
         {
             title: 'Họ tên',
@@ -221,7 +222,20 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
-
+    const onChangeShowChart = (value) => {
+        const selectedPeriod = value.target.value;
+        const learningHours = [];
+        dataSource.forEach((item) => {
+            const timePeriod = item.timePeriods.find(
+                (period) => period.period === selectedPeriod
+            );
+            if (timePeriod) {
+                learningHours.push(timePeriod.learningHour);
+            }
+        });
+        setChartValue(learningHours)
+        console.log(learningHours);
+    }
 
     return (<>
             <HomePage/>
@@ -382,6 +396,7 @@ const Statistical = () => {
                                     <InputLabel>{t("selectStatisticalObject")}</InputLabel>
                                     <Select
                                         value={selectedValue}
+                                        size="small"
                                         label={t("selectStatisticalObject")}
                                         onChange={handleSelectChange}
                                     >
@@ -426,7 +441,16 @@ const Statistical = () => {
                     </div>
                 </div>
                 {selectedValue !== "individual" && (
-                    <BarChart labels={tableName} data={dataTable}/>
+                    <div className="pt-10">
+                        <select value={chartData.period} onChange={onChangeShowChart} className="float-right">
+                            {chartData.map(option => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                        <BarChart labels={tableName} data={chartValue}/>
+                    </div>
                 )}
             </div>
         </>
