@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Chart, registerables} from 'chart.js';
 
 const BarChart = ({labels, data}) => {
-    console.log(labels,data)
+    console.log(labels, data)
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -15,6 +15,7 @@ const BarChart = ({labels, data}) => {
                     labels: labels,
                     datasets: [
                         {
+                            label: "",
                             data: data,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
@@ -43,6 +44,10 @@ const BarChart = ({labels, data}) => {
                             },
                             beginAtZero: true,
                             stepSize: 2,
+                        },
+                    }, plugins: {
+                        legend: {
+                            display: false, // Hide the legend box
                         },
                     },
                 },

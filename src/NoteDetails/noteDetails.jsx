@@ -171,7 +171,7 @@ const NoteDetails = ({handleSignOut}) => {
                                         className="absolute right-0 top-0 mt-6"/>
                         </div>
                         {courseData && (<>
-                            <div className="font-bold text-[32px] leading-[120%] text-left pt-12">
+                            <div className="font-bold text-[32px] leading-[120%] text-left pt-12 cursor-default">
                                 {courseData.title}
                             </div>
 
@@ -205,7 +205,7 @@ const NoteDetails = ({handleSignOut}) => {
                                 </div>
                             </div>
 
-                            <div className="text-left"
+                            <div className="text-left cursor-default"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>
                         </>)}
                     </div>
