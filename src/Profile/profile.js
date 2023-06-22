@@ -181,8 +181,9 @@ const Profile = (props) => {
         <>
             <HomePage handleSignOut={props.handleSignOut}/>
             <div className="flex pt-[54px] px-[5%] mx-auto flex justify-between bg-[#F6F6F6]">
-                <div className="rounded-2xl p-4 bg-white"
-                     style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)', height: '80vh'}}>
+                <div className="rounded-2xl p-4 bg-white h-fit"
+                     style={{boxShadow: '0px 8px 18px rgba(46, 45, 40, 0.08)'}}>
+                    {/* Profile Pic */}
                     <div className="bg-[#F6F6F6] p-4 rounded-2xl"
                          style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                         <div className="flex items-center justify-center pb-4">
@@ -271,7 +272,7 @@ const Profile = (props) => {
                                 <img src="/Images/Time.svg" alt=""/>
                             </div>
                         </div>
-
+                        {/*card2*/}
                         <div className="max-w-full rounded-2xl overflow-hidden border border-solid shadow-sm flex"
                              style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                             <div className="py-6 pl-6 flex-1">
@@ -291,7 +292,7 @@ const Profile = (props) => {
                                 <img src="/Images/Notes.svg" alt=""/>
                             </div>
                         </div>
-
+                        {/*card3*/}
                         <div className="max-w-full overflow-hidden border border-solid rounded-2xl shadow-sm flex"
                              style={{boxShadow: '0px 0px 8px rgba(46, 45, 40, 0.1)'}}>
                             <div className="py-6 pl-6 flex-1">
@@ -313,7 +314,7 @@ const Profile = (props) => {
                             </div>
                         </div>
                     </div>
-                    {/*//Right side*/}
+                    {/*//Right side Title*/}
                     <div className="flex pt-[37px] pb-4 flex items-center justify-between">
                         <div className="font-bold text-left">
                             {t("myCourse")}
@@ -322,10 +323,10 @@ const Profile = (props) => {
                             {t("complete")} {courseProcess.totalCompletedCourses}/{courseProcess.totalCourses}
                         </div>
                     </div>
-
+                    {/*Courses*/}
                     <div>
                         <div
-                            className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 pt-4 pb-4 mx-auto'>
+                            className='cursor-pointer grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 pt-4 pb-4 mx-auto'>
                             {visibleItems?.map((item, index) => (
                                 <div
                                     key={index}

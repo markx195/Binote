@@ -46,7 +46,7 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
+        <div className="App bg-[#F6F6F6]">
             <ToastContainerComponent/>
             <Routes>
                 {localStorage.getItem('QA') === "active" ? (

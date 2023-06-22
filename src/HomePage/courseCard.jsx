@@ -138,7 +138,7 @@ const CourseCard = () => {
             {/*Courses*/}
             <div>
                 <div
-                    className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto bg-[#F5F5F5]'>
+                    className='cursor-pointer grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4 pb-14 px-[5%] mx-auto bg-[#F5F5F5]'>
                     {dataSource?.map((item, index) => (
                         <div
                             key={index}
@@ -153,8 +153,9 @@ const CourseCard = () => {
                                     className='w-full rounded h-[150px] object-cover rounded-t-lg'
                                 />
                             </div>
-                            <p className='font-bold flex justify-between px-4 pb-4 text-sm truncate hover:text-clip hover:whitespace-normal hover:break-all'>
-                                {item?.title}
+                            <p className='font-bold flex justify-between px-4 pb-4 text-sm text-left overflow-ellipsis'>
+                                <span id="tooltip-text">{item?.title}</span>
+                                <span id="tooltip">{item?.title}</span>
                             </p>
                             <div className='flex justify-between px-4 pb-4'>
                                 <p className="inline-flex items-center">

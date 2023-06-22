@@ -337,15 +337,11 @@ const Vcard = () => {
                             <Slider {...settings} className="custom-slider">
                                 <div className="slider-item">
                                     <div className="image-container">
-                                        <div className="table relative">
-                                            <img
-                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
-                                                alt="Profile"
-                                                className="w-full h-auto rounded-full border-4 border-grey object-cover"
-                                            />
-                                            <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
-                                                 className="absolute bottom-0 right-0"/>
-                                        </div>
+                                        <img
+                                            src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                            alt="Profile"
+                                            className="w-full h-auto rounded-full border-4 border-grey object-cover"
+                                        />
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
@@ -446,7 +442,7 @@ const Vcard = () => {
                 </div>
             </div>
             <div className={`border-t text-xs text-[#2B3F6C] bg-white w-[90%] max-w-[400px] py-5 rounded-b-lg
-                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                ${isDarkMode ? 'border-t-[#D9DBDF] dark-mode' : 'border-t-[#2B3F6C] light-mode'}`}>
                 © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
             </div>
 
@@ -505,15 +501,11 @@ const Vcard = () => {
                             {data?.first_name && <Slider {...settings} className="custom-slider">
                                 <div className="slider-item">
                                     <div className="image-container">
-                                        <div className="table relative">
-                                            <img
-                                                src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
-                                                alt="Profile"
-                                                className="w-full h-auto rounded-full border-4 border-grey object-cover"
-                                            />
-                                            <img src="/Images/Bilogo.svg" alt="" style={{width: "52px", height: "52px"}}
-                                                 className="absolute bottom-0 right-0"/>
-                                        </div>
+                                        <img
+                                            src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                            alt="Profile"
+                                            className="w-full h-auto rounded-full border-4 border-grey object-cover"
+                                        />
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
@@ -612,8 +604,8 @@ const Vcard = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`border-t text-xs text-[#2B3F6C] bg-white py-5 rounded-b-lg
-                ${isDarkMode ? ' dark-mode' : ' light-mode'}`}>
+                <div className={`border-t-[1px] text-xs text-[#2B3F6C] bg-white py-5
+                ${isDarkMode ? 'border-t-[#D9DBDF] dark-mode' : 'border-t-[#2B3F6C] light-mode'}`}>
                     © 2023 BiPlus. Crafted with ❤️ - OP ⚓️
                 </div>
             </>)}

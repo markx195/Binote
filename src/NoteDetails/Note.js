@@ -236,17 +236,22 @@ Tôi có thể áp dụng gì vào công việc:`,
                                 item.id === selectedItemId ? 'bg-[#979696] border-b-2 border-solid border-yellow-300' : ''
                             } p-6 text-left group`}
                         >
-                            <div className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
+                            <div
+                                className="text-[#F4F4F4] text-sm font-bold line-clamp-2">{replaceSpecialCharacters(item.title)}</div>
                             <div className="flex justify-between">
-                                <div className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}</div>
+                                <div
+                                    className="text-[#D5D5D5] text-xs font-medium">{compareDate(item.date_updated)}</div>
                                 <div className={checkDelete === item.id ? 'block' : 'group-hover:block hidden'}>
                                     {checkDelete === item.id ? (
                                         <>
-                                            <CheckIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => handleDeleteItem(item.id)} />
-                                            <CloseIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => setCheckDelete(null)} />
+                                            <CheckIcon fontSize="small" sx={{color: grey[100]}}
+                                                       onClick={() => handleDeleteItem(item.id)}/>
+                                            <CloseIcon fontSize="small" sx={{color: grey[100]}}
+                                                       onClick={() => setCheckDelete(null)}/>
                                         </>
                                     ) : (
-                                        <DeleteIcon fontSize="small" sx={{ color: grey[100] }} onClick={() => setCheckDelete(item.id)} />
+                                        <DeleteIcon fontSize="small" sx={{color: grey[100]}}
+                                                    onClick={() => setCheckDelete(item.id)}/>
                                     )}
                                 </div>
                             </div>
@@ -303,10 +308,10 @@ Tôi có thể áp dụng gì vào công việc:`,
                                   onChange={handleInputChangeBody}
                         />
                     </div>
-                    <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10">
+                    <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10 ">
                         <AlarmIcon/>
                         <select
-                            className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none"
+                            className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none selectTime"
                             value={selectedTime}
                             onChange={handleSelectTime}
                         >
