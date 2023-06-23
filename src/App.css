@@ -203,3 +203,7 @@ body::-webkit-scrollbar {
     background: #F5F5F5;
 }
 
+.ant-table-placeholder {
+    display: none;
+}
+

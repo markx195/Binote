@@ -44,6 +44,8 @@ const Statistical = () => {
     const [getYear, setYear] = useState([]);
     const [chartData, setChartData] = useState([])
     const [chartValue, setChartValue] = useState([])
+    const [showChart, setShowChart] = useState(false)
+
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -123,7 +125,6 @@ const Statistical = () => {
     };
 
     useEffect(() => {
-        sendDataTable()
         handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
     }, []);
 
@@ -151,11 +152,13 @@ const Statistical = () => {
                 setChartData(timePeriods.map(period => period.period));
                 setTableName(data.data.map(item => item.name));
                 setTotalLearningHours(data.totalLearningHours)
+                setShowChart(!showChart)
             })
             .catch(error => {
                 // Handle error
             });
     }
+
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => {
         let title;
@@ -181,6 +184,16 @@ const Statistical = () => {
             }
         }
     });
+
+    const dynamicColumnsCompany = totalLearningHours.map((timePeriod, index) => {
+        let title = <RenderColumn dates={getDate} index={index}/>
+        return {
+            title,
+            dataIndex: `timePeriods[${index}].learningHour`,
+            key: `T${index + 1}`,
+        };
+    });
+
     const columns = [
         {
             title: 'Họ tên',
@@ -193,6 +206,16 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
+
+    const companyColumns = [
+        {
+            title: '',
+            dataIndex: '',
+            key: '',
+        },
+        ...dynamicColumnsCompany,
+    ];
+
     const onChangeShowChart = (value) => {
         const selectedPeriod = value.target.value;
         const learningHours = [];
@@ -207,7 +230,7 @@ const Statistical = () => {
         setChartValue(learningHours)
         console.log(learningHours);
     }
-
+    const renderedColumns = selectedValue === "company" ? companyColumns : columns;
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
@@ -245,7 +268,6 @@ const Statistical = () => {
                                 </RadioGroup>
                             </FormControl>
                         </div>
-                        {/*end header*/}
                         <div className="flex rounded-lg p-4 justify-between bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <div className="flex">
@@ -273,7 +295,7 @@ const Statistical = () => {
                         <div className="rounded-lg p-4 mt-4 bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
                             <Table
-                                columns={columns}
+                                columns={renderedColumns}
                                 dataSource={dataSource}
                                 pagination={false}
                                 bordered
@@ -282,8 +304,9 @@ const Statistical = () => {
                                     return (
                                         <>
                                             <Table.Summary.Row style={{fontWeight: 'bold'}}>
-                                                <Table.Summary.Cell>Tổng
-                                                    (giờ)</Table.Summary.Cell>
+                                                <Table.Summary.Cell>
+                                                    Tổng (giờ)
+                                                </Table.Summary.Cell>
                                                 {totalLearningHours.map((record, index) => (
                                                     <Table.Summary.Cell key={index}>
                                                         <Text>{record.totalLearningHours}</Text>
@@ -298,7 +321,7 @@ const Statistical = () => {
                         </div>
                     </div>
                 </div>
-                {selectedValue !== "individual" && (
+                {showChart && selectedValue !== "individual" && (
                     <div className="pt-10">
                         <select value={chartData.period} onChange={onChangeShowChart} className="float-right">
                             {chartData.map(option => (
