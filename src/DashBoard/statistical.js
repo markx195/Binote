@@ -45,9 +45,11 @@ const Statistical = () => {
     const [chartData, setChartData] = useState([])
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
+    const [renderTitleTable, setRenderTitleTable] = useState([])
 
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
+        setShowChart(false)
     };
 
     const renderDatePicker = () => {
@@ -152,8 +154,8 @@ const Statistical = () => {
                 setChartData(timePeriods.map(period => period.period));
                 setTableName(data.data.map(item => item.name));
                 setTotalLearningHours(data.totalLearningHours)
-                setShowChart(!showChart)
-            })
+                setRenderTitleTable(data.timePeriods.map(item => item.period))
+            }).finally(() => setShowChart(true))
             .catch(error => {
                 // Handle error
             });
@@ -163,11 +165,20 @@ const Statistical = () => {
     const dynamicColumns = timePeriods.map((timePeriod, index) => {
         let title;
         if (type === 'month') {
-            title = <RenderColumn dates={getDate} index={index}/>;
+            const value = renderTitleTable[index];
+            let monthNumber;
+            if (value) {
+                const monthString = value.substring(0, value.indexOf(' '));
+                const date = new Date(`${monthString} 1, 2000`);
+                monthNumber = date.getMonth() + 1;
+            } else {
+                monthNumber = -1;
+            }
+            title = `T${monthNumber}`
         } else if (type === 'quarter') {
-            title = getQuarter[index];
+            title = renderTitleTable[index];
         } else if (type === 'year') {
-            title = getYear[index];
+            title = renderTitleTable[index];
         }
         return {
             title,
@@ -321,7 +332,7 @@ const Statistical = () => {
                         </div>
                     </div>
                 </div>
-                {showChart && selectedValue !== "individual" && (
+                {selectedValue !== "individual" && showChart && (
                     <div className="pt-10">
                         <select value={chartData.period} onChange={onChangeShowChart} className="float-right">
                             {chartData.map(option => (
