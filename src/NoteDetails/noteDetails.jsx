@@ -26,7 +26,7 @@ const NoteDetails = ({handleSignOut}) => {
             notes: [newItem, ...prevData.notes],
         }));
         // Send a request to the API to add the new item
-        fetch('http://192.168.3.150:8050/items/note', {
+        fetch('http://192.168.3.150:8055/items/note', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const NoteDetails = ({handleSignOut}) => {
         }));
 
         // Send the DELETE request to the server
-        fetch(`http://192.168.3.150:8050/items/note/${id}`, {
+        fetch(`http://192.168.3.150:8055/items/note/${id}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -110,7 +110,7 @@ const NoteDetails = ({handleSignOut}) => {
     useEffect(() => {
         const fetchCourseData = async () => {
             try {
-                const response = await fetch(`http://192.168.3.150:8050/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
+                const response = await fetch(`http://192.168.3.150:8055/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id.id}`, {
                     headers: {
                         Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
                     }
@@ -134,7 +134,7 @@ const NoteDetails = ({handleSignOut}) => {
             is_completed: completeCourse
         };
         try {
-            const response = await axios.post('http://192.168.3.150:8050/flows/trigger/3e5411f6-cf6d-4f85-926d-5d560ba39c2b', requestData, {
+            const response = await axios.post('http://192.168.3.150:8055/flows/trigger/3e5411f6-cf6d-4f85-926d-5d560ba39c2b', requestData, {
                     headers: {
                         Accept: "*/*", "Content-Type": "application/json", Authorization: `Bearer ${storedAccessToken}`
                     }

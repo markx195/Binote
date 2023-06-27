@@ -32,7 +32,7 @@ const LoginForm = () => {
 //         try {
 //             // Send a POST request to the API endpoint with email in the request body
 //             const response = await fetch(
-//                 "http://192.168.3.150:8050/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
+//                 "http://192.168.3.150:8055/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
 //                 {
 //                     method: "POST",
 //                     body: JSON.stringify({email: email}),
@@ -96,7 +96,7 @@ const LoginForm = () => {
         };
 
         function handleLogin() {
-            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=http://192.168.3.150:90/';
+            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://binote.biplus.com.vn/';
             localStorage.setItem('QA', "logIn");
         }
 

@@ -12,7 +12,7 @@ const FeaturedCourse = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    "http://192.168.3.150:8050/flows/trigger/d03f7d11-8dec-4099-bd94-730a87995d5f?limit=5",
+                    "http://192.168.3.150:8055/flows/trigger/d03f7d11-8dec-4099-bd94-730a87995d5f?limit=5",
                     {
                         headers: {
                             Authorization: `Bearer ${storedAccessToken}`,
@@ -34,7 +34,7 @@ const FeaturedCourse = () => {
             {courses.map((course) => (
                 <div key={course.id} className="p-4 cursor-pointer border-b">
                     <div className="flex">
-                        <img src={`http://192.168.3.150:8050/assets/${course.image}`} alt=""
+                        <img src={`http://192.168.3.150:8055/assets/${course.image}`} alt=""
                              className="w-[56px] h-[56px] rounded object-cover"/>
                         {courses.image}
                         <div className="pl-2">

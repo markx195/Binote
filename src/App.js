@@ -26,7 +26,7 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = 'http://192.168.3.150:8050/users/me';
+                const apiUrl = 'http://192.168.3.150:8055/users/me';
 
                 const response = await fetch(apiUrl, {
                     method: 'GET',
