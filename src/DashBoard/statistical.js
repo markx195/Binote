@@ -41,7 +41,6 @@ const Statistical = () => {
     const [totalLearningHours, setTotalLearningHours] = useState([]);
     const [getDate, setDate] = useState([firstMonth, lastMonth]);
     const [getQuarter, setQuarter] = useState([]);
-    const [getYear, setYear] = useState([]);
     const [chartData, setChartData] = useState([])
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
@@ -110,16 +109,18 @@ const Statistical = () => {
     };
 
     const renderYear = (date, dateString) => {
+        if (!date || !dateString) {
+            // Handle the case when the value is cleared
+            setStartDate(null);
+            setEndDate(null);
+            return;
+        }
         const startYear = parseInt(dateString[0]);
         const endYear = parseInt(dateString[1]);
         const startDate = dayjs().year(startYear).startOf('year').toISOString();
         const endDate = dayjs().year(endYear).endOf('year').toISOString();
         setStartDate(startDate);
         setEndDate(endDate);
-
-        const years = Array.from({length: endYear - startYear + 1}, (_, index) => startYear + index);
-        const yearLabels = years.map((year) => year.toString());
-        setYear(yearLabels);
     }
 
     const handleRadioChange = (event) => {
@@ -130,6 +131,7 @@ const Statistical = () => {
 
     useEffect(() => {
         handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
+        sendDataTable()
     }, []);
 
     const sendDataTable = () => {
@@ -156,7 +158,8 @@ const Statistical = () => {
                 setChartData(timePeriods.map(period => period.period));
                 setTableName(data.data.map(item => item.name));
                 setTotalLearningHours(data.totalLearningHours)
-                setRenderTitleTable(data.timePeriods.map(item => item.period))
+                const listMonthForChart = data.timePeriods.map(item => item.period)
+                setRenderTitleTable(listMonthForChart)
             }).finally(() => setShowChart(true))
             .catch(error => {
                 // Handle error
@@ -230,18 +233,14 @@ const Statistical = () => {
         const selectedPeriod = value.target.value;
         const learningHours = [];
         dataSource.forEach((item) => {
-            const timePeriod = item.timePeriods.find(
-                (period) => period.period === selectedPeriod
-            );
+            const timePeriod = item.timePeriods.find((period) => period.period === selectedPeriod);
             if (timePeriod) {
                 learningHours.push(timePeriod.learningHour);
             }
         });
         setChartValue(learningHours)
-        console.log(learningHours);
     }
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
-
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
