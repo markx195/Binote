@@ -293,7 +293,7 @@ const Statistical = () => {
                                     >
                                         <MenuItem value="individual">{t("individual")}</MenuItem>
                                         <MenuItem value="team">{t("team")}</MenuItem>
-                                        <MenuItem value="company">{t("company")}</MenuItem>
+                                        {/*<MenuItem value="company">{t("company")}</MenuItem>*/}
                                     </Select>
                                 </FormControl>
                             </div>
@@ -305,35 +305,44 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4 bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            {dataSource.length === 0 ? (
-                                <div style={{textAlign: "center"}}>
+                            {dataSource?.length === 0 ? (
+                                <div className="text-center">
                                     <p>No data</p>
                                 </div>
                             ) : (
-                                <Table
-                                    columns={renderedColumns}
-                                    dataSource={dataSource}
-                                    pagination={false}
-                                    bordered
-                                    scroll={{y: 360}}
-                                    summary={(pageData) => {
-                                        return (
-                                            <>
-                                                <Table.Summary.Row style={{fontWeight: 'bold'}}>
-                                                    <Table.Summary.Cell>
-                                                        Tổng (giờ)
-                                                    </Table.Summary.Cell>
-                                                    {totalLearningHours.map((record, index) => (
-                                                        <Table.Summary.Cell key={index}>
-                                                            <Text>{record.totalLearningHours}</Text>
+                                <>
+                                    <Table
+                                        columns={renderedColumns}
+                                        dataSource={dataSource}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{y: 360}}
+                                        summary={(pageData) => {
+                                            return (
+                                                <>
+                                                    <Table.Summary.Row style={{fontWeight: 'bold'}}>
+                                                        <Table.Summary.Cell>
+                                                            Tổng (giờ)
                                                         </Table.Summary.Cell>
-                                                    ))}
-                                                </Table.Summary.Row>
-                                            </>
-                                        );
-                                    }}
-                                    className="sticky-summary"
-                                />)}
+                                                        {totalLearningHours.length === 0 ? (
+                                                            <Table.Summary.Cell colSpan={renderedColumns.length - 1}>
+                                                                <Text>No total learning hours available</Text>
+                                                            </Table.Summary.Cell>
+                                                        ) : (
+                                                            totalLearningHours.map((record, index) => (
+                                                                <Table.Summary.Cell key={index}>
+                                                                    <Text>{record.totalLearningHours}</Text>
+                                                                </Table.Summary.Cell>
+                                                            ))
+                                                        )}
+                                                    </Table.Summary.Row>
+                                                </>
+                                            );
+                                        }}
+                                        className="sticky-summary"
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
