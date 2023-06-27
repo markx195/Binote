@@ -133,7 +133,7 @@ const Statistical = () => {
     }, []);
 
     const sendDataTable = () => {
-        const url = "http://192.168.3.150:8055/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
+        const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
         const requestData = {
             from_date: startDate,
             to_date: endDate,
