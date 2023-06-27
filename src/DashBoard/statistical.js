@@ -124,6 +124,8 @@ const Statistical = () => {
 
     const handleRadioChange = (event) => {
         setType(event.target.value);
+        setDataSource([]);
+        setTotalLearningHours([])
     };
 
     useEffect(() => {
@@ -195,7 +197,6 @@ const Statistical = () => {
             }
         }
     });
-
     const dynamicColumnsCompany = totalLearningHours.map((timePeriod, index) => {
         let title = <RenderColumn dates={getDate} index={index}/>
         return {
@@ -204,7 +205,6 @@ const Statistical = () => {
             key: `T${index + 1}`,
         };
     });
-
     const columns = [
         {
             title: 'Họ tên',
@@ -217,7 +217,6 @@ const Statistical = () => {
         },
         ...dynamicColumns,
     ];
-
     const companyColumns = [
         {
             title: '',
@@ -242,6 +241,7 @@ const Statistical = () => {
         console.log(learningHours);
     }
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
+
     return (<>
             <HomePage/>
             <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
@@ -305,30 +305,35 @@ const Statistical = () => {
                         </div>
                         <div className="rounded-lg p-4 mt-4 bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            <Table
-                                columns={renderedColumns}
-                                dataSource={dataSource}
-                                pagination={false}
-                                bordered
-                                scroll={{y: 360}}
-                                summary={(pageData) => {
-                                    return (
-                                        <>
-                                            <Table.Summary.Row style={{fontWeight: 'bold'}}>
-                                                <Table.Summary.Cell>
-                                                    Tổng (giờ)
-                                                </Table.Summary.Cell>
-                                                {totalLearningHours.map((record, index) => (
-                                                    <Table.Summary.Cell key={index}>
-                                                        <Text>{record.totalLearningHours}</Text>
+                            {dataSource.length === 0 ? (
+                                <div style={{textAlign: "center"}}>
+                                    <p>No data</p>
+                                </div>
+                            ) : (
+                                <Table
+                                    columns={renderedColumns}
+                                    dataSource={dataSource}
+                                    pagination={false}
+                                    bordered
+                                    scroll={{y: 360}}
+                                    summary={(pageData) => {
+                                        return (
+                                            <>
+                                                <Table.Summary.Row style={{fontWeight: 'bold'}}>
+                                                    <Table.Summary.Cell>
+                                                        Tổng (giờ)
                                                     </Table.Summary.Cell>
-                                                ))}
-                                            </Table.Summary.Row>
-                                        </>
-                                    );
-                                }}
-                                className="sticky-summary"
-                            />
+                                                    {totalLearningHours.map((record, index) => (
+                                                        <Table.Summary.Cell key={index}>
+                                                            <Text>{record.totalLearningHours}</Text>
+                                                        </Table.Summary.Cell>
+                                                    ))}
+                                                </Table.Summary.Row>
+                                            </>
+                                        );
+                                    }}
+                                    className="sticky-summary"
+                                />)}
                         </div>
                     </div>
                 </div>
