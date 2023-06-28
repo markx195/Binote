@@ -21,12 +21,19 @@ import CardInfo from "./Card_info";
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
+const monthFormat = 'YYYY/MM';
+const currentYear = dayjs().format('YYYY');
+const currentMonth = dayjs().format('MM');
+const firstMonth = `${currentYear}/01`;
+const lastMonth = `${currentYear}/${currentMonth}`;
+
 const Statistical = () => {
-    const monthFormat = 'YYYY/MM';
-    const currentYear = dayjs().format('YYYY');
-    const currentMonth = dayjs().format('MM');
-    const firstMonth = `${currentYear}/01`;
-    const lastMonth = `${currentYear}/${currentMonth}`;
+    const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
+    const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
+    useEffect(() => {
+        handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
+    }, []);
+
     const disabledMonth = (current) => {
         const currentDate = new Date();
         return current.isAfter(currentDate, 'month');
@@ -34,13 +41,10 @@ const Statistical = () => {
     const {t} = useTranslation()
     const [selectedValue, setSelectedValue] = useState('individual');
     const [type, setType] = useState('month');
-    const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
-    const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     const [dataSource, setDataSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
     const [getDate, setDate] = useState([firstMonth, lastMonth]);
-    const [getQuarter, setQuarter] = useState([]);
     const [chartData, setChartData] = useState([])
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
@@ -78,18 +82,20 @@ const Statistical = () => {
     };
 
     const renderQuarter = (date, dateString) => {
-        const startQuarter = parseInt(dateString[0].split('-')[1].substring(1));
-        const endQuarter = parseInt(dateString[1].split('-')[1].substring(1));
-        const startMonth = (startQuarter - 1) * 3 + 1; // Calculate start month
-        const endMonth = endQuarter * 3; // Calculate end month
-        const startDate = dayjs().month(startMonth - 1).startOf('month').toISOString();
-        const endDate = dayjs().month(endMonth - 1).endOf('month').toISOString();
+        const formattedDateString = dateString.map(str => str.replace('-Q', ' '));
+        const startQuarter = formattedDateString[0];
+        const endQuarter = formattedDateString[1]
+        let startDate = null;
+        let endDate = null;
+        if (startQuarter && endQuarter) {
+            const [startYear, startQuarterNum] = startQuarter.split(' ');
+            const [endYear, endQuarterNum] = endQuarter.split(' ');
+
+            startDate = new Date(startYear, (startQuarterNum - 1) * 3, 1).toISOString();
+            endDate = new Date(endYear, endQuarterNum * 3, 1).toISOString();
+        }
         setStartDate(startDate);
         setEndDate(endDate);
-
-        const quarters = Array.from({length: endQuarter - startQuarter + 1}, (_, index) => startQuarter + index);
-        const quarterLabels = quarters.map(quarter => `Quý ${quarter}`);
-        setQuarter(quarterLabels);
     };
 
     const handleDateChange = (date, dateString) => {
@@ -128,43 +134,41 @@ const Statistical = () => {
         setDataSource([]);
         setTotalLearningHours([])
     };
-
     useEffect(() => {
-        handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
-        sendDataTable()
-    }, []);
+        console.log(chartData);
+    }, [chartData]);
 
-    const sendDataTable = () => {
-        const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
-        const requestData = {
-            from_date: startDate,
-            to_date: endDate,
-            option: selectedValue,
-            type: type
-        };
+    const sendDataTable = async () => {
+        try {
+            const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
+            const requestData = {
+                from_date: startDate,
+                to_date: endDate,
+                option: selectedValue,
+                type: type
+            };
 
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${storedAccessToken}`
-            },
-            body: JSON.stringify(requestData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Update the tableData state with the fetched data
-                setDataSource(data.data);
-                setChartData(timePeriods.map(period => period.period));
-                setTableName(data.data.map(item => item.name));
-                setTotalLearningHours(data.totalLearningHours)
-                const listMonthForChart = data.timePeriods.map(item => item.period)
-                setRenderTitleTable(listMonthForChart)
-            }).finally(() => setShowChart(true))
-            .catch(error => {
-                // Handle error
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${storedAccessToken}`
+                },
+                body: JSON.stringify(requestData)
             });
-    }
+            const data = await response.json();
+            setDataSource(data.data);
+            setChartData(data.timePeriods.map(period => period.period));
+            setTableName(data.data.map(item => item.name));
+            setTotalLearningHours(data.totalLearningHours);
+            const listMonthForChart = data.timePeriods.map(item => item.period);
+            setRenderTitleTable(listMonthForChart);
+            setShowChart(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => {
