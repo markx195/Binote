@@ -98,6 +98,21 @@ const Statistical = () => {
         setEndDate(endDate);
     };
 
+    const renderYear = (date, dateString) => {
+        if (!date || !dateString) {
+            // Handle the case when the value is cleared
+            setStartDate(null);
+            setEndDate(null);
+            return;
+        }
+        const startYear = parseInt(dateString[0]);
+        const endYear = parseInt(dateString[1]);
+        const startDate = dayjs().year(startYear).startOf('year').toISOString();
+        const endDate = dayjs().year(endYear).endOf('year').toISOString();
+        setStartDate(startDate);
+        setEndDate(endDate);
+    }
+
     const handleDateChange = (date, dateString) => {
         if (dateString) {
             setDate(dateString);
@@ -114,40 +129,21 @@ const Statistical = () => {
         }
     };
 
-    const renderYear = (date, dateString) => {
-        if (!date || !dateString) {
-            // Handle the case when the value is cleared
-            setStartDate(null);
-            setEndDate(null);
-            return;
-        }
-        const startYear = parseInt(dateString[0]);
-        const endYear = parseInt(dateString[1]);
-        const startDate = dayjs().year(startYear).startOf('year').toISOString();
-        const endDate = dayjs().year(endYear).endOf('year').toISOString();
-        setStartDate(startDate);
-        setEndDate(endDate);
-    }
-
     const handleRadioChange = (event) => {
         setType(event.target.value);
         setDataSource([]);
         setTotalLearningHours([])
     };
-    useEffect(() => {
-        console.log(chartData);
-    }, [chartData]);
 
     const sendDataTable = async () => {
+        const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
+        const requestData = {
+            from_date: startDate,
+            to_date: endDate,
+            option: selectedValue,
+            type: type
+        };
         try {
-            const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
-            const requestData = {
-                from_date: startDate,
-                to_date: endDate,
-                option: selectedValue,
-                type: type
-            };
-
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -156,16 +152,19 @@ const Statistical = () => {
                 },
                 body: JSON.stringify(requestData)
             });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const data = await response.json();
             setDataSource(data.data);
+            setTotalLearningHours(data.totalLearningHours)
             setChartData(data.timePeriods.map(period => period.period));
-            setTableName(data.data.map(item => item.name));
-            setTotalLearningHours(data.totalLearningHours);
-            const listMonthForChart = data.timePeriods.map(item => item.period);
+            const listMonthForChart = data.timePeriods.map(item => item.period)
             setRenderTitleTable(listMonthForChart);
-            setShowChart(true);
+            setTableName(data?.data.map(item => item.name));
         } catch (error) {
-            console.log(error);
+        } finally {
+            setShowChart(true);
         }
     };
 
@@ -204,14 +203,32 @@ const Statistical = () => {
             }
         }
     });
+
     const dynamicColumnsCompany = totalLearningHours.map((timePeriod, index) => {
-        let title = <RenderColumn dates={getDate} index={index}/>
+        let title;
+        if (type === 'month') {
+            const value = renderTitleTable[index];
+            let monthNumber;
+            if (value) {
+                const monthString = value.substring(0, value.indexOf(' '));
+                const date = new Date(`${monthString} 1, 2000`);
+                monthNumber = date.getMonth() + 1;
+            } else {
+                monthNumber = -1;
+            }
+            title = `T${monthNumber}`
+        } else if (type === 'quarter') {
+            title = renderTitleTable[index];
+        } else if (type === 'year') {
+            title = renderTitleTable[index];
+        }
         return {
             title,
             dataIndex: `timePeriods[${index}].learningHour`,
             key: `T${index + 1}`,
         };
     });
+
     const columns = [
         {
             title: 'Họ tên',
@@ -296,7 +313,7 @@ const Statistical = () => {
                                     >
                                         <MenuItem value="individual">{t("individual")}</MenuItem>
                                         <MenuItem value="team">{t("team")}</MenuItem>
-                                        {/*<MenuItem value="company">{t("company")}</MenuItem>*/}
+                                        <MenuItem value="company">{t("company")}</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
