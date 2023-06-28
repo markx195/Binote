@@ -27,7 +27,7 @@ const currentMonth = dayjs().format('MM');
 const firstMonth = `${currentYear}/01`;
 const lastMonth = `${currentYear}/${currentMonth}`;
 
-const Statistical = () => {
+const Statistical = (props) => {
     const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
     const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     useEffect(() => {
@@ -49,11 +49,6 @@ const Statistical = () => {
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
     const [renderTitleTable, setRenderTitleTable] = useState([])
-
-    const handleSelectChange = (event) => {
-        setSelectedValue(event.target.value);
-        setShowChart(false)
-    };
 
     const renderDatePicker = () => {
         switch (type) {
@@ -162,13 +157,24 @@ const Statistical = () => {
             const listMonthForChart = data.timePeriods.map(item => item.period)
             setRenderTitleTable(listMonthForChart);
             setTableName(data?.data.map(item => item.name));
+
         } catch (error) {
         } finally {
             setShowChart(true);
+            renderValueChartCompany()
         }
     };
 
-
+    const renderValueChartCompany = () => {
+        const learningHours = [];
+        console.log(totalLearningHours)
+        totalLearningHours.forEach((item) => {
+            learningHours.push(item.learningHour)
+            //// sẽ thay đổi trường totalLeaningHours
+            //// thay đổi khi chọn công ty
+        });
+        setChartValue(learningHours)
+    }
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => {
         let title;
@@ -226,7 +232,7 @@ const Statistical = () => {
             title,
             dataIndex: `timePeriods[${index}].learningHour`,
             key: `T${index + 1}`,
-        };
+        }
     });
 
     const columns = [
@@ -261,9 +267,16 @@ const Statistical = () => {
         });
         setChartValue(learningHours)
     }
+
+    const handleSelectChange = (event) => {
+        const value = event.target.value
+        setSelectedValue(value);
+        setShowChart(false)
+    };
+
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
     return (<>
-            <HomePage/>
+            <HomePage handleSignOut={props.handleSignOut}/>
             <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
                 <CardInfo/>
                 <div className="flex pt-10">
@@ -368,14 +381,21 @@ const Statistical = () => {
                 </div>
                 {selectedValue !== "individual" && showChart && (
                     <div className="pt-10">
-                        <select value={chartData.period} onChange={onChangeShowChart} className="float-right">
-                            {chartData.map(option => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-                        <BarChart labels={tableName} data={chartValue}/>
+                        {selectedValue === "team" && (
+                            <>
+                                <select value={chartData.period} onChange={onChangeShowChart} className="float-right">
+                                    {chartData.map(option => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                                <BarChart labels={tableName} data={chartValue}/>
+                            </>
+                        )}
+                        {selectedValue === "company" && (
+                            <BarChart labels={renderTitleTable} data={chartValue}/>
+                        )}
                     </div>
                 )}
             </div>

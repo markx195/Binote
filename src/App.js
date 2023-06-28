@@ -61,7 +61,7 @@ function App() {
                 <Route path='/Profile'
                        element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
-                <Route path='/Statistical' element={<Statistical/>}/>
+                <Route path='/Statistical' element={<Statistical handleSignOut={handleSignOut}/>}/>
             </Routes>
         </div>
     );
