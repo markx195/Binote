@@ -68,7 +68,7 @@ const Vcard = () => {
     const [data, setData] = useState({})
     const params = useParams();
     const id = params.id;
-    const imgQr = `http://192.168.3.150:90/bicard/${id}`;
+    const imgQr = `https://binote.biplus.com.vn/bicard/${id}`;
     const changeColor = isDarkMode ? '#D9DBDF' : '#2B3F6C';
     const phoneIcon = <svg width="24" height="24" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -174,7 +174,7 @@ const Vcard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const apiUrl = `http://192.168.3.150:8050/users/${id}`;
+                const apiUrl = `https://binote-api.biplus.com.vn/users/${id}`;
 
                 const response = await fetch(apiUrl, {
                     method: 'GET'
@@ -256,12 +256,12 @@ const Vcard = () => {
 
     const handleDownloadVcf = async () => {
         try {
-            const response = await fetch(`http://192.168.3.150:8050/vcf/${id}`, {
+            const response = await fetch(`https://binote-api.biplus.com.vn/vcf/${id}`, {
                 method: "GET",
             });
             const data = await response.json();
             const fileId = data.data.id;
-            const downloadUrl = `http://192.168.3.150:8050/assets/${fileId}?download`;
+            const downloadUrl = `https://binote-api.biplus.com.vn/assets/${fileId}?download`;
             setDownloadLink(downloadUrl);
 
             // Create a direct download link
@@ -288,9 +288,15 @@ const Vcard = () => {
             className="flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 h-screen font-nunito overflow-y-auto h-max">
             <div
                 className={`flex flex-col items-center rounded-t-lg px-4 shadow-md w-[90%] max-w-[400px] ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
-                    <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
-                </div>
+                {isDarkMode ? (
+                    <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                        <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                    </div>
+                ) : (
+                    <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                        <img src="/Images/biplusLogoWNameLight.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                    </div>
+                )}
                 <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                      style={{
                          backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -338,7 +344,7 @@ const Vcard = () => {
                                 <div className="slider-item">
                                     <div className="image-container">
                                         <img
-                                            src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                            src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                             alt="Profile"
                                             className="w-full h-auto rounded-full border-4 border-grey object-cover"
                                         />
@@ -452,9 +458,15 @@ const Vcard = () => {
             <>
                 <div
                     className={`flex flex-col items-center px-4 overflow-y-auto shadow-md ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-                    <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
-                        <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
-                    </div>
+                    {isDarkMode ? (
+                        <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                            <img src="/Images/biplusLogoWName.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                        </div>
+                    ) : (
+                        <div style={{alignSelf: 'flex-start'}} className="pt-[11px]  pb-2">
+                            <img src="/Images/biplusLogoWNameLight.svg" alt="" style={{alignSelf: 'flex-start'}}/>
+                        </div>
+                    )}
                     <div className="rounded-2xl h-full w-full px-4 flex flex-col items-center justify-center"
                          style={{
                              backgroundImage: `url(${process.env.PUBLIC_URL}/Images/bgvcard.png)`,
@@ -502,7 +514,7 @@ const Vcard = () => {
                                 <div className="slider-item">
                                     <div className="image-container">
                                         <img
-                                            src={`http://192.168.3.150:8050/assets/${data?.avatar}`}
+                                            src={`https://binote-api.biplus.com.vn/assets/${data?.avatar}`}
                                             alt="Profile"
                                             className="w-full h-auto rounded-full border-4 border-grey object-cover"
                                         />
