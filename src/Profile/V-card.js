@@ -345,7 +345,7 @@ const Vcard = () => {
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                            {data?.first_name}
+                                            {data?.last_name} {data?.first_name}
                                         </div>
                                         <div className="text-base text-white">{data?.position}</div>
                                     </div>
@@ -509,7 +509,7 @@ const Vcard = () => {
                                     </div>
                                     <div className="text-container">
                                         <div className="font-bold mb-1 pt-4 text-2xl text-white pb-1">
-                                            {data?.first_name}
+                                            {data?.last_name} {data?.first_name}
                                         </div>
                                         <div className="text-base text-white">{data?.position}</div>
                                     </div>

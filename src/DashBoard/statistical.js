@@ -14,7 +14,6 @@ import {Table, Typography} from 'antd';
 import "../App.css"
 import BarChart from "../common/BarChart";
 import dayjs from 'dayjs';
-import RenderColumn from "./Render_column"
 import FeaturedCourse from "./ Featured_course";
 import CardInfo from "./Card_info";
 
@@ -44,7 +43,6 @@ const Statistical = (props) => {
     const [dataSource, setDataSource] = useState([]);
     const [tableName, setTableName] = useState([]);
     const [totalLearningHours, setTotalLearningHours] = useState([]);
-    const [getDate, setDate] = useState([firstMonth, lastMonth]);
     const [chartData, setChartData] = useState([])
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
@@ -109,9 +107,6 @@ const Statistical = (props) => {
     }
 
     const handleDateChange = (date, dateString) => {
-        if (dateString) {
-            setDate(dateString);
-        }
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
             const endDate = new Date(date[1]);
@@ -275,6 +270,41 @@ const Statistical = (props) => {
     };
 
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
+
+    const handleExport = async () => {
+        const url = "http://192.168.3.150:8050/export";
+        const requestData = {
+            from_date: startDate,
+            to_date: endDate,
+            option: selectedValue,
+            type: type
+        };
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${storedAccessToken}`
+                },
+                body: JSON.stringify(requestData)
+            });
+            const data = await response.json();
+            const fileId = data.data.id;
+            const downloadUrl = `http://192.168.3.150:8050/assets/${fileId}?download`;
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.target = '_blank';
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            setTimeout(function () {
+                link.click();
+                document.body.removeChild(link);
+            }, 500);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (<>
             <HomePage handleSignOut={props.handleSignOut}/>
             <div className="px-[5%] mx-auto py-[54px] bg-[#F5F5F5]">
@@ -343,7 +373,7 @@ const Statistical = (props) => {
                                     <p>No data</p>
                                 </div>
                             ) : (
-                                <>
+                                <div className="grid justify-items-end">
                                     <Table
                                         columns={renderedColumns}
                                         dataSource={dataSource}
@@ -364,7 +394,7 @@ const Statistical = (props) => {
                                                         ) : (
                                                             totalLearningHours.map((record, index) => (
                                                                 <Table.Summary.Cell key={index}>
-                                                                    <Text>{record.totalLearningHours}</Text>
+                                                                    <Text>{record.learningHour}</Text>
                                                                 </Table.Summary.Cell>
                                                             ))
                                                         )}
@@ -372,9 +402,15 @@ const Statistical = (props) => {
                                                 </>
                                             );
                                         }}
-                                        className="sticky-summary"
+                                        className="sticky-summary pb-8"
                                     />
-                                </>
+                                    <button
+                                        className="rounded-xl border-2 border-yellow-500 px-4 py-2 rounded text-yellow-500 hover:bg-yellow-500 hover:text-white transition-colors duration-300 ease-in-out cursor-pointer"
+                                        onClick={handleExport}
+                                    >
+                                        Export
+                                    </button>
+                                </div>
                             )}
                         </div>
                     </div>
