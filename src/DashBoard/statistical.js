@@ -16,6 +16,7 @@ import BarChart from "../common/BarChart";
 import dayjs from 'dayjs';
 import FeaturedCourse from "./ Featured_course";
 import CardInfo from "./Card_info";
+import {Spin} from 'antd';
 
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
@@ -27,10 +28,12 @@ const firstMonth = `${currentYear}/01`;
 const lastMonth = `${currentYear}/${currentMonth}`;
 
 const Statistical = (props) => {
+    const [loading, setLoading] = useState(false);
     const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
     const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
     useEffect(() => {
         handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
+        sendDataTable()
     }, []);
 
     const disabledMonth = (current) => {
@@ -107,6 +110,7 @@ const Statistical = (props) => {
     }
 
     const handleDateChange = (date, dateString) => {
+        console.log(date, dateString)
         if (date && date.length === 2) {
             const startDate = new Date(date[0]);
             const endDate = new Date(date[1]);
@@ -134,6 +138,7 @@ const Statistical = (props) => {
             type: type
         };
         try {
+            setLoading(true);
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
@@ -156,6 +161,7 @@ const Statistical = (props) => {
         } catch (error) {
         } finally {
             setShowChart(true);
+            setLoading(false);
             renderValueChartCompany()
         }
     };
@@ -236,6 +242,7 @@ const Statistical = (props) => {
             dataIndex: 'name',
             key: 'name',
             render: (text) => {
+                console.log(text)
                 const username = text.split('@')[0];
                 return <span>{username}</span>;
             },
@@ -368,7 +375,11 @@ const Statistical = (props) => {
                         </div>
                         <div className="rounded-lg p-4 mt-4 bg-white"
                              style={{boxShadow: "0px 0px 8px rgba(51, 51, 51, 0.1)"}}>
-                            {dataSource?.length === 0 ? (
+                            {loading ? (
+                                <div className="text-center">
+                                    <Spin size="large"/>
+                                </div>
+                            ) : dataSource?.length === 0 ? (
                                 <div className="text-center">
                                     <p>No data</p>
                                 </div>
@@ -388,7 +399,8 @@ const Statistical = (props) => {
                                                             Tổng (giờ)
                                                         </Table.Summary.Cell>
                                                         {totalLearningHours.length === 0 ? (
-                                                            <Table.Summary.Cell colSpan={renderedColumns.length - 1}>
+                                                            <Table.Summary.Cell
+                                                                colSpan={renderedColumns.length - 1}>
                                                                 <Text>No total learning hours available</Text>
                                                             </Table.Summary.Cell>
                                                         ) : (

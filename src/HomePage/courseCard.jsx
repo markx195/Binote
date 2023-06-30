@@ -94,7 +94,7 @@ const CourseCard = () => {
     };
 
     const handleNoteDetails = (id) => {
-        navigate(`/NoteDetails/${id}`);
+        navigate(`/note/${id}`);
     };
 
     return (<>

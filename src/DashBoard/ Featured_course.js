@@ -38,7 +38,7 @@ const FeaturedCourse = () => {
                              className="w-[56px] h-[56px] rounded object-cover"/>
                         {courses.image}
                         <div className="pl-2">
-                            <p className="text-left text-xl font-bold">{course.title}</p>
+                            <p className="text-left text-lg font-bold">{course.title}</p>
                             <p className="lowercase text-left text-[#979696] text-base">{course.userCount} {t("learner")}</p>
                         </div>
                     </div>

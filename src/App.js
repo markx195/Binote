@@ -16,11 +16,29 @@ const storedAccessToken = localStorage.getItem('accessToken');
 function App() {
     const navigate = useNavigate();
     const handleSignOut = () => {
-        localStorage.removeItem("accessToken");
-        localStorage.setItem("loggedIn", true);
-        localStorage.setItem('QA', "logOut");
-        navigate("/");
+        const storedAccessToken = localStorage.getItem('accessToken');
+
+        fetch('https://binote-api.biplus.com.vn/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${storedAccessToken}`,
+            },
+            body: JSON.stringify({refresh_token: storedAccessToken}), // Pass the access token in the request body
+        })
+            .then(response => {
+                // handle the response here if needed
+                localStorage.removeItem("accessToken");
+                localStorage.setItem("loggedIn", true);
+                localStorage.setItem('QA', "logOut");
+                navigate("/");
+            })
+            .catch(error => {
+                // handle the error here if needed
+            });
     };
+
+
     const [infoData, setInfoData] = useState({})
 
     useEffect(() => {
@@ -50,18 +68,18 @@ function App() {
             <ToastContainerComponent/>
             <Routes>
                 {localStorage.getItem('QA') === "active" ? (
-                    <Route path="/" element={<Navigate to="/HomePage" replace/>}/>
+                    <Route path="/" element={<Navigate to="/home" replace/>}/>
                 ) : (
                     <Route path="/" element={<Login/>}/>
                 )}
-                <Route path="/HomePage" element={<HomePage handleSignOut={handleSignOut}/>}>
+                <Route path="/home" element={<HomePage handleSignOut={handleSignOut}/>}>
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
-                <Route path='/NoteDetails/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
-                <Route path='/Profile'
+                <Route path='/note/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
+                <Route path='/profile'
                        element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>
-                <Route path='/Statistical' element={<Statistical handleSignOut={handleSignOut}/>}/>
+                <Route path='/statistical' element={<Statistical handleSignOut={handleSignOut}/>}/>
             </Routes>
         </div>
     );

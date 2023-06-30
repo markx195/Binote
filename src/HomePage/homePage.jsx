@@ -87,11 +87,11 @@ const HomePage = (props) => {
     }, []);
 
     const handleBackToHomePage = () => {
-        navigate("/HomePage");
+        navigate("/home");
     };
 
     const goToStatistical = () => {
-        navigate("/Statistical");
+        navigate("/statistical");
     }
 
     const handleDropdownToggle = () => {
@@ -103,7 +103,7 @@ const HomePage = (props) => {
     };
 
     const handleProfile = () => {
-        navigate("/Profile");
+        navigate("/profile");
     }
 
     const handleVcard = () => {
@@ -133,13 +133,13 @@ const HomePage = (props) => {
                 {/*Middle*/}
                 <div className="bg-[#2F2E2E] hidden lg:flex items-center rounded-2xl p-4 text-[14px]">
                     <div
-                        className={`flex items-center cursor-pointer ${window.location.pathname === '/Statistical' ? 'text-[#F0C528]' : ''}`}
+                        className={`flex items-center cursor-pointer ${window.location.pathname === '/statistical' ? 'text-[#F0C528]' : ''}`}
                         onClick={goToStatistical}>
                         <DashboardIcon
-                            sx={{color: window.location.pathname === '/Statistical' ? '#F0C528' : '#979696'}}/>
+                            sx={{color: window.location.pathname === '/statistical' ? '#F0C528' : '#979696'}}/>
                         <p
                             className={`text-[#979696] rounded-full p-2 hover:text-[#F0C528] ${
-                                window.location.pathname === '/Statistical' ? 'text-[#F0C528]' : ''
+                                window.location.pathname === '/statistical' ? 'text-[#F0C528]' : ''
                             }`}
                         >
                             Dashboard
@@ -147,12 +147,12 @@ const HomePage = (props) => {
                     </div>
                     <p className="w-[22px] border border-solid rotate-90"></p>
                     <div
-                        className={`flex items-center cursor-pointer ${window.location.pathname === '/HomePage' ? 'text-[#F0C528]' : ''}`}
+                        className={`flex items-center cursor-pointer ${window.location.pathname === '/home' ? 'text-[#F0C528]' : ''}`}
                         onClick={handleBackToHomePage}>
-                        <SchoolIcon sx={{color: window.location.pathname === '/HomePage' ? '#F0C528' : '#979696'}}/>
+                        <SchoolIcon sx={{color: window.location.pathname === '/home' ? '#F0C528' : '#979696'}}/>
                         <p
                             className={`text-[#979696] rounded-full p-2 hover:text-[#F0C528] ${
-                                window.location.pathname === '/HomePage' ? 'text-[#F0C528]' : ''
+                                window.location.pathname === '/home' ? 'text-[#F0C528]' : ''
                             }`}
                         >
                             {t("course")}

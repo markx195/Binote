@@ -26,6 +26,8 @@ const BarChart = ({labels, data}) => {
     };
     const {highest, lowest} = findHighestAndLowest(data);
     console.log(highest, lowest);
+    const numberOfDataPoints = data.length;
+    const barThickness = 800 / numberOfDataPoints;
 
     useEffect(() => {
         let chartInstance = null;
@@ -41,9 +43,10 @@ const BarChart = ({labels, data}) => {
                         {
                             label: '',
                             data: data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: '#D5D5D5',
+                            hoverBackgroundColor: '#F0C528',
                             borderWidth: 1,
+                            barThickness: barThickness
                         },
                     ],
                 },

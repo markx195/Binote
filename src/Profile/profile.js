@@ -161,7 +161,7 @@ const Profile = (props) => {
     const handleSaveProfile = debounce(handleEditProfile, 1000);
 
     const handleNoteDetails = (id) => {
-        navigate(`/NoteDetails/${id}`);
+        navigate(`/note/${id}`);
     };
 
     function convertDecimalToTime(decimalTime) {

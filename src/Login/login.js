@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import '../App.css';
 import "./login.css"
 import ImageSlider from "./imageSlider"
+import {showToast} from "../common/Toast";
 
 const LoginForm = () => {
 //     const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ const LoginForm = () => {
 //         try {
 //             // Send a POST request to the API endpoint with email in the request body
 //             const response = await fetch(
-//                 "http://192.168.3.150:8050/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
+//                 "https://binote-api.biplus.com.vn/flows/trigger/a3a5d7b8-e41a-4530-ae33-c55fefc46cff",
 //                 {
 //                     method: "POST",
 //                     body: JSON.stringify({email: email}),
@@ -96,7 +97,7 @@ const LoginForm = () => {
         };
 
         function handleLogin() {
-            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://binote.biplus.com.vn/';
+            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=http://localhost:3000/';
             localStorage.setItem('QA', "logIn");
         }
 
@@ -114,10 +115,10 @@ const LoginForm = () => {
                     const accessToken = data.data.access_token;
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('QA', "active")
-                    navigate("/HomePage");
+                    navigate("/home");
                 })
                 .catch((error) => {
-                    console.error('Token refresh failed', error);
+                    showToast("Hãy đăng nhập lại với mail Biplus của bạn", "error")
                 });
         }
 
