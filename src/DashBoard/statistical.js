@@ -21,18 +21,33 @@ import {Spin} from 'antd';
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
 const storedAccessToken = localStorage.getItem('accessToken');
-const monthFormat = 'YYYY/MM';
-const currentYear = dayjs().format('YYYY');
-const currentMonth = dayjs().format('MM');
-const firstMonth = `${currentYear}/01`;
-const lastMonth = `${currentYear}/${currentMonth}`;
+const monthFormat = 'YYYY-MM';
+const currentYear = dayjs().year();
+const currentMonth = dayjs().month() + 1; // Months are zero-based, so we add 1
+const firstMonth = dayjs(`${currentYear}-01-01`).format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+const lastMonth = dayjs(`${currentYear}-${currentMonth}`).endOf('month').format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+
+const convertToTimestamp = (dateString, isEndDate) => {
+    const date = new Date(dateString);
+    date.setDate(1);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = isEndDate ? String(new Date(year, month, 0).getDate()).padStart(2, '0') : String(date.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    const formattedTime = "00:00:00.000Z";
+    const timestamp = `${formattedDate}T${formattedTime}`;
+
+    return timestamp;
+}
 
 const Statistical = (props) => {
     const [loading, setLoading] = useState(false);
-    const [startDate, setStartDate] = useState(new Date(firstMonth).toISOString());
-    const [endDate, setEndDate] = useState(new Date(lastMonth).toISOString());
+    const [startDate, setStartDate] = useState(firstMonth);
+    const [endDate, setEndDate] = useState(lastMonth);
     useEffect(() => {
-        handleDateChange([dayjs(firstMonth, monthFormat), dayjs(lastMonth, monthFormat)]);
+        handleDateChange([firstMonth, lastMonth]);
         sendDataTable()
     }, []);
 
@@ -68,57 +83,29 @@ const Statistical = (props) => {
             case 'quarter':
                 return <RangePicker className="mr-6" picker="quarter" style={{width: '100%'}}
                                     disabledDate={disabledMonth}
-                                    onChange={renderQuarter}/>;
+                                    onChange={handleDateChange}/>;
             case 'year':
                 return <RangePicker className="mr-6" picker="year" style={{width: '100%'}} disabledDate={disabledMonth}
-                                    onChange={renderYear}/>;
+                                    onChange={handleDateChange}/>;
             default:
                 return null;
         }
     };
 
-    const renderQuarter = (date, dateString) => {
-        const formattedDateString = dateString.map(str => str.replace('-Q', ' '));
-        const startQuarter = formattedDateString[0];
-        const endQuarter = formattedDateString[1]
-        let startDate = null;
-        let endDate = null;
-        if (startQuarter && endQuarter) {
-            const [startYear, startQuarterNum] = startQuarter.split(' ');
-            const [endYear, endQuarterNum] = endQuarter.split(' ');
-
-            startDate = new Date(startYear, (startQuarterNum - 1) * 3, 1).toISOString();
-            endDate = new Date(endYear, endQuarterNum * 3, 1).toISOString();
-        }
-        setStartDate(startDate);
-        setEndDate(endDate);
-    };
-
-    const renderYear = (date, dateString) => {
-        if (!date || !dateString) {
-            // Handle the case when the value is cleared
-            setStartDate(null);
-            setEndDate(null);
-            return;
-        }
-        const startYear = parseInt(dateString[0]);
-        const endYear = parseInt(dateString[1]);
-        const startDate = dayjs().year(startYear).startOf('year').toISOString();
-        const endDate = dayjs().year(endYear).endOf('year').toISOString();
-        setStartDate(startDate);
-        setEndDate(endDate);
-    }
-
-    const handleDateChange = (date, dateString) => {
-        console.log(date, dateString)
+    const handleDateChange = (date) => {
         if (date && date.length === 2) {
-            const startDate = new Date(date[0]);
-            const endDate = new Date(date[1]);
-            if (!isNaN(startDate) && !isNaN(endDate)) {
-                setStartDate(startDate.toISOString());
-                setEndDate(endDate.toISOString());
+            const startDate = date[0];
+            const endDate = date[1];
+
+            if (startDate && endDate) {
+                if (!isNaN(startDate.$d) && !isNaN(endDate.$d)) {
+                    setStartDate(convertToTimestamp(startDate.$d, false));
+                    setEndDate(convertToTimestamp(endDate.$d, true));
+                } else {
+                    console.log('Invalid date format');
+                }
             } else {
-                console.log('Invalid date format');
+                console.log('Invalid date values');
             }
         }
     };
@@ -242,7 +229,6 @@ const Statistical = (props) => {
             dataIndex: 'name',
             key: 'name',
             render: (text) => {
-                console.log(text)
                 const username = text.split('@')[0];
                 return <span>{username}</span>;
             },
@@ -271,9 +257,11 @@ const Statistical = (props) => {
     }
 
     const handleSelectChange = (event) => {
+        setLoading(false)
         const value = event.target.value
         setSelectedValue(value);
         setShowChart(false)
+        setDataSource([])
     };
 
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
