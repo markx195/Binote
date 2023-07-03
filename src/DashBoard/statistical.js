@@ -46,11 +46,6 @@ const Statistical = (props) => {
     const [loading, setLoading] = useState(false);
     const [startDate, setStartDate] = useState(firstMonth);
     const [endDate, setEndDate] = useState(lastMonth);
-    useEffect(() => {
-        handleDateChange([firstMonth, lastMonth]);
-        sendDataTable()
-    }, []);
-
     const disabledMonth = (current) => {
         const currentDate = new Date();
         return current.isAfter(currentDate, 'month');
@@ -65,6 +60,14 @@ const Statistical = (props) => {
     const [chartValue, setChartValue] = useState([])
     const [showChart, setShowChart] = useState(false)
     const [renderTitleTable, setRenderTitleTable] = useState([])
+    useEffect(() => {
+        handleDateChange([firstMonth, lastMonth]);
+        renderValueChartCompany()
+    }, [totalLearningHours]);
+
+    useEffect(() => {
+        sendDataTable()
+    }, []);
 
     const renderDatePicker = () => {
         switch (type) {
@@ -116,6 +119,14 @@ const Statistical = (props) => {
         setTotalLearningHours([])
     };
 
+    const renderValueChartCompany = () => {
+        const valueHours = [];
+        totalLearningHours.forEach((item) => {
+            valueHours.push(item.learningHour)
+        });
+        setChartValue(valueHours)
+    }
+
     const sendDataTable = async () => {
         const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
         const requestData = {
@@ -144,25 +155,13 @@ const Statistical = (props) => {
             const listMonthForChart = data.timePeriods.map(item => item.period)
             setRenderTitleTable(listMonthForChart);
             setTableName(data?.data.map(item => item.name));
-
         } catch (error) {
         } finally {
             setShowChart(true);
             setLoading(false);
-            renderValueChartCompany()
         }
     };
 
-    const renderValueChartCompany = () => {
-        const learningHours = [];
-        console.log(totalLearningHours)
-        totalLearningHours.forEach((item) => {
-            learningHours.push(item.learningHour)
-            //// sẽ thay đổi trường totalLeaningHours
-            //// thay đổi khi chọn công ty
-        });
-        setChartValue(learningHours)
-    }
     const timePeriods = dataSource && dataSource.length > 0 ? dataSource[0].timePeriods : [];
     const dynamicColumns = timePeriods.map((timePeriod, index) => {
         let title;
