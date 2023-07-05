@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import '../App.css';
 import "./login.css"
@@ -108,7 +108,7 @@ const LoginForm = () => {
             });
         }
 
-        if (localStorage.getItem('QA') != "logOut") {
+        if (localStorage.getItem('QA') !== "logOut") {
             refreshTokens()
                 .then(response => response.json())
                 .then(data => {

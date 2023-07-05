@@ -16,8 +16,6 @@ const storedAccessToken = localStorage.getItem('accessToken');
 function App() {
     const navigate = useNavigate();
     const handleSignOut = () => {
-        const storedAccessToken = localStorage.getItem('accessToken');
-
         fetch('https://binote-api.biplus.com.vn/auth/logout', {
             method: 'POST',
             headers: {
@@ -27,7 +25,6 @@ function App() {
             body: JSON.stringify({refresh_token: storedAccessToken}), // Pass the access token in the request body
         })
             .then(response => {
-                // handle the response here if needed
                 localStorage.removeItem("accessToken");
                 localStorage.setItem("loggedIn", true);
                 localStorage.setItem('QA', "logOut");
