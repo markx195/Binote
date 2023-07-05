@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css"
 import Profile from "./Profile/profile";
 import Statistical from "./DashBoard/statistical"
 import VCard from "./Profile/V-card";
+import {handleClose} from "./WebSocket/LogOutEvent";
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
@@ -29,6 +30,7 @@ function App() {
                 localStorage.setItem("loggedIn", true);
                 localStorage.setItem('QA', "logOut");
                 navigate("/");
+                handleClose()
             })
             .catch(error => {
                 // handle the error here if needed

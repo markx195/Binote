@@ -264,7 +264,9 @@ const Profile = (props) => {
                                 </div>
                                 <div className="flex items-center" title="Text to show on hover">
                                     <p className="text-[40px] font-semibold" style={{marginRight: '10px'}}>
-                                        {convertDecimalToTime(courseStatistics?.daily_learning)}
+                                        {isNaN(courseStatistics?.daily_learning)
+                                            ? "00:00"
+                                            : convertDecimalToTime(courseStatistics?.daily_learning)}
                                     </p>
                                 </div>
                             </div>

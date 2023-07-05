@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import '../App.css';
 import "./login.css"
 import ImageSlider from "./imageSlider"
 import {showToast} from "../common/Toast";
+import wsRef from '../WebSocket/wsRef';
 
 const LoginForm = () => {
 //     const [email, setEmail] = useState("");
@@ -116,10 +117,20 @@ const LoginForm = () => {
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('QA', "active")
                     navigate("/home");
+                    handleConnect()
                 })
                 .catch((error) => {
                     showToast("Hãy đăng nhập lại với mail Biplus của bạn", "error")
                 });
+        }
+
+        const [socketURL] = useState('ws://192.168.3.150:8050/websocket');
+        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQyNDU4MDNhLTJlNTktNDYzZS04Y2FjLTU1ZTBmMDc2YmUxOCIsInJvbGUiOiIwODhkZTczMy0yNDkzLTQ5ZGMtYTVlNi00MzU0NTM0NWY0ODAiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOmZhbHNlLCJpYXQiOjE2ODg1MjI0NjMsImV4cCI6MTY5MTExNDQ2MywiaXNzIjoiZGlyZWN0dXMifQ.G2FEZsFPSdykFhYei6e8l_cjgwnsG8670MjBUDq2Tdg";
+
+        function handleConnect() {
+            const url = socketURL + (accessToken ? '?access_token=' + accessToken : '');
+            const ws = new WebSocket(url);
+            wsRef.current = ws;
         }
 
         return (
