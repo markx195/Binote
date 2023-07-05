@@ -98,7 +98,7 @@ const LoginForm = () => {
         };
 
         function handleLogin() {
-            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=http://localhost:3000/';
+            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=192.168.3.150:90';
             localStorage.setItem('QA', "logIn");
         }
 
