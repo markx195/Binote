@@ -12,11 +12,17 @@ import Statistical from "./DashBoard/statistical"
 import VCard from "./Profile/V-card";
 import {handleClose} from "./WebSocket/LogOutEvent";
 
-const storedAccessToken = localStorage.getItem('accessToken');
 
 function App() {
+    useEffect(() => {
+        const storedAccessToken = localStorage.getItem('accessToken');
+        if (storedAccessToken) {
+            fetchData(storedAccessToken);
+        }
+    }, []);
     const navigate = useNavigate();
     const handleSignOut = () => {
+        const storedAccessToken = localStorage.getItem('accessToken');
         fetch('https://binote-api.biplus.com.vn/auth/logout', {
             method: 'POST',
             headers: {
@@ -40,28 +46,23 @@ function App() {
 
     const [infoData, setInfoData] = useState({})
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const apiUrl = 'http://192.168.3.150:8050/users/me';
+    const fetchData = async (accessToken) => {
+        try {
+            const apiUrl = 'http://192.168.3.150:8050/users/me';
 
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${storedAccessToken}`
-                    }
-                });
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
 
-                const data = await response.json();
-                setInfoData(data.data)
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
+            const data = await response.json();
+            setInfoData(data.data)
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <div className="App bg-[#F6F6F6]">
             <ToastContainerComponent/>

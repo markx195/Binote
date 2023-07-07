@@ -97,11 +97,6 @@ const LoginForm = () => {
             margin: "0 auto",
         };
 
-        function handleLogin() {
-            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=192.168.3.150:90';
-            localStorage.setItem('QA', "logIn");
-        }
-
         function refreshTokens() {
             return fetch('https://binote-api.biplus.com.vn/auth/refresh', {
                 method: 'POST',
@@ -109,25 +104,38 @@ const LoginForm = () => {
             });
         }
 
-        if (localStorage.getItem('QA') !== "logOut") {
-            refreshTokens()
-                .then(response => response.json())
-                .then(data => {
-                    const accessToken = data.data.access_token;
-                    localStorage.setItem('accessToken', accessToken);
-                    localStorage.setItem('QA', "active")
-                    navigate("/home");
-                    handleConnect()
-                })
-                .catch((error) => {
-                    showToast("Hãy đăng nhập lại với mail Biplus của bạn", "error")
-                });
+        function handleLogin() {
+            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=192.168.3.150:90';
+            localStorage.setItem('QA', "logIn");
         }
 
-        const [socketURL] = useState('ws://192.168.3.150:8050/websocket');
-        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQyNDU4MDNhLTJlNTktNDYzZS04Y2FjLTU1ZTBmMDc2YmUxOCIsInJvbGUiOiIwODhkZTczMy0yNDkzLTQ5ZGMtYTVlNi00MzU0NTM0NWY0ODAiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOmZhbHNlLCJpYXQiOjE2ODg1MjI0NjMsImV4cCI6MTY5MTExNDQ2MywiaXNzIjoiZGlyZWN0dXMifQ.G2FEZsFPSdykFhYei6e8l_cjgwnsG8670MjBUDq2Tdg";
+        useEffect(() => {
+            if (localStorage.getItem('QA') !== "logOut") {
+                const storedAccessToken = localStorage.getItem('accessToken');
 
-        function handleConnect() {
+                if (storedAccessToken) {
+                    navigate("/home");
+                    handleConnect();
+                } else {
+                    refreshTokens()
+                        .then(response => response.json())
+                        .then(data => {
+                            const accessToken = data.data.access_token;
+                            localStorage.setItem('accessToken', accessToken);
+                            localStorage.setItem('QA', "active");
+                            navigate("/home");
+                            handleConnect(accessToken);
+                        })
+                        .catch((error) => {
+                            showToast("Hãy đăng nhập lại với mail Biplus của bạn", "error");
+                        });
+                }
+            }
+        }, []);
+
+        const [socketURL] = useState('ws://192.168.3.150:8050/websocket');
+
+        function handleConnect(accessToken) {
             const url = socketURL + (accessToken ? '?access_token=' + accessToken : '');
             const ws = new WebSocket(url);
             wsRef.current = ws;

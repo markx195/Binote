@@ -20,7 +20,6 @@ import {Spin} from 'antd';
 
 const {Text} = Typography;
 const {RangePicker} = DatePicker;
-const storedAccessToken = localStorage.getItem('accessToken');
 const monthFormat = 'YYYY-MM';
 const currentYear = dayjs().year();
 const currentMonth = dayjs().month() + 1; // Months are zero-based, so we add 1
@@ -66,7 +65,8 @@ const Statistical = (props) => {
     }, [totalLearningHours]);
 
     useEffect(() => {
-        sendDataTable()
+        const storedAccessToken = localStorage.getItem('accessToken');
+        sendDataTable(storedAccessToken)
     }, []);
 
     const renderDatePicker = () => {
@@ -127,7 +127,7 @@ const Statistical = (props) => {
         setChartValue(valueHours)
     }
 
-    const sendDataTable = async () => {
+    const sendDataTable = async (accessToken) => {
         const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
         const requestData = {
             from_date: startDate,
@@ -141,7 +141,7 @@ const Statistical = (props) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${storedAccessToken}`
+                    Authorization: `Bearer ${accessToken}`
                 },
                 body: JSON.stringify(requestData)
             });
@@ -266,6 +266,7 @@ const Statistical = (props) => {
     const renderedColumns = selectedValue === "company" ? companyColumns : columns;
 
     const handleExport = async () => {
+        const storedAccessToken = localStorage.getItem('accessToken');
         const url = "http://192.168.3.150:8050/export";
         const requestData = {
             from_date: startDate,

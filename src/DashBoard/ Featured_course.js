@@ -2,13 +2,12 @@ import React, {useEffect, useState} from "react"
 import axios from "axios";
 import {useTranslation} from "react-i18next";
 
-const storedAccessToken = localStorage.getItem('accessToken');
-
 const FeaturedCourse = () => {
     const {t} = useTranslation()
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
+        const storedAccessToken = localStorage.getItem('accessToken');
         const fetchData = async () => {
             try {
                 const response = await axios.get(
