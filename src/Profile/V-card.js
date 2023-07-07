@@ -402,7 +402,7 @@ const Vcard = () => {
                     </div>
                 </div>
                 {/*Info*/}
-                <div className="py-8 px-6">
+                <div className="py-8 px-6 w-full">
                     <div className="flex items-center pb-4">
                         {phoneIcon}
                         <div className="ml-2">
@@ -421,7 +421,7 @@ const Vcard = () => {
                         {buildingIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">{t("company")}</div>
-                            <div className="text-left">Biplus Vietnam Software Solution JSC</div>
+                            <div className="text-left">{data?.company}</div>
                         </div>
                     </div>
                     <div className="flex items-center pb-4">
@@ -442,7 +442,7 @@ const Vcard = () => {
                         {languageIcon}
                         <div className="ml-2">
                             <div className="text-left font-semibold">Website</div>
-                            <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
+                            <a href={data?.website}>{data?.website}</a>
                         </div>
                     </div>
                 </div>
@@ -571,7 +571,7 @@ const Vcard = () => {
                         </div>
                     </div>
                     {/*Info*/}
-                    <div className="py-8 px-6">
+                    <div className="py-8 px-6 w-full">
                         <div className="flex items-center pb-4">
                             {phoneIcon}
                             <div className="ml-2">
@@ -590,7 +590,7 @@ const Vcard = () => {
                             {buildingIcon}
                             <div className="ml-2">
                                 <div className="text-left font-semibold">{t("company")}</div>
-                                <div className="text-left">Biplus Vietnam Software Solution JSC</div>
+                                <div className="text-left">{data?.company}</div>
                             </div>
                         </div>
                         <div className="flex items-center pb-4">
@@ -611,7 +611,7 @@ const Vcard = () => {
                             {languageIcon}
                             <div className="ml-2">
                                 <div className="text-left font-semibold">Website</div>
-                                <a href="https://biplus.com.vn">https://biplus.com.vn/</a>
+                                <a href={data?.website}>{data?.website}</a>
                             </div>
                         </div>
                     </div>
