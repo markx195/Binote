@@ -128,7 +128,7 @@ const Statistical = (props) => {
     }
 
     const sendDataTable = async (accessToken) => {
-        const url = "http://192.168.3.150:8050/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
+        const url = "https://binote-api.biplus.com.vn/flows/trigger/d81543a3-bf6f-4551-a673-7e1cf148c0a6";
         const requestData = {
             from_date: startDate,
             to_date: endDate,
@@ -197,7 +197,7 @@ const Statistical = (props) => {
         }
     });
 
-    const dynamicColumnsCompany = totalLearningHours.map((timePeriod, index) => {
+    const dynamicColumnsCompany = totalLearningHours?.map((timePeriod, index) => {
         let title;
         if (type === 'month') {
             const value = renderTitleTable[index];
@@ -267,7 +267,7 @@ const Statistical = (props) => {
 
     const handleExport = async () => {
         const storedAccessToken = localStorage.getItem('accessToken');
-        const url = "http://192.168.3.150:8050/export";
+        const url = "https://binote-api.biplus.com.vn/export";
         const requestData = {
             from_date: startDate,
             to_date: endDate,
@@ -285,7 +285,7 @@ const Statistical = (props) => {
             });
             const data = await response.json();
             const fileId = data.data.id;
-            const downloadUrl = `http://192.168.3.150:8050/assets/${fileId}?download`;
+            const downloadUrl = `https://binote-api.biplus.com.vn/assets/${fileId}?download`;
             const link = document.createElement('a');
             link.href = downloadUrl;
             link.target = '_blank';

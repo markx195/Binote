@@ -12,13 +12,15 @@ const noiticeIcon = <svg width="16" height="17" viewBox="0 0 16 17" fill="none" 
 
 const Card_info = () => {
     const [data, setData] = useState("")
+    const [data1, setData1] = useState("")
+
 
     const fetchData = async (accessToken) => {
         const currentDateValue = new Date();
         const fromDateValue = new Date(currentDateValue.getTime() - 30 * 24 * 60 * 60 * 1000);
         const fromDateStr = fromDateValue.toISOString();
         const toDateStr = currentDateValue.toISOString();
-        const url = 'http://192.168.3.150:8055/flows/trigger/051b34ba-edfd-4df7-82df-4c6ffcd5e753';
+        const url = 'https://binote-api.biplus.com.vn/flows/trigger/051b34ba-edfd-4df7-82df-4c6ffcd5e753';
         const fromDate = fromDateStr;
         const toDate = toDateStr
         try {
@@ -33,6 +35,37 @@ const Card_info = () => {
             if (response.ok) {
                 const data = await response.json();
                 setData(data)
+                console.log(1111, data)
+                await fetchDataToCompare(fromDate, accessToken)
+            } else {
+                console.log('Error:', response.status);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
+    const fetchDataToCompare = async (endDate, accessToken) => {
+        const currentDateValue = new Date(endDate);
+        const fromDateValue = new Date(currentDateValue.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const fromDateStr = fromDateValue.toISOString();
+        const toDateStr = endDate
+        const url = 'https://binote-api.biplus.com.vn/flows/trigger/051b34ba-edfd-4df7-82df-4c6ffcd5e753';
+        const fromDate = fromDateStr;
+        const toDate = toDateStr
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({from_date: fromDate, to_date: toDate}),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setData1(data)
+                console.log(2222, data)
             } else {
                 console.log('Error:', response.status);
             }
@@ -45,6 +78,12 @@ const Card_info = () => {
         const storedAccessToken = localStorage.getItem('accessToken');
         fetchData(storedAccessToken)
     }, []);
+
+    const calculatePercentageDifference = (value1, value2) => {
+        const difference = value2 - value1;
+        const percentageDifference = (difference / value1) * 100;
+        return percentageDifference;
+    };
 
     function convertDecimalToTime(decimalValue) {
         if (isNaN(decimalValue)) {
@@ -76,13 +115,12 @@ const Card_info = () => {
                             {data?.totalUserCount}
                         </p>
                         <Statistic
-                            value={11.28}
+                            value={calculatePercentageDifference(data.totalUserCount, data1.totalUserCount)}
                             precision={2}
                             valueStyle={{
                                 fontSize: '14px',
                                 color: '#3f8600',
                             }}
-                            prefix={<AddIcon style={{fontSize: '14px'}}/>}
                             suffix="%"
                         />
                     </div>
@@ -105,13 +143,12 @@ const Card_info = () => {
                             {convertDecimalToTime(data?.averageLearningHour)}
                         </p>
                         <Statistic
-                            value={11.28}
+                            value={calculatePercentageDifference(data.averageLearningHour, data1.averageLearningHour)}
                             precision={2}
                             valueStyle={{
                                 fontSize: '14px',
                                 color: '#3f8600',
                             }}
-                            prefix={<AddIcon style={{fontSize: '14px'}}/>}
                             suffix="%"
                         />
                     </div>
@@ -137,13 +174,12 @@ const Card_info = () => {
                             {convertDecimalToTime(data?.averageTime)}
                         </p>
                         <Statistic
-                            value={11.28}
+                            value={calculatePercentageDifference(data.averageTime, data1.averageTime)}
                             precision={2}
                             valueStyle={{
                                 fontSize: '14px',
                                 color: '#3f8600',
                             }}
-                            prefix={<AddIcon style={{fontSize: '14px'}}/>}
                             suffix="%"
                         />
                     </div>

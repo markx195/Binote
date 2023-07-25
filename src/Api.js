@@ -3,7 +3,7 @@ const storedAccessToken = localStorage.getItem('accessToken');
 export const fetchCourseDataDetail = async (id) => {
     try {
         const response = await fetch(
-            `http://192.168.3.150:8050/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id}`, {
+            `https://binote-api.biplus.com.vn/flows/trigger/20202c51-f8a4-4204-a479-b0b40f064f90?id=${id}`, {
                 headers: {
                     Accept: "*/*",
                     "Content-Type": "application/json",

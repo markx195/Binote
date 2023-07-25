@@ -36,7 +36,7 @@ const Profile = (props) => {
 
     const getProfileUser = async () => {
         try {
-            const apiUrl = 'http://192.168.3.150:8050/users/me';
+            const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
 
             const response = await fetch(apiUrl, {
                 method: 'GET',
@@ -53,7 +53,7 @@ const Profile = (props) => {
     }
     const fetchData = async () => {
         try {
-            const response = await axios.get("http://192.168.3.150:8050/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&page=0", {
+            const response = await axios.get("https://binote-api.biplus.com.vn/flows/trigger/df524185-f718-4c57-891d-0761aabbd03e?sort=sort,-notes.date_updated,-notes.date_created&page=0", {
                 headers: {
                     Accept: "*/*",
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const Profile = (props) => {
         const fromDateValue = new Date(currentDateValue.getTime() - 30 * 24 * 60 * 60 * 1000);
         const fromDateStr = fromDateValue.toISOString();
         const toDateStr = currentDateValue.toISOString();
-        const url = 'http://192.168.3.150:8050/flows/trigger/22833381-b10f-45c5-a4ee-f90aa8b34f73';
+        const url = 'https://binote-api.biplus.com.vn/flows/trigger/22833381-b10f-45c5-a4ee-f90aa8b34f73';
         const fromDate = fromDateStr;
         const toDate = toDateStr
         try {
@@ -112,7 +112,7 @@ const Profile = (props) => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://192.168.3.150:8050/files', formData, {
+            const response = await axios.post('https://binote-api.biplus.com.vn/files', formData, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${storedAccessToken}`,
@@ -120,7 +120,7 @@ const Profile = (props) => {
                 },
             });
             const imageUrl = response.data.data.id;
-            const updateResponse = await axios.patch('http://192.168.3.150:8050/users/me', {
+            const updateResponse = await axios.patch('https://binote-api.biplus.com.vn/users/me', {
                 avatar: imageUrl,
             }, {
                 method: 'PATCH',
@@ -139,7 +139,7 @@ const Profile = (props) => {
     };
 
     const handleEditProfile = (newValue) => {
-        const apiUrl = 'http://192.168.3.150:8050/users/me';
+        const apiUrl = 'https://binote-api.biplus.com.vn/users/me';
 
         fetch(apiUrl, {
             method: 'PATCH',
@@ -195,7 +195,7 @@ const Profile = (props) => {
                                 <input id="file" type="file" onChange={handleFileUpload}/>
                                 {profileDetails && (
                                     <img
-                                        src={`http://192.168.3.150:8050/assets/${profileDetails?.avatar}`}
+                                        src={`https://binote-api.biplus.com.vn/assets/${profileDetails?.avatar}`}
                                         id="output"
                                         width="500"
                                         alt="Profile"
@@ -222,7 +222,7 @@ const Profile = (props) => {
                         </div>
                         <div className="flex items-center justify-center">
                             <img
-                                src={`http://192.168.3.150:8050/assets/${rankDetails?.image}`}
+                                src={`https://binote-api.biplus.com.vn/assets/${rankDetails?.image}`}
                                 id="output"
                                 width="130"
                                 alt="RankAvatar"
@@ -339,7 +339,7 @@ const Profile = (props) => {
                                         <div className='relative'>
                                             <img
                                                 key={item?.image}
-                                                src={`http://192.168.3.150:8050/assets/${item.image}`}
+                                                src={`https://binote-api.biplus.com.vn/assets/${item.image}`}
                                                 alt={item?.name}
                                                 className='w-full rounded h-[117.33px] object-cover rounded-t-lg'
                                             />
