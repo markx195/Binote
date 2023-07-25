@@ -48,5 +48,9 @@
   "numberCoursesCompleted": "Số giờ khóa học hoàn thành",
   "hour": "Giờ",
   "showMore": "Xem thêm",
-  "keepStudying": "Tiếp tục học"
+  "keepStudying": "Tiếp tục học",
+  "addLessons": "Thêm buổi học",
+  "endCourse": "Kết thúc khóa học",
+  "joinCourse": "Tham gia",
+  "joinedCourse": "Đã tham gia"
 }

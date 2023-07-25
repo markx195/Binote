@@ -93,8 +93,8 @@ const CourseCard = () => {
         fetchData(id);
     };
 
-    const handleNoteDetails = (id) => {
-        navigate(`/note/${id}`);
+    const handleNoteDetails = (item) => {
+        navigate(`/note/${item.id}`, { state: { item } });
     };
 
     return (<>
@@ -143,7 +143,7 @@ const CourseCard = () => {
                         <div
                             key={index}
                             className='border shadow-md rounded-lg hover:scale-105 duration-300 bg-white'
-                            onClick={() => handleNoteDetails(item.id)}
+                            onClick={() => handleNoteDetails(item)}
                         >
                             <div className="p-4">
                                 <img

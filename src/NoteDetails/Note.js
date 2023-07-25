@@ -22,6 +22,7 @@ const Note = ({
                   idNoted,
                   setIsVisible,
                   setIsCancelled,
+                  setInstructor,
                   onAddItem,
                   onDeleteItem,
                   isInfoVisible,
@@ -199,6 +200,10 @@ Tôi có thể áp dụng gì vào công việc:`,
 
     const [checkDelete, setCheckDelete] = useState(null);
 
+    const checkInstructor = () => {
+        const userID = localStorage.getItem("userID")
+        return setInstructor === userID;
+    }
     return (
         <>
             <div
@@ -218,8 +223,10 @@ Tôi có thể áp dụng gì vào công việc:`,
                                     <div className="font-bold text-xl text-[#F4F4F4]">{t("notes")}</div>
                                 </div>
                             </div>
-                            <AddIcon sx={{color: yellow[500]}} fontSize="large" onClick={handleAddItem}
-                                     className="cursor-pointer"/>
+                            {checkInstructor() ? null : (
+                                <AddIcon sx={{color: yellow[500]}} fontSize="large" onClick={handleAddItem}
+                                         className="cursor-pointer"/>
+                            )}
                         </div>
                         <div
                             className="bg-[#585858] text-left text-[#D5D5D5] text-sm font-normal">

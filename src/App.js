@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes, Navigate, useNavigate} from "react-router-dom";
+import {Route, Routes, Navigate, useNavigate, useLocation} from "react-router-dom";
 import Login from "./Login/login";
 import React, {useEffect, useState} from "react";
 import HomePage from "./HomePage/homePage"
@@ -12,8 +12,8 @@ import Statistical from "./DashBoard/statistical"
 import VCard from "./Profile/V-card";
 import {handleClose} from "./WebSocket/LogOutEvent";
 
-
 function App() {
+    const location = useLocation();
     useEffect(() => {
         const storedAccessToken = localStorage.getItem('accessToken');
         if (storedAccessToken) {
@@ -75,7 +75,8 @@ function App() {
                 <Route path="/home" element={<HomePage handleSignOut={handleSignOut}/>}>
                     <Route path="" element={<CourseCard/>}/>
                 </Route>
-                <Route path='/note/:id' element={<NoteDetails handleSignOut={handleSignOut}/>}/>
+                <Route path='/note/:id' element={<NoteDetails handleSignOut={handleSignOut}
+                                                              item={location.state && location.state.item}/>}/>
                 <Route path='/profile'
                        element={<Profile infoData={infoData} handleSignOut={handleSignOut}/>}/>
                 <Route path='/bicard/:id' element={<VCard/>}/>

@@ -48,5 +48,9 @@
   "numberCoursesCompleted": "Number of courses completed",
   "hour": "Hour",
   "showMore": "Show more",
-  "keepStudying": "Keep studying"
+  "keepStudying": "Keep studying",
+  "addLessons": "Add lessons",
+  "endCourse": "End course",
+  "joinCourse": "Join course",
+  "joinedCourse": "Joined course"
 }

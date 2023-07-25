@@ -76,6 +76,7 @@ const HomePage = (props) => {
                 const data = await response.json();
                 const userID = data.data.id
                 setUserId(userID)
+                localStorage.setItem('userID', userID);
                 setPermission(data.data.role)
                 setUserInfo(data.data);
             } catch (error) {

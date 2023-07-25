@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useLocation} from "react-router-dom";
 import HomePage from "../HomePage/homePage";
 import Note from '../NoteDetails/Note';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -9,15 +9,26 @@ import {showToast} from '../common/Toast'
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const NoteDetails = ({handleSignOut}) => {
+    const location = useLocation();
+    const item = location.state && location.state?.item;
+    useEffect(() => {
+        setIsFinished(item.is_finished)
+        setUser_attend(item.user_attend)
+        console.log(item); // This will log the 'item' object to the console
+    }, [item]);
     const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
     const id = useParams()
     const [courseData, setCourseData] = useState({notes: []});
+    const [isFinished, setIsFinished] = useState(false);
+    const [user_attend, setUser_attend] = useState([]);
     const [isVisible, setIsVisible] = useState(true);
     const [isCancelled, setIsCancelled] = useState(false);
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
     const [isCompletion, setIsCompletion] = useState(false)
+    const [instructor, setInstructor] = useState("")
+    const [courseType, setCourseType] = useState("")
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -120,6 +131,8 @@ const NoteDetails = ({handleSignOut}) => {
                     setIsCompletion(data.data.isCompletion);
                 }
                 setCourseData(data.data);
+                setInstructor(data.data.instructor)
+                setCourseType(data.data.course_type)
             } catch (error) {
                 console.error("Error fetching course data:", error);
             }
@@ -128,6 +141,9 @@ const NoteDetails = ({handleSignOut}) => {
     }, [id.id, storedAccessToken, isCompletion]);
 
     const handleFinishedCourse = async () => {
+        if (!isFinished) {
+            return;
+        }
         const completeCourse = !isCompletion;
         const requestData = {
             course_id: id.id,
@@ -142,10 +158,43 @@ const NoteDetails = ({handleSignOut}) => {
             );
             setIsCompletion(response.data.is_completed)
             showToast(t("completeCourseBtn"), "success")
-            console.log(response.data); // Handle the response data as needed
         } catch (error) {
             console.error(error);
         }
+    }
+
+    const checkInstructor = () => {
+        const userID = localStorage.getItem("userID")
+        return instructor === userID;
+    }
+
+    const addOrEndLesson = (lessonStatus, isFinished) => {
+        const apiUrl = `http://192.168.3.150:8055/items/course/${id.id}`;
+        const requestOptions = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${storedAccessToken}`,
+            },
+            body: JSON.stringify({lesson_status: lessonStatus, is_finished: isFinished}),
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+            })
+            .catch(error => {
+                // Handle any error that occurred during the API call
+                console.error('Error:', error);
+            });
+    };
+
+    const joinOrNotCourse = () => {
     }
 
     return (<>
@@ -155,6 +204,7 @@ const NoteDetails = ({handleSignOut}) => {
                 className={`w-full border-solid border h-[76.7vh] border-[#979696] rounded-2xl flex ${isCancelled ? "w-full" : "w-8/12"}`}>
                 <Note courseData={courseData?.notes}
                       idNoted={id.id}
+                      setInstructor={setInstructor}
                       setIsCancelled={setIsCancelled}
                       setIsVisible={setIsVisible}
                       setIsInfoVisible={setIsInfoVisible}
@@ -174,7 +224,47 @@ const NoteDetails = ({handleSignOut}) => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12 cursor-default">
                                 {courseData.title}
                             </div>
-
+                            {checkInstructor() ? null : (
+                                <div className="flex flex-col sm:flex-row">
+                                    <div className="flex-1 py-4 pr-2">
+                                        <div
+                                            className="cursor-pointer flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] bg-[#F0C528] hover:scale-105"
+                                            onClick={() => addOrEndLesson("true", "false")}
+                                        >
+                                            <span className="whitespace-nowrap break-words">
+                                                    {t("addLessons")}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 py-4 cursor-pointer">
+                                        <div
+                                            className={`flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] ${
+                                                isFinished ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'
+                                            }`}
+                                            onClick={() => handleFinishedCourse("false")}
+                                        >
+                                            <span className="whitespace-nowrap break-words">
+                                                    {t("endCourse")}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {courseType === "COURSE" && (
+                                <div className="flex-1 py-4 cursor-pointer">
+                                    <div
+                                        className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
+                                        onClick={joinOrNotCourse}
+                                    >
+                                        {user_attend.length > 0 ? (<>
+                                                <div className="whitespace-nowrap break-words pr-1">{t("joinCourse")}</div>
+                                            </>) :
+                                            <span className="whitespace-nowrap break-words">
+                                                    {t("joinedCourse")}
+                                            </span>}
+                                    </div>
+                                </div>
+                            )}
                             <div className="flex flex-col sm:flex-row">
                                 <div className="flex-1 py-4 pr-2">
                                     <a
