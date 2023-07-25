@@ -27,7 +27,8 @@ const LoginForm = () => {
         }
 
         function handleLogin() {
-            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://binote.biplus.com.vn/';
+            // window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=https://binote.biplus.com.vn/';
+            window.location.href = 'https://binote-api.biplus.com.vn/auth/login/google?redirect=http://localhost:3000/';
             localStorage.setItem('QA', "logIn");
         }
 
@@ -50,6 +51,8 @@ const LoginForm = () => {
                                 handleConnect(accessToken);
                             })
                             .catch((error) => {
+                                console.log(1)
+                                console.log(error)
                                 showToast("Hãy đăng nhập lại với mail Biplus của bạn", "error");
                             });
                     }
@@ -57,7 +60,7 @@ const LoginForm = () => {
             }
         }, []);
 
-        const [socketURL] = useState('ws://192.168.3.150:8055/websocket');
+        const [socketURL] = useState('wss://192.168.3.150:8055/websocket');
 
         function handleConnect(accessToken) {
             const url = socketURL + (accessToken ? '?access_token=' + accessToken : '');
