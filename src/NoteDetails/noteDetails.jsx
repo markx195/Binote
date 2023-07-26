@@ -199,7 +199,7 @@ const NoteDetails = ({handleSignOut}) => {
         const apiUrl = `https://binote-api.biplus.com.vn/items/course/${idSend}`;
         let bodyData = {};
 
-        if (user_attend?.length > 0) {
+        if (user_attend?.length < 0) {
             // User is joining the course
             bodyData = {
                 "user_attend": {
@@ -311,12 +311,12 @@ const NoteDetails = ({handleSignOut}) => {
                                         {user_attend?.length > 0 ? (
                                             <>
                                                 <div className="whitespace-nowrap break-words pr-1">
-                                                    {t("joinedCourse")}
+                                                    {t("joinCourse")}
                                                 </div>
                                             </>
                                         ) : (
                                             <span className="whitespace-nowrap break-words">
-              {t("joinCourse")}
+              {t("joinedCourse")}
             </span>
                                         )}
                                     </div>
