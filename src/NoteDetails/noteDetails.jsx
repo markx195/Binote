@@ -165,7 +165,7 @@ const NoteDetails = ({handleSignOut}) => {
 
     const checkInstructor = () => {
         const userID = localStorage.getItem("userID")
-        return instructor === userID;
+        return instructor !== userID;
     }
 
     const addOrEndLesson = (lessonStatus, isFinished) => {
