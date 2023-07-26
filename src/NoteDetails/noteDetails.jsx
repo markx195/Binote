@@ -169,7 +169,7 @@ const NoteDetails = ({handleSignOut}) => {
     }
 
     const addOrEndLesson = (lessonStatus, isFinished) => {
-        const apiUrl = `http://192.168.3.150:8055/items/course/${id.id}`;
+        const apiUrl = `https://binote-api.biplus.com.vn/items/course/${id.id}`;
         const requestOptions = {
             method: 'PATCH',
             headers: {
@@ -196,8 +196,7 @@ const NoteDetails = ({handleSignOut}) => {
     const joinOrNotCourse = () => {
         const idSend = id.id
         const userID = localStorage.getItem("userID")
-        const apiUrl = `http://192.168.3.150:8055/items/course/${idSend}`;
-        const getUserAttendValue = item?.user_attend[0].id;
+        const apiUrl = `https://binote-api.biplus.com.vn/items/course/${idSend}`;
         let bodyData = {};
 
         if (user_attend?.length > 0) {
