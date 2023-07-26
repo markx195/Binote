@@ -165,7 +165,7 @@ const NoteDetails = ({handleSignOut}) => {
 
     const checkInstructor = () => {
         const userID = localStorage.getItem("userID")
-        return instructor !== userID;
+        return instructor === userID;
     }
 
     const addOrEndLesson = (lessonStatus, isFinished) => {
@@ -245,6 +245,9 @@ const NoteDetails = ({handleSignOut}) => {
             });
     };
 
+    const showA = checkInstructor();
+    const showB = courseType === "COURSE";
+    const showC = true;
     return (<>
         <HomePage handleSignOut={handleSignOut}/>
         <div className="flex px-[5%] pt-10 pb-20 bg-[#F5F5F5]">
@@ -272,16 +275,18 @@ const NoteDetails = ({handleSignOut}) => {
                             <div className="font-bold text-[32px] leading-[120%] text-left pt-12 cursor-default">
                                 {courseData.title}
                             </div>
-                            {checkInstructor() ? null : (
+
+                            {showA ? (
+                                // A - This will be shown if showA is true
                                 <div className="flex flex-col sm:flex-row">
                                     <div className="flex-1 py-4 pr-2">
                                         <div
                                             className="cursor-pointer flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] bg-[#F0C528] hover:scale-105"
                                             onClick={() => addOrEndLesson("true", "false")}
                                         >
-                                            <span className="whitespace-nowrap break-words">
-                                                    {t("addLessons")}
-                                            </span>
+            <span className="whitespace-nowrap break-words">
+              {t("addLessons")}
+            </span>
                                         </div>
                                     </div>
                                     <div className="flex-1 py-4 cursor-pointer">
@@ -291,57 +296,71 @@ const NoteDetails = ({handleSignOut}) => {
                                             }`}
                                             onClick={() => handleFinishedCourse("false")}
                                         >
-                                            <span className="whitespace-nowrap break-words">
-                                                    {t("endCourse")}
-                                            </span>
+            <span className="whitespace-nowrap break-words">
+              {t("endCourse")}
+            </span>
                                         </div>
                                     </div>
                                 </div>
-                            )}
-                            {courseType === "COURSE" && (
+                            ) : showB ? (
+                                // B - This will be shown if showA is false and showB is true
                                 <div className="flex-1 py-4 cursor-pointer">
                                     <div
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={joinOrNotCourse}
                                     >
-                                        {user_attend?.length > 0 ? (<>
-                                                <div className="whitespace-nowrap break-words pr-1">{t("joinedCourse")}</div>
-                                            </>) :
+                                        {user_attend?.length > 0 ? (
+                                            <>
+                                                <div className="whitespace-nowrap break-words pr-1">
+                                                    {t("joinedCourse")}
+                                                </div>
+                                            </>
+                                        ) : (
                                             <span className="whitespace-nowrap break-words">
-                                                    {t("joinCourse")}
-                                            </span>}
+              {t("joinCourse")}
+            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                // C - This will be shown if both showA and showB are false
+                                <div className="flex flex-col sm:flex-row">
+                                    <div className="flex-1 py-4 pr-2">
+                                        <a
+                                            className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href={courseData.link}
+                                        >
+            <span className="whitespace-nowrap break-words">
+              {t("goToCourse")}
+            </span>
+                                        </a>
+                                    </div>
+                                    <div className="flex-1 py-4 cursor-pointer">
+                                        <div
+                                            className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
+                                            onClick={handleFinishedCourse}
+                                        >
+                                            {isCompletion ? (
+                                                <>
+                                                    <div className="flex">
+                                                        <div className="whitespace-nowrap break-words pr-1">
+                                                            {t("keepStudying")}
+                                                        </div>
+                                                        <RestartAltIcon/>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <span className="whitespace-nowrap break-words">
+                {t("completCourse")}
+              </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             )}
-                            <div className="flex flex-col sm:flex-row">
-                                <div className="flex-1 py-4 pr-2">
-                                    <a
-                                        className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md bg-[#F0C528] text-[#2F2E2E] hover:scale-105"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        href={courseData.link}
-                                    >
-                                        <span className="whitespace-nowrap break-words">{t("goToCourse")}</span>
-                                    </a>
-                                </div>
-                                <div className="flex-1 py-4 cursor-pointer">
-                                    <div
-                                        className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
-                                        onClick={handleFinishedCourse}
-                                    >
-                                        {isCompletion ? (<>
-                                                <div className="flex">
-                                                    <div
-                                                        className="whitespace-nowrap break-words pr-1">{t("keepStudying")}</div>
-                                                    <RestartAltIcon/>
-                                                </div>
-                                            </>) :
-                                            <span className="whitespace-nowrap break-words">
-                                                    {t("completCourse")}
-                                            </span>}
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div className="text-left cursor-default"
                                  dangerouslySetInnerHTML={{__html: formatString(courseData.description)}}></div>
