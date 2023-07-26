@@ -12,8 +12,7 @@ const NoteDetails = ({handleSignOut}) => {
     const location = useLocation();
     const item = location.state && location.state?.item;
     useEffect(() => {
-        setIsFinished(item.is_finished)
-        setUser_attend(item.user_attend)
+        setIsFinished(item?.is_finished)
         console.log(item); // This will log the 'item' object to the console
     }, [item]);
     const {t} = useTranslation()
@@ -131,8 +130,9 @@ const NoteDetails = ({handleSignOut}) => {
                     setIsCompletion(data.data.isCompletion);
                 }
                 setCourseData(data.data);
-                setInstructor(data.data.instructor)
-                setCourseType(data.data.course_type)
+                setUser_attend(data.data?.user_attend)
+                setInstructor(data.data?.instructor)
+                setCourseType(data.data?.course_type)
             } catch (error) {
                 console.error("Error fetching course data:", error);
             }
@@ -193,9 +193,57 @@ const NoteDetails = ({handleSignOut}) => {
                 console.error('Error:', error);
             });
     };
-
     const joinOrNotCourse = () => {
-    }
+        const idSend = id.id
+        const userID = localStorage.getItem("userID")
+        const apiUrl = `http://192.168.3.150:8055/items/course/${idSend}`;
+        const getUserAttendValue = item?.user_attend[0].id;
+        let bodyData = {};
+
+        if (user_attend?.length > 0) {
+            // User is joining the course
+            bodyData = {
+                "user_attend": {
+                    "create": [
+                        {
+                            "course_id": {idSend},
+                            "directus_users_id": {
+                                "id": userID,
+                            }
+                        }
+                    ],
+                    "update": []
+                }
+            };
+        } else {
+            // User is leaving the course
+            bodyData = {
+                "user_attend": {
+                    "delete": [courseData.user_attend[0]?.id] // Replace '3' with the ID of the attendance record you want to delete
+                }
+            };
+        }
+
+        const requestOptions = {
+            method: 'PATCH', // Use PATCH for this example
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${storedAccessToken}`,
+            },
+            body: JSON.stringify(bodyData)
+        };
+
+        fetch(apiUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                // Handle the API response as needed
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the API call
+                console.error('Error:', error);
+            });
+    };
 
     return (<>
         <HomePage handleSignOut={handleSignOut}/>
@@ -256,11 +304,11 @@ const NoteDetails = ({handleSignOut}) => {
                                         className="flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] hover:scale-105"
                                         onClick={joinOrNotCourse}
                                     >
-                                        {user_attend.length > 0 ? (<>
-                                                <div className="whitespace-nowrap break-words pr-1">{t("joinCourse")}</div>
+                                        {user_attend?.length > 0 ? (<>
+                                                <div className="whitespace-nowrap break-words pr-1">{t("joinedCourse")}</div>
                                             </>) :
                                             <span className="whitespace-nowrap break-words">
-                                                    {t("joinedCourse")}
+                                                    {t("joinCourse")}
                                             </span>}
                                     </div>
                                 </div>

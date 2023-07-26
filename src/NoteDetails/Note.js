@@ -16,7 +16,6 @@ import {showToast} from '../common/Toast'
 
 const storedAccessToken = localStorage.getItem('accessToken');
 
-
 const Note = ({
                   courseData = [],
                   idNoted,
@@ -173,7 +172,6 @@ Tôi có thể áp dụng gì vào công việc:`,
     // Close Change and updateNote//
 
     const handleItemClick = (item) => {
-        console.log(item)
         setSelectedItemId(item.id);
         if (item.note === null) {
             setInputValue(item.title || "");
