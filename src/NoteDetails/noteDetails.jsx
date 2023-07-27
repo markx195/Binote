@@ -13,7 +13,6 @@ const NoteDetails = ({handleSignOut}) => {
     const item = location.state && location.state?.item;
     useEffect(() => {
         setIsFinished(item?.is_finished)
-        console.log(item); // This will log the 'item' object to the console
     }, [item]);
     const {t} = useTranslation()
     const storedAccessToken = localStorage.getItem('accessToken');
@@ -141,7 +140,7 @@ const NoteDetails = ({handleSignOut}) => {
     }, [id.id, storedAccessToken, isCompletion]);
 
     const handleFinishedCourse = async () => {
-        if (!isFinished) {
+        if (isFinished) {
             return;
         }
         const completeCourse = !isCompletion;
@@ -193,13 +192,14 @@ const NoteDetails = ({handleSignOut}) => {
                 console.error('Error:', error);
             });
     };
+
     const joinOrNotCourse = () => {
         const idSend = id.id
         const userID = localStorage.getItem("userID")
         const apiUrl = `https://binote-api.biplus.com.vn/items/course/${idSend}`;
         let bodyData = {};
 
-        if (user_attend?.length < 0) {
+        if (user_attend?.length === 0) {
             // User is joining the course
             bodyData = {
                 "user_attend": {
@@ -291,13 +291,13 @@ const NoteDetails = ({handleSignOut}) => {
                                     <div className="flex-1 py-4 cursor-pointer">
                                         <div
                                             className={`flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] ${
-                                                isFinished ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'
+                                                !isFinished ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'
                                             }`}
                                             onClick={() => handleFinishedCourse("false")}
                                         >
-            <span className="whitespace-nowrap break-words">
-              {t("endCourse")}
-            </span>
+                                            <div className="whitespace-nowrap break-words">
+                                                {t("endCourse")}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -311,13 +311,11 @@ const NoteDetails = ({handleSignOut}) => {
                                         {user_attend?.length > 0 ? (
                                             <>
                                                 <div className="whitespace-nowrap break-words pr-1">
-                                                    {t("joinCourse")}
+                                                    {t("joinedCourse")}
                                                 </div>
                                             </>
                                         ) : (
-                                            <span className="whitespace-nowrap break-words">
-              {t("joinedCourse")}
-            </span>
+                                            <span className="whitespace-nowrap break-words">{t("joinCourse")}</span>
                                         )}
                                     </div>
                                 </div>
