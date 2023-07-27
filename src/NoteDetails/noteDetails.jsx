@@ -291,9 +291,9 @@ const NoteDetails = ({handleSignOut}) => {
                                     <div className="flex-1 py-4 cursor-pointer">
                                         <div
                                             className={`flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] ${
-                                                !isFinished ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'
+                                                isFinished ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'
                                             }`}
-                                            onClick={() => handleFinishedCourse("false")}
+                                            onClick={() => addOrEndLesson("false", "true")}
                                         >
                                             <div className="whitespace-nowrap break-words">
                                                 {t("endCourse")}
