@@ -27,6 +27,7 @@ const NoteDetails = ({handleSignOut}) => {
     const [isCompletion, setIsCompletion] = useState(false)
     const [instructor, setInstructor] = useState("")
     const [courseType, setCourseType] = useState("")
+    const [checkAddLesson, SetCheckAddLesson] = useState("")
 
     const handleAddItem = newItem => {
         // Add the new item to the list of notes first
@@ -132,6 +133,7 @@ const NoteDetails = ({handleSignOut}) => {
                 setUser_attend(data.data?.user_attend)
                 setInstructor(data.data?.instructor)
                 setCourseType(data.data?.course_type)
+                SetCheckAddLesson(data.data?.lesson_available)
             } catch (error) {
                 console.error("Error fetching course data:", error);
             }
@@ -282,7 +284,8 @@ const NoteDetails = ({handleSignOut}) => {
                                 <div className="flex flex-col sm:flex-row">
                                     <div className="flex-1 py-4 pr-2">
                                         <div
-                                            className="cursor-pointer flex justify-center items-center px-1 py-2 text-center transition duration-300 ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] bg-[#F0C528] hover:scale-105"
+                                            className={`cursor-pointer flex justify-center items-center px-1 py-2 text-center transition duration-300
+                                             ease-in-out transform border border-[#F0C528] rounded-md shadow-md text-[#2F2E2E] bg-[#F0C528] ${checkAddLesson ? 'hover:scale-105' : 'cursor-not-allowed opacity-50 pointer-events-none'}`}
                                             onClick={() => addOrEndLesson("true", "false")}
                                         >
             <span className="whitespace-nowrap break-words">
