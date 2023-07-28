@@ -193,7 +193,7 @@ const NoteDetails = ({handleSignOut}) => {
             });
     };
 
-    const joinOrNotCourse = () => {
+    const joinOrNotCourse = async () => {
         const idSend = id.id
         const userID = localStorage.getItem("userID")
         const apiUrl = `https://binote-api.biplus.com.vn/items/course/${idSend}`;
@@ -232,17 +232,18 @@ const NoteDetails = ({handleSignOut}) => {
             body: JSON.stringify(bodyData)
         };
 
-        fetch(apiUrl, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                // Handle the API response as needed
-                console.log(data);
-            })
-            .catch(error => {
-                // Handle any errors that occurred during the API call
-                console.error('Error:', error);
-            });
+        try {
+            const response = await fetch(apiUrl, requestOptions);
+            const data = await response.json();
+
+            // Update user_attend state after the API call.
+            setUser_attend(data.data?.user_attend || []);
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
+    useEffect(() => {
+    }, [storedAccessToken, isCompletion, user_attend, courseData]);
 
     const showA = checkInstructor();
     const showB = courseType === "COURSE";
@@ -259,6 +260,7 @@ const NoteDetails = ({handleSignOut}) => {
                       setIsVisible={setIsVisible}
                       setIsInfoVisible={setIsInfoVisible}
                       isInfoVisible={isInfoVisible}
+                      setCourseType={courseType}
                       onAddItem={handleAddItem}
                       onDeleteItem={handleDeleteItem}/>
             </div>

@@ -17,6 +17,7 @@ import {showToast} from '../common/Toast'
 const storedAccessToken = localStorage.getItem('accessToken');
 
 const Note = ({
+                  setCourseType,
                   courseData = [],
                   idNoted,
                   setIsVisible,
@@ -198,10 +199,10 @@ Tôi có thể áp dụng gì vào công việc:`,
 
     const [checkDelete, setCheckDelete] = useState(null);
 
-    const checkInstructor = () => {
-        const userID = localStorage.getItem("userID")
-        return setInstructor === userID;
-    }
+    // const checkInstructor = () => {
+    //     const userID = localStorage.getItem("userID")
+    //     return setInstructor === userID;
+    // }
     return (
         <>
             <div
@@ -221,7 +222,7 @@ Tôi có thể áp dụng gì vào công việc:`,
                                     <div className="font-bold text-xl text-[#F4F4F4]">{t("notes")}</div>
                                 </div>
                             </div>
-                            {checkInstructor() ? null : (
+                            {setCourseType === "COURSE" ? null : (
                                 <AddIcon sx={{color: yellow[500]}} fontSize="large" onClick={handleAddItem}
                                          className="cursor-pointer"/>
                             )}
@@ -313,19 +314,21 @@ Tôi có thể áp dụng gì vào công việc:`,
                                   onChange={handleInputChangeBody}
                         />
                     </div>
-                    <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10 ">
-                        <AlarmIcon/>
-                        <select
-                            className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none selectTime"
-                            value={selectedTime}
-                            onChange={handleSelectTime}
-                        >
-                            <option value="0.25 ">15m</option>
-                            <option value="0.5">30m</option>
-                            <option value="0.75">45m</option>
-                            <option value="1">60m</option>
-                        </select>
-                    </div>
+                    {setCourseType === "COURSE" ? null : (
+                        <div className="flex justify-center items-center absolute bottom-0 right-0 pr-12 pb-10 ">
+                            <AlarmIcon/>
+                            <select
+                                className="bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer appearance-none selectTime"
+                                value={selectedTime}
+                                onChange={handleSelectTime}
+                            >
+                                <option value="0.25 ">15m</option>
+                                <option value="0.5">30m</option>
+                                <option value="0.75">45m</option>
+                                <option value="1">60m</option>
+                            </select>
+                        </div>
+                    )}
                 </div>
             )}
         </>
